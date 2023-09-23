@@ -1,0 +1,12 @@
+.home-page {
+    color: #0C0E0F;
+    /* leading-trim: both; */
+    /* text-edge: cap; */
+    font-family: Roboto Flex;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 1.28px;
+    text-transform: uppercase;
+}

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background: radial-gradient(126.66% 126.19% at 50.01% 86.65%, rgba(201, 206, 210, 0.00) 0%, #C9CED2 41.67%);
 }
 
 .App-logo {
@@ -13,8 +14,10 @@
   }
 }
 
+
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
+  background: radial-gradient(126.66% 126.19% at 50.01% 86.65%, rgba(201, 206, 210, 0.00) 0%, #C9CED2 41.67%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;

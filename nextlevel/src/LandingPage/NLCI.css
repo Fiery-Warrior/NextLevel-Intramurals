@@ -1,0 +1,99 @@
+.landing-page {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    /* border: 1px solid black; */ /*Benifical to see where everything is on page*/
+    /* padding: 10px; */
+  }
+  
+  .landing-page-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+
+  }
+  
+  .landing-page-text h1 {:root {
+  --font-family: 'Roboto Flex', sans-serif;
+  --font-size-h1: 64px;
+  --font-size-h2: 48px;
+  --font-weight-bold: 800;
+  --color-text: #0C0E0F;
+}
+
+.landing-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.landing-page-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.landing-page-text h1,
+.landing-page-text h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.landing-page-text h1 {
+  font-size: var(--font-size-h1);
+  letter-spacing: calc(1.28px * 2);
+}
+
+.landing-page-text h2 {
+  font-size: var(--font-size-h2);
+  letter-spacing: 1.28px;
+}
+    margin: 0;
+
+    color: #0C0E0F;
+    /* leading-trim: both;
+    text-edge: cap; */
+    font-family: Roboto Flex;
+    font-size: 54px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 1.28px;
+    text-transform: uppercase;
+  }
+  
+  .landing-page-text h2 {
+    margin: 0;
+
+    color: #0C0E0F;
+
+    font-family: Roboto Flex;
+    font-size: 54px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: 1.28px;
+    text-transform: uppercase;
+  }
+
+  .landing-page-text p {
+    color: var(--COLOR-3, #0B1519);
+    font-family: Roboto Flex;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.48px;
+  }
+
+
+  .landing-page-image {
+    margin-left: 20;
+  }

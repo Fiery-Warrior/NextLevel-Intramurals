@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import HomePage from './HomePage/homepage';
+import LandingPage from './LandingPage/Landingpage';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         >
           Learn React
         </a> */}
-      <HomePage/>
+      <LandingPage/>
 
       </header>
     </div>

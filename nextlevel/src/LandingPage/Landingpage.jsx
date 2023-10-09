@@ -41,7 +41,7 @@ function LandingPage() {
         <h2>Community</h2>
         <h2>Intramurals</h2>
 
-        <p> Since 2023 </p>
+        <p> Since I don't remember when </p>
 
         <Button variation="primary">Join Now</Button>
 

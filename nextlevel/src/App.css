@@ -24,6 +24,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
 }
 
 .App-link {
@@ -37,4 +38,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+/*Section Dividers*/
+
+.activity-center{
+  margin-top: 50%;
 }

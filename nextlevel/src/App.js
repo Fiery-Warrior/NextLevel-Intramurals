@@ -1,14 +1,16 @@
 // import logo from './logo.svg';
 import './App.css';
+import NavBar from './NavBar/NavBar';
+import Footer from './NavBar/Footer';
 import LandingPage from './LandingPage/Landingpage';
 import ActivityCenter from './ActivityCentral/ActivityCenter';
 
-import Test  from './ActivityCentral/ActivityCards/Sporty/Test';
 
 function App() {
   return (
     <div className="App">
-      <Test/>
+      <NavBar/>
+
       <header className="App-header">
 
       <LandingPage/>
@@ -17,6 +19,8 @@ function App() {
 
 
       </header>
+      <Footer/>
+
     </div>
   );
 }

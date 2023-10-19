@@ -16,6 +16,7 @@ export default function FootballCard() {
         alt="Football"
         height="140"
         image="/static/images/football.png"
+        
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

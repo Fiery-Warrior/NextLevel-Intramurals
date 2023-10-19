@@ -34,7 +34,7 @@ export default function TopNavBar() {
           <div>
             <Button color="inherit">Home</Button>
             <Button color="inherit" className={classes.button}>About</Button>
-            <Button color="inherit" className={classes.button}>Services</Button>
+            <Button color="inherit" className={classes.button} href='/login'>Login</Button>
             <Button color="inherit" className={classes.button}>Contact</Button>
           </div>
         </Toolbar>

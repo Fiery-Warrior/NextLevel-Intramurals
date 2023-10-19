@@ -3,9 +3,16 @@ import './landingImage.css';
 import './NLCI.css';
 import { Button } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-// import Warning from './warning';
+import PrivacyNotification from './NavBar/PrivacyNotification';
+import Footer from './NavBar/Footer';
+import ActivityCenter from './ActivityCentral/ActivityCenter.jsx';
 
-function LandingPage() {
+
+
+
+
+
+function TopLanding() {
   return (
     <div className="landing-page">
       <div className="landing-page-text">
@@ -24,11 +31,9 @@ function LandingPage() {
 
       <div style={{ borderTop: "2px solid #fff ", marginLeft: 20, marginRight: 20 }}></div>
 
-      {/* <Warning/> */}
-
       
     </div>
   );
 }
 
-export default LandingPage;
+export default TopLanding;

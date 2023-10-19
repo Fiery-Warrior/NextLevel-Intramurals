@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -15,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     card: {
-        width: '25%',
-        minWidth: 300,
-        margin: '0 2%', //'2%' represents the space between each card
+        width: '30%', // increase the width of the card
+        minWidth: 350, // increase the MIN width of the card
+        margin: '0 3%', //'2%' represents the space between each card
         [theme.breakpoints.down('sm')]: {
             width: '80%',
             margin: '2%',
@@ -25,31 +26,15 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         height: 0,
-        paddingTop: '60%', // 16:9
+        paddingTop: '50%', // increase the height of the media
     },
 }));
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     marginBottom: theme.spacing(2),
-//   },
-//   card: {
-//     width: '25%',
-//     minWidth: 300,
-//     margin: '0 2%', //'2%' represents the space between eacb card
-//   },
-//   media: {
-//     height: 0,
-//     paddingTop: '60%', // 16:9
-//   },
-// }));
 
 const cards = [
   {
-    title: 'Card 1',
-    description: 'This is the description for card 1',
-    image: 'https://picsum.photos/300/200',
+    title: 'Football',
+    description: 'This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1',
+    image: '/static/images/football.png',
   },
   {
     title: 'Card 2',

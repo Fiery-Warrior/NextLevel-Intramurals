@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    backgroundColor: '#0B1519',
+    backgroundColor: '#4b6d7b',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -28,13 +28,15 @@ export default function TopNavBar() {
     <div className={classes.root}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} style={{ visibility: "hidden" }}>
             NextLevel
           </Typography>
-          <Button color="inherit">Home</Button>
-          <Button color="inherit" className={classes.button}>About</Button>
-          <Button color="inherit" className={classes.button}>Services</Button>
-          <Button color="inherit" className={classes.button}>Contact</Button>
+          <div>
+            <Button color="inherit">Home</Button>
+            <Button color="inherit" className={classes.button}>About</Button>
+            <Button color="inherit" className={classes.button}>Services</Button>
+            <Button color="inherit" className={classes.button}>Contact</Button>
+          </div>
         </Toolbar>
       </AppBar>
       <Toolbar />

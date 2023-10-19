@@ -2,6 +2,7 @@
 import './App.css';
 import NavBar from './NavBar/NavBar';
 import Footer from './NavBar/Footer';
+import PrivacyNotification from './NavBar/PrivacyNotification';
 import LandingPage from './LandingPage/Landingpage';
 import ActivityCenter from './ActivityCentral/ActivityCenter';
 
@@ -10,7 +11,8 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-
+      <PrivacyNotification/>
+      
       <header className="App-header">
 
       <LandingPage/>

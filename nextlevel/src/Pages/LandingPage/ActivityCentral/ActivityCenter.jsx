@@ -5,8 +5,7 @@ import './ActivityCenter.css';
 function ActivityCenter() {
   return (
     <div className="landing-activity">
-
-       
+      
     <ActivityCard/>
 
     </div>

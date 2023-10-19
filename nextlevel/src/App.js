@@ -56,7 +56,7 @@ function App() {
             <Routes>
               <Route exact path='/' element={<LandingPage/>} />
               <Route path='/login' element={<Logininpage/>} />
-              <Route path='signin' element={<RegisterPage/>} />
+              <Route path='/signin' element={<RegisterPage/>} />
             </Routes>
         </Router>
 
@@ -74,17 +74,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-// <header className="App-header">
-
-// <LandingPage/>
-// <section className='activity-center'/>
-// <ActivityCenter/>
-
-
-// </header>
-// <Footer/>

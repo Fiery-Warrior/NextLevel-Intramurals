@@ -13,9 +13,12 @@ function LandingPage() {
         <h2>Intramurals</h2>
 
         <p> Since I don't remember when </p>
-
+        <a href='/signin'>
         <Button variation="primary">Join Now</Button>
-        <Button style={{ marginTop: '10px' }}>Login</Button>
+        </a>
+        <a href='/login'>
+          <Button style={{ marginTop: '10px' }}>Login</Button>
+        </a>
 
       </div>
       <div className="landing-page-image">

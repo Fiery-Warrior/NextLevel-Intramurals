@@ -19,7 +19,7 @@ function LandingPage() {
 
       </div>
       <div className="landing-page-image">
-        <img src={process.env.PUBLIC_URL + '/trophy.png'} alt="Trophy" />
+        <img src={process.env.PUBLIC_URL + '/static/images/baseball.png'} alt="" />
       </div>
 
       <div style={{ borderTop: "2px solid #fff ", marginLeft: 20, marginRight: 20 }}></div>

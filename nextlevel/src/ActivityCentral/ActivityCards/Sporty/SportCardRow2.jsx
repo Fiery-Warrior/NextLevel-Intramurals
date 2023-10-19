@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         width: '30%', // increase the width of the card
-        minWidth: 350, // increase the MIN width of the card
-        margin: '0 3%', //'2%' represents the space between each card
+        minWidth: 310, // increase the MIN width of the card
+        margin: '0 1%', //'2%' represents the space between each card
         [theme.breakpoints.down('sm')]: {
             width: '80%',
             margin: '2%',
@@ -30,21 +30,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const cards = [
+const cards_row2 = [
   {
-    title: 'Football',
+    title: 'Red Soxs Baseball',
     description: 'This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1',
-    image: '/static/images/football.png',
+    image: '/static/images/baseball.png',
   },
   {
-    title: 'Card 2',
+    title: 'KA Cross Country',
     description: 'This is the description for card 2',
-    image: 'https://picsum.photos/300/200',
+    image: '/static/images/crosscountry.png',
   },
   {
-    title: 'Card 3',
+    title: 'Tea Time Golf',
     description: 'This is the description for card 3',
-    image: 'https://picsum.photos/300/200',
+    image: '/static/images/golf.png',
+  },  
+  {
+    title: 'Knight Game Night',
+    description: 'This is the description for card 3',
+    image: '/static/images/gamenight.png',
   },
 ];
 
@@ -53,7 +58,7 @@ export default function SportCardRow() {
 
   return (
     <div className={classes.root}>
-      {cards.map((card) => (
+      {cards_row2.map((card) => (
         <Card key={card.title} className={classes.card}>
           <CardMedia
             className={classes.media}

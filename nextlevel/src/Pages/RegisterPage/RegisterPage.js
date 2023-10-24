@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -31,13 +32,24 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    
+    const userData = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    };
+    
+    try {
+      // Sending data to the backend API
+      const response = await axios.post('http://localhost:3001/register', userData);
+      console.log(response.data); // Handle the response accordingly
+    } catch (error) {
+      console.error('An error occurred while sending data to the backend:', error);
+    }
   };
 
   return (

@@ -12,6 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+//import React, { useState } from 'react';
 
 function Copyright(props) {
   return (
@@ -31,13 +33,32 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Logininpage() {
-  const handleSubmit = (event) => {
+  const [authMessage, setAuthMessage] = React.useState('');
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    
+    const userData = {
       email: data.get('email'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    };
+    
+    try {
+      // Sending login data to the backend API
+      const response = await axios.post('http://localhost:3001/login', userData);
+      if (response.status===200){
+        setAuthMessage('Login successful!');
+        //in final build, redirect to login page
+      }
+      console.log(response.data); // Handle the response accordingly
+    } catch (error) {
+      if (error.response && error.response.status === 401){
+        setAuthMessage('Invalid email or password.');
+      } else {
+        setAuthMessage('An error occurred during login. Please try again later.');
+        console.error('An error occurred during login:', error);
+      }
+    }
   };
 
   return (
@@ -99,6 +120,12 @@ export default function Logininpage() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+
+              {authMessage && (
+              <Typography variant="body2" color="error" align="center" sx={{ mb: 2 }}>
+                {authMessage}
+              </Typography>
+              )}
               <Button
                 type="submit"
                 fullWidth

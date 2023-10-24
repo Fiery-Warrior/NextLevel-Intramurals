@@ -1,3 +1,20 @@
+# Hey gang. It's ya boi asher. I am riding the high of getting authentication to work so here are some steps you need to get this running on your machine.
+Install `NLIDBDump20231023.sql` using MySQL Workbench
+GETTING THE REACT FRONTEND RUNNING (As of 10/23/2023):
+    Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)
+
+GETTING DB INTEGRATION WORKING
+    Install body-parser middleware: `npm install -f express mysql body-parser` (note: I am unsure if I ever actually used this)
+    Install cors middleware: `npm install -f cors`
+    Make http requests: `npm install -f axios`
+    Hash passwords: `npm install -f bcrypt`
+    Assuming you have the database configured correctly, you are now able to start the servers
+
+RUN SERVERS:
+backend express.js server (for DB interaction): `node index.js`
+Frontend React server: `npm.start`
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -1,4 +1,5 @@
 # Hey gang. It's ya boi asher. I am riding the high of getting authentication to work so here are some steps you need to get this running on your machine.
+Make sure you have both MySQL Workbench **AND** MySql server installed and running on your machine.
 Install `NLIDBDump20231023.sql` using MySQL Workbench
 GETTING THE REACT FRONTEND RUNNING (As of 10/23/2023):
     Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)

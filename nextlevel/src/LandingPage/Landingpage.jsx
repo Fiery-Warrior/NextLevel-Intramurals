@@ -12,7 +12,7 @@ function LandingPage() {
         <h2>Community</h2>
         <h2>Intramurals</h2>
 
-        <p> Since I don't remember when </p>
+        <p> Since 2023 </p>
 
         <Button variation="primary">Join Now</Button>
         <Button style={{ marginTop: '10px' }}>Login</Button>

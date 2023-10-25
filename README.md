@@ -1,6 +1,21 @@
 # Hey gang. It's ya boi asher. I am riding the high of getting authentication to work so here are some steps you need to get this running on your machine.
-Make sure you have both MySQL Workbench **AND** MySql server installed and running on your machine.  
-Install `NLIDBDump20231023.sql` using MySQL Workbench  
+Make sure you have both MySQL Workbench **AND** MySql server installed and running on your machine.   
+CONFIGURING THE SERVER:  
+    Install `NLIDBDump20231023.sql` using MySQL Workbench  
+        Workbench: https://dev.mysql.com/downloads/workbench/  
+        Server: https://dev.mysql.com/downloads/mysql/  
+    In MySql Workbench, create and connect to a localhost connection. If you do not set the password as 'password' you will need to edit some of the backend code.  
+    After opening the server connection, click "schemas" towards the bottom left hand corner of the window.  
+    Right click the schema you would like to load the db tables into. In the code, it is called 'NLIDB', but by default, it is called 'sys'  
+    Go to 'Server>Data Import' and select "Import from self contained file"   
+    Select the "Import Progress" tab and select "Start Import"   
+    Open the "Query 1" tab (not in the ribbon, but above the main window) and execute the following queries:  
+        ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'your_password';  
+        FLUSH PRIVILEGES;  
+    Replace "your_password" with the password you used when configuring the server and press the lightning bolt icon to run these queries.  
+    Open windows services (enter "services" into the windows search bar) and restart the MySql service.  
+    In nextlevel>index.js change the "password" and "database" fields to accurately reflect your password and database scheme name  
+    
 GETTING THE REACT FRONTEND RUNNING (As of 10/23/2023):  
     Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)  
   
@@ -11,9 +26,12 @@ GETTING DB INTEGRATION WORKING
     Hash passwords: `npm install -f bcrypt`  
     Assuming you have the database configured correctly, you are now able to start the servers  
   
-RUN SERVERS:  
+RUN SERVERS (IT DOES NOT MATTER WHICH ORDER THEY RUN IN):  
 backend express.js server (for DB interaction): `node index.js`  
 Frontend React server: `npm.start`  
+
+Extra notes:  
+    When creating a new user for testing, remember or write down their password. You will not be able to retrive this value after setting it the first time.  
   
 
 # Getting Started with Create React App

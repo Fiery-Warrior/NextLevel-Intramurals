@@ -45,7 +45,7 @@ export default function Logininpage() {
     
     try {
       // Sending login data to the backend API
-      const response = await axios.post('http://localhost:3001/login', userData);
+      const response = await axios.post('http://localhost:30001/login', userData);
       if (response.status===200){
         setAuthMessage('Login successful!');
         //in final build, redirect to login page

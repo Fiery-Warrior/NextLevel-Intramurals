@@ -19,7 +19,9 @@ npm i react-router-dom --save
 ### Using:
 
 Vscode
+
 MySQL Workbench
+
 MySQL Server 'Typical': https://dev.mysql.com/downloads/MysSQL
 
 Install `NLIDBDump20231023.sql` using MySQL Workbench

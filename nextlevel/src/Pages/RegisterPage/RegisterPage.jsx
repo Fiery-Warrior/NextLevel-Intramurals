@@ -45,6 +45,7 @@ export default function RegisterPage() {
     
     try {
       // Sending data to the backend API
+      // const response = await axios.post('/register', userData);
       const response = await axios.post('http://localhost:3001/register', userData);
       console.log(response.data); // Handle the response accordingly
     } catch (error) {

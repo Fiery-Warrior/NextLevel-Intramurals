@@ -6,6 +6,7 @@ import Footer from './Pages/LandingPage/NavBar/Footer';
 import LandingPage from './Pages/LandingPage/Landingpage';
 import Logininpage from './Pages/LogininPage/loginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
+import UserProfile from './Pages/UserProfile/UserProfile';
 
 import {BrowserRouter as Router, Routes, Route }
 from 'react-router-dom';
@@ -26,6 +27,7 @@ function App() {
               <Route exact path='/' element={<LandingPage/>} />
               <Route path='/login' element={<Logininpage/>} />
               <Route path='/signin' element={<RegisterPage/>} />
+              <Route path='/profile' element={<UserProfile/>} />
             </Routes>
         </Router>
 

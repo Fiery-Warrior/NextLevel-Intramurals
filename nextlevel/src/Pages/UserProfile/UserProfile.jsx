@@ -1,19 +1,22 @@
 import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
 
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
-
-    if (cookies.myCookie) {
-        // do something if the cookie exists
-    } else {
-        // do something else if the cookie doesn't exist
-    }
+    const [email, setEmail] = useState('');
+    console.log('Cookie is: ', cookies);
+    console.log('email is: ', email);
+    useEffect(() => {
+        if (cookies.myCookie && !email) { // add a check to see if email state has already been set
+            setEmail(cookies.myCookie.email);
+        }
+    }, [cookies, email]); // add email state to dependency array
 
     return (
         // your component JSX
         <div>
             <h1>User Profile</h1>
-            <p>Welcome to your user profile!</p>
+            <p>Welcome to your profile, {email}!</p>
         </div>
     );
 }

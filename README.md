@@ -32,6 +32,7 @@ Frontend React server: `npm.start`
 
 Extra notes:  
     When creating a new user for testing, remember or write down their password. You will not be able to retrive this value after setting it the first time.  
+    If you want to issue queries from workbench, make sure you run the "use schemaname" query first (replace schemaname with the name of your db schema)
   
 
 # Getting Started with Create React App

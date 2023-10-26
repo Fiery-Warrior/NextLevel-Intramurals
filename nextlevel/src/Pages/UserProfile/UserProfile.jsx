@@ -164,13 +164,6 @@
 
     import React, { useState, useEffect } from 'react';
     import { useCookies } from 'react-cookie'; // import useCookies hook
-    import Card from '@material-ui/core/Card';
-    import CardMedia from '@material-ui/core/CardMedia';
-    import CardContent from '@material-ui/core/CardContent';
-    import Typography from '@material-ui/core/Typography';
-    import Modal from '@material-ui/core/Modal';
-    import Grid from '@material-ui/core/Grid';
-    import Container from '@mui/material/Container';
     import CardDesign from './CardDesign';
 
     function UserProfile() {
@@ -186,8 +179,8 @@
 
         return (
             <div>
-                <h1>User Profile</h1>
-                <p>Welcome to your profile, {email}!</p>
+                <h1>{email} Profile</h1>
+                <h1>Welcome to your profile, {email}!</h1>
                 <CardDesign/>
             </div>
         );

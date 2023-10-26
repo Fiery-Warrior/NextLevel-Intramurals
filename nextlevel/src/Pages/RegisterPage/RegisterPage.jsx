@@ -99,7 +99,7 @@ export default function RegisterPage() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="DBU Email Address"
                   name="email"
                   autoComplete="email"
                 />

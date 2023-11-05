@@ -16,6 +16,7 @@ function LandingPage() {
         <p> Since 2023 </p>
 
         <Button variation="primary">Join Now</Button>
+        <Button style={{ marginTop: '10px' }}>Login</Button>
 
       </div>
       <div className="landing-page-image">

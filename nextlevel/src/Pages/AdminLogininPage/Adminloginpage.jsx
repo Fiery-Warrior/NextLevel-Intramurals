@@ -53,7 +53,7 @@ export default function LoginPage() {
       if (response.status === 200) {
         setAuthMessage('Login successful!');
         setCookie('myCookie', { email: userData.email }, { path: '/' }); // Set the cookie
-        window.location.href = `/profile?email=${userData.email}`; // Redirect to profile page with email as query parameter
+        window.location.href = `/admindash?email=${userData.email}`; // Redirect to dash page with email as query parameter
       }
       console.log(response.data); // Handle the response accordingly
     } catch (error) {

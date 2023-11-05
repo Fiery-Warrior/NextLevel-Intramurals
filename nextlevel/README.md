@@ -1,22 +1,10 @@
-# Dependecies:
+# Getting Started with Create React App
 
-npm i -f
-
-npm install -f @mui/material @emotion/react @emotion/styled
-
-npm install -f express mysql body-parser
-
-npm install -f cors
-
-npm install -f axios
-
-npm install -f bcrypt
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
-
-cd NextLevel-Intramurals/nextlevel
 
 ### `npm start`
 

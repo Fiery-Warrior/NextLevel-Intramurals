@@ -1,6 +1,4 @@
 import './App.css';
-// import NavBar from './Pages/LandingPage/NavBar/NavBar';
-// import Footer from './Pages/LandingPage/NavBar/Footer';
 import LandingPage from './Pages/LandingPage/Landingpage';
 import LoginPage from './Pages/LogininPage/loginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
@@ -22,13 +20,6 @@ function App() {
     <CookiesProvider>
 
     <div className="App">
-    {/* <NavBar/> */}
-   {/* <PrivacyNotification/> */}
-   {/* {cookies.user ? (
-          <WelcomePage user={cookies.user} />
-        ) : (
-          <LoginPage onLogin={handleLogin} />
-        )} */}
 
       <Router>
             <Routes>

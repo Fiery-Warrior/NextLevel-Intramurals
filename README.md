@@ -39,9 +39,17 @@ RUN SERVERS:
 backend express.js server (for DB interaction): `node index.js`
 Frontend React server: `npm.start`
 
-## To Start the project:
+## MySQL Workbench
 
-## Available Scripts
+//stat by choosing the database
+
+USE sys;
+
+//type to view the USERs database for: role, email, firstname, lastname, and hashed password
+
+select \* from user;
+
+## To Start the project:
 
 In the project directory, you can run:
 

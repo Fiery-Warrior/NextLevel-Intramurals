@@ -1,13 +1,11 @@
 import './App.css';
-import NavBar from './Pages/LandingPage/NavBar/NavBar';
-import Footer from './Pages/LandingPage/NavBar/Footer';
-// import PrivacyNotification from './NavBar/PrivacyNotification';
-// import ActivityCenter from './ActivityCentral/ActivityCenter';
+// import NavBar from './Pages/LandingPage/NavBar/NavBar';
+// import Footer from './Pages/LandingPage/NavBar/Footer';
 import LandingPage from './Pages/LandingPage/Landingpage';
 import LoginPage from './Pages/LogininPage/loginpage';
-import WelcomePage from './Pages/WelcomePage/WelcomePage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import UserProfile from './Pages/UserProfile/UserProfile';
+import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
 import { CookiesProvider, useCookies } from "react-cookie";
 import {BrowserRouter as Router, Routes, Route }
 from 'react-router-dom';
@@ -38,6 +36,7 @@ function App() {
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/signin' element={<RegisterPage/>} />
               <Route path='/profile' element={<UserProfile/>} />
+              <Route path='/admindash' element={<AdminDash/>} />
             </Routes>
         </Router>
   </div>

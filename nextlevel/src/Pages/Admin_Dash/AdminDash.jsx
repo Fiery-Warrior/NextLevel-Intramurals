@@ -22,7 +22,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import './admindash.css';
 import Users from './Users.jsx';
-import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -89,7 +88,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AdminDash() {
-    const [users, setUsers] = useState([]);
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
@@ -103,28 +101,6 @@ function AdminDash() {
 
 
  
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/admindash');
-                setUsers(response.data);
-            } catch (error) {
-                console.error(`There is error retrieving the user data: ${error}`);
-            }
-        };
-
-        fetchUsers();
-    }, []);
-    // useEffect(() => {
-    //     axios.get('http://localhost:3001/admindash')
-    //       .then(response => {
-    //         setUsers(response.data);
-    //       })
-    //       .catch(error => {
-    //         console.error(`There is error retrieving the user data: ${error}`);
-    //       });
-    //   }, []);
-
 
     return (
         <div className={classes.root}>
@@ -243,16 +219,9 @@ function AdminDash() {
                 </Card>
                 <div className='card-space'/>
                 <Users/>
-                <div>
-                    <h1>Admin Dashboard</h1>
-                    {users.map((user, index) => (
-                        <div key={index}>
-                            <p>{user.firstName} {user.lastName}</p>
-                            <p>{user.email}</p>
-                        </div>
-                    ))}
-                </div>
-            </main>        </div>
+
+            </main>        
+            </div>
     );
 }
 

@@ -199,18 +199,7 @@ function AdminDash() {
                 <Card>
                     <CardContent>
                         <Typography variant="h5" component="h2">
-                            Total Revenue
-                        </Typography>
-                        <Typography color="textSecondary">
-                            $10,000
-                        </Typography>
-                    </CardContent>
-                </Card>
-                <div className='card-space'/>
-                <Card>
-                    <CardContent>
-                        <Typography variant="h5" component="h2">
-                            Total Orders
+                            Total Sports
                         </Typography>
                         <Typography color="textSecondary">
                             50

@@ -1,6 +1,7 @@
 import './App.css';
 import LandingPage from './Pages/LandingPage/Landingpage';
 import LoginPage from './Pages/LogininPage/loginpage';
+import AdminLoginPage from './Pages/AdminLogininPage/Adminloginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route exact path='/' element={<LandingPage/>} />
               <Route path='/login' element={<LoginPage/>} />
+              <Route path='/adminlogin' element={<AdminLoginPage/>} />
               <Route path='/signin' element={<RegisterPage/>} />
               <Route path='/profile' element={<UserProfile/>} />
               <Route path='/admindash' element={<AdminDash/>} />

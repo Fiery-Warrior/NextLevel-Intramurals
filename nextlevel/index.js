@@ -72,6 +72,13 @@ app.post('/login', (req, res) => {
   });
 });
 
+//For Admin Dashboard
+app.get('/users', (req, res) => {
+  connection.query('SELECT firstName, lastName, email FROM user', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
 
 // Start the server
 const PORT = 3001;

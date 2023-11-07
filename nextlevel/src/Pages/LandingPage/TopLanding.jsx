@@ -1,14 +1,13 @@
 import React from 'react';
 import './landingImage.css';
 import './NLCI.css';
-import { Button } from '@aws-amplify/ui-react';
+// import { Button } from '@aws-amplify/ui-react';
+import {Button } from '@material-ui/core';
+
 import '@aws-amplify/ui-react/styles.css';
 import PrivacyNotification from './NavBar/PrivacyNotification';
 import Footer from './NavBar/Footer';
 import ActivityCenter from './ActivityCentral/ActivityCenter.jsx';
-
-
-
 
 
 
@@ -22,7 +21,8 @@ function TopLanding() {
 
         <p> Since 2023 </p>
 
-        <Button variation="primary">Join Now</Button>
+        <Button variation="primary"  href='/signin' style ={{backgroundColor: 'rgb(4, 125, 149)', color: 'white'}}>Join Now</Button >
+
 
       </div>
       <div className="landing-page-image">

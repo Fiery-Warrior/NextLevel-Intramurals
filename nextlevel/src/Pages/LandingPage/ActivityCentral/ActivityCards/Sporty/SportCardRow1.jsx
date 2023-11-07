@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,6 +29,17 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '50%', // increase the height of the media
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
 }));
 
 const cards_row1 = [
@@ -35,31 +47,48 @@ const cards_row1 = [
     title: 'Patriot Football',
     description: 'This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1This is the description for card 1',
     image: '/static/images/football.png',
+    location: 'Football Field',
   },
   {
     title: 'Viking Soccer',
     description: 'This is the description for card 2',
     image: '/static/images/soccer.png',
+    location: 'Soccer Field',
   },
   {
     title: 'Blues Hockey',
     description: 'This is the description for card 3',
     image: '/static/images/hockey.png',
+    location: 'Hockey Rink',
   },  
   {
     title: 'Track & Field',
     description: 'This is the description for card 3',
     image: '/static/images/track.png',
+    location: 'Track',
   },
 ];
 
 export default function SportCardRow() {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [cardTitle, setCardTitle] = useState('');
+  const [cardLocation, setCardLocation] = useState('');
+
+  const handleOpen = (title, location) => {
+    setOpen(true);
+    setCardTitle(title);
+    setCardLocation(location);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
       {cards_row1.map((card) => (
-        <Card key={card.title} className={classes.card}>
+        <Card key={card.title} className={classes.card} onClick={() => handleOpen(card.title, card.location)}>
           <CardMedia
             className={classes.media}
             image={card.image}
@@ -75,7 +104,22 @@ export default function SportCardRow() {
           </CardContent>
         </Card>
       ))}
-      
+      <Modal
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.paper}>
+          <Typography variant="h6" id="modal-title">
+            {cardTitle}
+          </Typography>
+          <Typography variant="subtitle1" id="simple-modal-description">
+            Location: {cardLocation}
+          </Typography>
+        </div>
+      </Modal>
     </div>
   );
 }

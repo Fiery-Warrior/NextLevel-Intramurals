@@ -5,6 +5,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,12 +36,19 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: '10px',
+        
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    blurbackground: {
+      filter: 'blur(5px)',
+      transition: 'filter 0.095s ease',
+
     },
 }));
 
@@ -74,21 +84,30 @@ export default function SportCardRow() {
   const [open, setOpen] = useState(false);
   const [cardTitle, setCardTitle] = useState('');
   const [cardLocation, setCardLocation] = useState('');
+  const [scheduledTime, setScheduledTime] = useState('');
+  const [BackgroundBlur, setBackgroundBlur] = useState(false);
 
   const handleOpen = (title, location) => {
     setOpen(true);
     setCardTitle(title);
     setCardLocation(location);
+    setBackgroundBlur(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setBackgroundBlur(false);
   };
 
+  const handleSchedule = () => {
+    setOpen(false);
+  }
+
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${BackgroundBlur ? classes.blurbackground : ''}`}>
       {cards_row1.map((card) => (
         <Card key={card.title} className={classes.card} onClick={() => handleOpen(card.title, card.location)}>
+          
           <CardMedia
             className={classes.media}
             image={card.image}
@@ -104,7 +123,8 @@ export default function SportCardRow() {
           </CardContent>
         </Card>
       ))}
-      <Modal
+      
+      <Modal //Modal Code
         className={classes.modal}
         open={open}
         onClose={handleClose}
@@ -118,6 +138,11 @@ export default function SportCardRow() {
           <Typography variant="subtitle1" id="simple-modal-description">
             Location: {cardLocation}
           </Typography>
+          Next Game:
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar />
+          </LocalizationProvider>
+
         </div>
       </Modal>
     </div>

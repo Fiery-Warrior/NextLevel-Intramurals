@@ -37,10 +37,18 @@ import Footer from './Pages/LandingPage/NavBar/Footer';
 import LandingPage from './Pages/LandingPage/Landingpage';
 import Logininpage from './Pages/LogininPage/loginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
+import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
 
 import {BrowserRouter as Router, Routes, Route }
 from 'react-router-dom';
-
+/*const userCardTemplate = document.querySelector("[data-user-template]");
+fetch("https://jsonplaceholder.typicode.com/users").then(res => res.json()).then(data => {})
+  data.forEach(user => {
+  const card = userCardTemplate.textContent.cloneNode(true).children[0];
+  const header = card.querySelector("[data-header]")
+  const body = card.querySelector("[data-body]") 
+  console.log(card);
+  })*/
 
 function App() {
   return (
@@ -57,6 +65,7 @@ function App() {
               <Route exact path='/' element={<LandingPage/>} />
               <Route path='/login' element={<Logininpage/>} />
               <Route path='/signin' element={<RegisterPage/>} />
+              <Route path='/teamselection' element={<TeamSelectionPage/>} />
             </Routes>
         </Router>
 

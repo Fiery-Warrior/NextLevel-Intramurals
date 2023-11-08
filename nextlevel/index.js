@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'sys'
+  database: 'NLIDB'
 });
 
 connection.connect((err) => {
@@ -24,7 +24,8 @@ connection.connect((err) => {
 
 // Define a POST endpoint to handle user registration
 app.post('/register', (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, sex, stuID } = req.body;
+  const sexVal = sex === 'male' ? 'M' : 'F'; //sets the sex to M or F
 
   // Hash the password
   bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
@@ -38,6 +39,8 @@ app.post('/register', (req, res) => {
       lastName: lastName,
       email: email,
       password: hashedPassword,
+      sex: sexVal,
+      stuID: stuID,
       role: 1
     }, (err, results) => {
       if (err) throw err;
@@ -58,8 +61,15 @@ app.post('/login', (req, res) => {
         if (err) throw err;
         
         if (isMatch) {
-          console.log('User authenticated successfully');
-          res.send('User authenticated successfully.');
+          // Check if user has admin role (3 or 4)
+          const userRole = results[0].role;
+          if (userRole === 3 || userRole === 4) {
+            console.log('Admin authenticated successfully');
+            res.send('Admin authenticated successfully.');
+          } else {
+            console.log('Unauthorized access');
+            res.status(403).send('Unauthorized access');
+          }
         } else {
           console.log('Invalid email or password');
           res.status(401).send('Invalid email or password.');
@@ -71,6 +81,7 @@ app.post('/login', (req, res) => {
     }
   });
 });
+
 
 //For Admin Dashboard
 app.get('/admindash', (req, res) => {

@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 function Copyright(props) {
   return (
@@ -32,24 +36,35 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
+  const [registrationError, setRegistrationError] = React.useState('');
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
     const userData = {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
-      password: data.get('password')
+      password: data.get('password'),
+      stuID: data.get('stuID'),
+      sex: data.get('sex')
     };
-    
+  
+    // Check if email ends with "@dbu.edu"
+    if (!userData.email.endsWith("@dbu.edu")) {
+      setRegistrationError('Registration requires a DBU email address.');
+      return; // Stop the form submission
+    }
+  
     try {
       // Sending data to the backend API
-      // const response = await axios.post('/register', userData);
       const response = await axios.post('http://localhost:3001/register', userData);
-      console.log(response.data); // Handle the response accordingly
+      console.log(response.data);
+      // On successful registration, you might want to clear the error or navigate the user to a different page
+      setRegistrationError('Registration Success!');
     } catch (error) {
-      console.error('An error occurred while sending data to the backend:', error);
+      console.error('An error occurred during registration:', error);
+      // Display backend error message or a default error message
+      setRegistrationError(error.response?.data?.message || 'An unexpected error occurred during registration.');
     }
   };
 
@@ -108,6 +123,31 @@ export default function RegisterPage() {
                 <TextField
                   required
                   fullWidth
+                  id="stuID"
+                  label="Student ID"
+                  name="stuID"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Sex</FormLabel>
+                  
+                  <RadioGroup
+                    row
+                    aria-labelledby="sex-radio-buttons-group-label"
+                    name="sex"
+                  >
+                    <FormControlLabel value="female" control={<Radio />} label="Female" />
+                    <FormControlLabel value="male" control={<Radio />} label="Male" />
+                  </RadioGroup>
+
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   name="password"
                   label="Password"
                   type="password"
@@ -122,6 +162,13 @@ export default function RegisterPage() {
                 />
               </Grid>
             </Grid>
+            {registrationError && (
+            <Grid item xs={12}>
+              <Typography color="error" align="center">
+                 {registrationError}
+              </Typography>
+             </Grid>
+            )}
             <Button
               type="submit"
               fullWidth

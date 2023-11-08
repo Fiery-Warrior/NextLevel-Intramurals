@@ -59,7 +59,11 @@ export default function LoginPage() {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setAuthMessage('Invalid email or password.');
-      } else {
+      } 
+      else if (error.response && error.response.status === 403){
+        setAuthMessage('Unauthorized User. Please contact your administator for access.');
+      }
+      else {
         setAuthMessage('An error occurred during login. Please try again later.');
         console.error('An error occurred during login:', error);
       }

@@ -41,8 +41,8 @@ export default function Users() {
                             <TableCell>First Name</TableCell>
                             <TableCell>Last Name</TableCell>
                             <TableCell>Email</TableCell>
-                            <TableCell>Phone</TableCell>
-                            <TableCell>Sport</TableCell>
+                            <TableCell>Sex</TableCell>
+                            <TableCell>StudID</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -51,8 +51,8 @@ export default function Users() {
                                 <TableCell>{user.firstName}</TableCell>
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.phone}</TableCell>
-                                <TableCell>{user.sport}</TableCell>
+                                <TableCell>{user.sex}</TableCell>
+                                <TableCell>{user.stuID}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

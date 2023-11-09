@@ -1,49 +1,19 @@
-# Dependecies:
-
-npm i -f
-
-npm install @material-ui/core --save -f
-
-npm install -f @mui/material @emotion/react @emotion/styled
-
-npm install -f express mysql body-parser
-
-npm install -f cors
-
-npm install -f axios
-
-npm install -f bcrypt
-
-npm i react-router-dom --save
-
-### Using:
-
-Vscode
-
-MySQL Workbench
-
-MySQL Server 'Typical': https://dev.mysql.com/downloads/MysSQL
-
+# Hey gang. It's ya boi asher. I am riding the high of getting authentication to work so here are some steps you need to get this running on your machine.
 Install `NLIDBDump20231023.sql` using MySQL Workbench
 GETTING THE REACT FRONTEND RUNNING (As of 10/23/2023):
-Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)
+    Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)
 
 GETTING DB INTEGRATION WORKING
-Install body-parser middleware: `npm install -f express mysql body-parser` (note: I am unsure if I ever actually used this)
-Install cors middleware: `npm install -f cors`
-Make http requests: `npm install -f axios`
-Hash passwords: `npm install -f bcrypt`
-Assuming you have the database configured correctly, you are now able to start the servers
+    Install body-parser middleware: `npm install -f express mysql body-parser` (note: I am unsure if I ever actually used this)
+    Install cors middleware: `npm install -f cors`
+    Make http requests: `npm install -f axios`
+    Hash passwords: `npm install -f bcrypt`
+    Assuming you have the database configured correctly, you are now able to start the servers
 
 RUN SERVERS:
 backend express.js server (for DB interaction): `node index.js`
 Frontend React server: `npm.start`
 
-## MySQL Workbench
-
-//stat by choosing the database
-
-USE sys;
 
 //type to view the USERs database for: role, email, firstname, lastname, and hashed password
 

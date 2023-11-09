@@ -3,17 +3,13 @@ import LandingPage from './Pages/LandingPage/Landingpage';
 import LoginPage from './Pages/LogininPage/loginpage';
 import AdminLoginPage from './Pages/AdminLogininPage/Adminloginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
-
+import UserProfile from './Pages/UserProfile/UserProfile';
+import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
+import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
+import { CookiesProvider, useCookies } from "react-cookie";
 import {BrowserRouter as Router, Routes, Route }
 from 'react-router-dom';
-/*const userCardTemplate = document.querySelector("[data-user-template]");
-fetch("https://jsonplaceholder.typicode.com/users").then(res => res.json()).then(data => {})
-  data.forEach(user => {
-  const card = userCardTemplate.textContent.cloneNode(true).children[0];
-  const header = card.querySelector("[data-header]")
-  const body = card.querySelector("[data-body]") 
-  console.log(card);
-  })*/
+
 
 function App() {
   const [cookies, setCookie] = useCookies(["user"]);
@@ -33,6 +29,9 @@ function App() {
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/adminlogin' element={<AdminLoginPage/>} />
               <Route path='/signin' element={<RegisterPage/>} />
+              <Route path='/profile' element={<UserProfile/>} />
+              <Route path='/admindash' element={<AdminDash/>} />
+              <Route path='/teamselection' element={<TeamSelectionPage/>} />
             </Routes>
         </Router>
   </div>

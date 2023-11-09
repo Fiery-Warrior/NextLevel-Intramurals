@@ -130,7 +130,6 @@ export default function RegisterPage() {
               </Grid>
               <Grid item xs={12}>
                 <FormControl component="fieldset">
-                  <FormLabel component="legend">Sex</FormLabel>
                   
                   <RadioGroup
                     row

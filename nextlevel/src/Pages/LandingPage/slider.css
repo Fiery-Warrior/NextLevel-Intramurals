@@ -1,0 +1,27 @@
+.prev-arrow,
+.next-arrow {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 60px; /* Increase padding to make buttons bigger */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 60px; /* Increase font-size to make arrows more prominent */
+}
+
+.prev-arrow {
+  margin-right: 20px;
+}
+
+.next-arrow {
+  margin-left: 20px;
+}
+
+.image-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+  

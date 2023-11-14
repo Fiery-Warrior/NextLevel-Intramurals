@@ -49,8 +49,8 @@ app.post('/register', (req, res) => {
   });
 });
 
-// Define a POST endpoint to handle login
-app.post('/login', (req, res) => {
+// Define a POST endpoint to handle Admin login
+app.post('/adminlogin', (req, res) => {
   const { email, password } = req.body;
 
   connection.query('SELECT * FROM user WHERE email = ?', [email], (err, results) => {
@@ -66,6 +66,43 @@ app.post('/login', (req, res) => {
           if (userRole === 3 || userRole === 4) {
             console.log('Admin authenticated successfully');
             res.send('Admin authenticated successfully.');
+          } else {
+            console.log('Unauthorized access');
+            res.status(403).send('Unauthorized access');
+          }
+        } else {
+          console.log('Invalid email or password');
+          res.status(401).send('Invalid email or password.');
+        }
+      });
+    } else {
+      console.log('Invalid email or password');
+      res.status(401).send('Invalid email or password.');
+    }
+  });
+});
+
+
+// Define a POST endpoint to handle login
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  connection.query('SELECT * FROM user WHERE email = ?', [email], (err, results) => {
+    if (err) throw err;
+
+    if (results.length > 0) {
+      bcrypt.compare(password, results[0].password, (err, isMatch) => {
+        if (err) throw err;
+        
+        if (isMatch) {
+          // Check if user has admin role (3 or 4)
+          const userRole = results[0].role;
+          if (userRole === 1) {
+            console.log('Player authenticated successfully');
+            res.send('Player authenticated successfully.');
+          } else if (userRole === 2) {
+            console.log('Captain authenticated successfully');
+            res.send('Captain authenticated successfully.');
           } else {
             console.log('Unauthorized access');
             res.status(403).send('Unauthorized access');

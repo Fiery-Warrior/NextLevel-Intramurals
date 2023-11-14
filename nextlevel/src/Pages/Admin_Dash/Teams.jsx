@@ -48,14 +48,7 @@ export default function Teams() {
                     </TableHead>
                     <TableBody>
                         {teams.map((team, index) => {
-                            // let userPosition;
-                            // if (user.role === 2) {
-                            //     userPosition = 'Captain';
-                            // } else if (user.role == 1) {
-                            //     userPosition = 'Player';
-                            // } else {
-                            //     userPosition = 'NA';
-                            // }
+        
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{team.teamID}</TableCell>

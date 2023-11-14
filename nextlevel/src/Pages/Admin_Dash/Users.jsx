@@ -29,6 +29,7 @@ export default function Users() {
         fetchUsers();
     }, []);
 
+    
     function preventDefault(event) {
         event.preventDefault();
     }
@@ -46,6 +47,7 @@ export default function Users() {
                             <TableCell>Sex</TableCell>
                             <TableCell>StudID</TableCell>
                             <TableCell>Role</TableCell>
+                            <TableCell>Team</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

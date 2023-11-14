@@ -17,12 +17,12 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import './admindash.css';
 import Users from './Users.jsx';
 import Teams from './Teams.jsx';
+import HomeIcon from '@mui/icons-material/Home';
 
 const drawerWidth = 240;
 
@@ -167,9 +167,9 @@ function AdminDash() {
                 <List>
                     <ListItem button>
                         <ListItemIcon>
-                            <AssignmentIcon />
+                            <HomeIcon/>
                         </ListItemIcon>
-                        <ListItemText primary="Assignments" />
+                        <ListItemText primary="Home" />
                     </ListItem>
                 </List>
             </Drawer>

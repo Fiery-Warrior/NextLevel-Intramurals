@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import Avatar from '@mui/material/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,7 @@ export default function TopNavBar() {
             <Button color="inherit" className={classes.button}>About</Button>
             <Button color="inherit" className={classes.button} href='/login'>Login</Button>
             <Button color="inherit" className={classes.button} href='/teamselection'>Contact</Button>
+            <Avatar alt="Keagan Bogart" src="/static/images/avatar/KB.jpg" />
           </div>
         </Toolbar>
       </AppBar>

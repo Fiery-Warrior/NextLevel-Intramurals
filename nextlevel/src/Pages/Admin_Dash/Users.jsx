@@ -12,6 +12,8 @@ import axios from 'axios';
 
 
 export default function Users() {
+    //Use 'users' to display this data on website
+    //Use 'setUsers' to grab this data
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -46,15 +48,26 @@ export default function Users() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{user.firstName}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.sex}</TableCell>
-                                <TableCell>{user.stuID}</TableCell>
-                            </TableRow>
-                        ))}
+                        {users.map((user, index) => {
+                            let userPosition;
+                            if (user.role === 2) {
+                                userPosition = 'Captain';
+                            } else if (user.role == 1) {
+                                userPosition = 'Player';
+                            } else {
+                                userPosition = 'NA';
+                            }
+                            return (
+                                <TableRow key={index}>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.sex}</TableCell>
+                                    <TableCell>{user.stuID}</TableCell>
+                                    <TableCell>{userPosition}</TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
                 <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>

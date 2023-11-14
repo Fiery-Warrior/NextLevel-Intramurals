@@ -120,7 +120,7 @@ app.post('/login', (req, res) => {
 });
 
 
-//For Admin Dashboard
+//For Admin Dashboard --> Users.jsx
 app.get('/admindash', (req, res) => {
   connection.query('SELECT firstName, lastName, email, sex, stuID FROM user', (err, results) => {
     if (err) throw err;
@@ -129,9 +129,17 @@ app.get('/admindash', (req, res) => {
 
   });
 
-  
+});
 
-  //Users sport and user team data will also be displayed here
+//Users sport and user team data will also be displayed here
+app.get('/teams', (req, res) => {
+  connection.query('SELECT teamID, TeamName, Captain, sport_idSport FROM team', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+    console.log(results);
+
+  });
+
 });
 
 

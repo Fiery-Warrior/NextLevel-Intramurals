@@ -22,6 +22,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import './admindash.css';
 import Users from './Users.jsx';
+import Teams from './Teams.jsx';
 
 const drawerWidth = 240;
 
@@ -206,6 +207,8 @@ function AdminDash() {
                         </Typography>
                     </CardContent>
                 </Card>
+                <div className='card-space'/>
+                <Teams/>
                 <div className='card-space'/>
                 <Users/>
 

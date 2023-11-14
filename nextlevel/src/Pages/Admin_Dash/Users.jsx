@@ -45,16 +45,23 @@ export default function Users() {
                             <TableCell>Email</TableCell>
                             <TableCell>Sex</TableCell>
                             <TableCell>StudID</TableCell>
+                            <TableCell>Role</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.map((user, index) => {
                             let userPosition;
-                            if (user.role === 2) {
-                                userPosition = 'Captain';
-                            } else if (user.role == 1) {
+                            console.log(user.role)
+
+                            if (user.role === 1) {
                                 userPosition = 'Player';
-                            } else {
+                            } else if (user.role === 2) {
+                                userPosition = 'Captain';
+                            } else if (user.role === 3) {
+                                userPosition = 'Admin';
+                            } else if (user.role === 4) {
+                                userPosition = 'Super Admin';
+                            }else {
                                 userPosition = 'NA';
                             }
                             return (

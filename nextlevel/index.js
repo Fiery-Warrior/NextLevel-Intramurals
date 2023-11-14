@@ -120,9 +120,13 @@ app.post('/login', (req, res) => {
 });
 
 
+
+
 //For Admin Dashboard --> Users.jsx
 app.get('/admindash', (req, res) => {
-  connection.query('SELECT firstName, lastName, email, sex, stuID FROM user', (err, results) => {
+  //Note had to remove 
+  //connection.query('SELECT firstName, lastName, email, sex, role, stuID FROM user' since it was not showing the role
+  connection.query('SELECT * FROM user', (err, results) => {
     if (err) throw err;
     res.json(results);
     console.log(results);

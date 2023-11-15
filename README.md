@@ -24,7 +24,7 @@ MySQL Workbench
 
 MySQL Server 'Typical': https://dev.mysql.com/downloads/MysSQL
 
-Install `NLIDBDump20231023.sql` using MySQL Workbench
+Install `sysDump20231023.sql` using MySQL Workbench
 GETTING THE REACT FRONTEND RUNNING (As of 10/23/2023):
 Install Material-UI (MUI): `npm install -f @mui/material @emotion/react @emotion/styled` (Do not forget the -f)
 

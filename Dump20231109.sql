@@ -26,6 +26,8 @@
 --
 -- Table structure for table `sport`
 --
+CREATE DATABASE IF NOT EXISTS sys;
+USE sys;
 DROP TABLE IF EXISTS `sport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */
 ;

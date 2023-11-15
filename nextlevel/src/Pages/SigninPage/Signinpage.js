@@ -12,11 +12,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
 function Copyright(props) {
   return (
@@ -35,38 +30,14 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function RegisterPage() {
-  const [registrationError, setRegistrationError] = React.useState('');
-  const handleSubmit = async (event) => {
+export default function SignUp() {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const userData = {
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
+    console.log({
       email: data.get('email'),
       password: data.get('password'),
-      stuID: data.get('stuID'),
-      sex: data.get('sex')
-    };
-  
-    // Check if email ends with "@dbu.edu"
-    if (!userData.email.endsWith("@dbu.edu")) {
-      setRegistrationError('Registration requires a DBU email address.');
-      return; // Stop the form submission
-    }
-  
-    try {
-      // Sending data to the backend API
-      const response = await axios.post('http://localhost:3001/register', userData);
-      console.log(response.data);
-      // On successful registration, you might want to clear the error or navigate the user to a different page
-      setRegistrationError('Registration Success!');
-      window.history.pushState(null, '', '/profile');
-    } catch (error) {
-      console.error('An error occurred during registration:', error);
-      // Display backend error message or a default error message
-      setRegistrationError(error.response?.data?.message || 'An unexpected error occurred during registration.');
-    }
+    });
   };
 
   return (
@@ -85,7 +56,7 @@ export default function RegisterPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create an Account - join the winning team!
+            Sign up
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -115,35 +86,11 @@ export default function RegisterPage() {
                   required
                   fullWidth
                   id="email"
-                  label="DBU Email Address"
+                  label="Email Address"
                   name="email"
                   autoComplete="email"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="stuID"
-                  label="Student ID"
-                  name="stuID"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  
-                  <RadioGroup
-                    row
-                    aria-labelledby="sex-radio-buttons-group-label"
-                    name="sex"
-                  >
-                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                  </RadioGroup>
-
-                </FormControl>
-              </Grid>
-
               <Grid item xs={12}>
                 <TextField
                   required
@@ -162,13 +109,6 @@ export default function RegisterPage() {
                 />
               </Grid>
             </Grid>
-            {registrationError && (
-            <Grid item xs={12}>
-              <Typography color="error" align="center">
-                 {registrationError}
-              </Typography>
-             </Grid>
-            )}
             <Button
               type="submit"
               fullWidth
@@ -180,7 +120,7 @@ export default function RegisterPage() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Create an account - Join the winning team!
+                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>

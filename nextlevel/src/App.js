@@ -44,3 +44,17 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+// <header className="App-header">
+
+// <LandingPage/>
+// <section className='activity-center'/>
+// <ActivityCenter/>
+
+
+// </header>
+// <Footer/>

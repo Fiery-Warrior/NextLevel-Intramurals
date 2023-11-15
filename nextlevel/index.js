@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'NLIDB'
+  database: 'sys'
 });
 
 connection.connect((err) => {
@@ -179,12 +179,16 @@ app.post('/reset', (req, res) => {
 
 //For Admin Dashboard
 app.get('/admindash', (req, res) => {
-  connection.query('SELECT firstName, lastName, email FROM user', (err, results) => {
+  connection.query('SELECT firstName, lastName, email, sex, stuID FROM user', (err, results) => {
     if (err) throw err;
     res.json(results);
     console.log(results);
 
   });
+
+  
+
+  //Users sport and user team data will also be displayed here
 });
 
 

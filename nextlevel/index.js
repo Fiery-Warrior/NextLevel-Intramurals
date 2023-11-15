@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'nlidb'
+  database: 'sys'
 });
 
 connection.connect((err) => {

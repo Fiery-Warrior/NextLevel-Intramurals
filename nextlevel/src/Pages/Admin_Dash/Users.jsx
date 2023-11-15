@@ -45,6 +45,9 @@ export default function Users() {
                             <TableCell>Email</TableCell>
                             <TableCell>Sex</TableCell>
                             <TableCell>StudID</TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>Team Name</TableCell>
+                            <TableCell>Sport</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -65,6 +68,8 @@ export default function Users() {
                                     <TableCell>{user.sex}</TableCell>
                                     <TableCell>{user.stuID}</TableCell>
                                     <TableCell>{userPosition}</TableCell>
+                                    <TableCell>{user.TeamName}</TableCell>
+                                    <TableCell>{user.sportName}</TableCell>
                                 </TableRow>
                             );
                         })}

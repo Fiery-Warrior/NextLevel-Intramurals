@@ -153,7 +153,7 @@ app.post('/reset', (req, res) => {
 
 //For Admin Dashboard
 app.get('/admindash', (req, res) => {
-  connection.query('SELECT firstName, lastName, email, sex, stuID FROM user', (err, results) => {
+  connection.query('SELECT u.firstName, u.lastName, u.role, u.email, u.stuID, u.sex, t.TeamName, s.sportName FROM user u JOIN team_has_user thu ON u.stuID = thu.user_stuID JOIN team t ON thu.team_teamID = t.teamID JOIN sport s ON t.sport_idSport = s.idSport', (err, results) => {
     if (err) throw err;
     res.json(results);
     console.log(results);

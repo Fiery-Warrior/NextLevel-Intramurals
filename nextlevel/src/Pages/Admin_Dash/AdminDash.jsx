@@ -17,7 +17,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import HomeIcon from '@mui/icons-material/Home';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import './admindash.css';
@@ -166,9 +166,9 @@ function AdminDash() {
                 <List>
                     <ListItem button>
                         <ListItemIcon>
-                            <AssignmentIcon />
+                            <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Assignments" />
+                        <ListItemText primary="Home" onClick={() => {window.location.href = '/'}}/>
                     </ListItem>
                 </List>
             </Drawer>

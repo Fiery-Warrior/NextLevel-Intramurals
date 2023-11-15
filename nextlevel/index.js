@@ -50,7 +50,7 @@ app.post('/register', (req, res) => {
 });
 
 // Define a POST endpoint to handle login
-app.post('/login', (req, res) => {
+app.post('/adminlogin', (req, res) => {
   const { email, password } = req.body;
 
   connection.query('SELECT * FROM user WHERE email = ?', [email], (err, results) => {

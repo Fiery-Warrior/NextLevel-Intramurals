@@ -29,7 +29,7 @@ function App() {
               <Route exact path='/' element={<LandingPage/>} />
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/adminlogin' element={<AdminLoginPage/>} />
-              <Route path='/signin' element={<RegisterPage/>} />
+              <Route path='/register' element={<RegisterPage/>} />
               <Route path='/profile' element={<UserProfile/>} />
               <Route path='/admindash' element={<AdminDash/>} />
               <Route path='/teamselection' element={<TeamSelectionPage/>} />

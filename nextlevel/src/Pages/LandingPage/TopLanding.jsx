@@ -21,7 +21,7 @@ function TopLanding() {
 
         <p> Since 2023 </p>
 
-        <Button variation="primary"  href='/signin' style ={{backgroundColor: 'rgb(4, 125, 149)', color: 'white'}}>Join Now</Button >
+        <Button variation="primary"  href='/register' style ={{backgroundColor: 'rgb(4, 125, 149)', color: 'white'}}>Join Now</Button >
 
 
       </div>

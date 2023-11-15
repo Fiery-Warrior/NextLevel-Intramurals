@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'sys'
+  database: 'nlidb'
 });
 
 connection.connect((err) => {
@@ -46,32 +46,6 @@ app.post('/register', (req, res) => {
       if (err) throw err;
       res.send('User registered successfully.');
     });
-  });
-});
-
-// Define a POST endpoint to handle login
-app.post('/adminlogin', (req, res) => {
-  const { email, password } = req.body;
-
-  connection.query('SELECT * FROM user WHERE email = ?', [email], (err, results) => {
-    if (err) throw err;
-
-    if (results.length > 0) {
-      bcrypt.compare(password, results[0].password, (err, isMatch) => {
-        if (err) throw err;
-        
-        if (isMatch) {
-          console.log('User authenticated successfully');
-          res.send('User authenticated successfully.');
-        } else {
-          console.log('Invalid email or password');
-          res.status(401).send('Invalid email or password.');
-        }
-      });
-    } else {
-      console.log('Invalid email or password');
-      res.status(401).send('Invalid email or password.');
-    }
   });
 });
 

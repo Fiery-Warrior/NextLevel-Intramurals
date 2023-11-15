@@ -5,6 +5,8 @@ import AdminLoginPage from './Pages/AdminLogininPage/Adminloginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
+import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
+import ResetPassword from './Pages/ResetPassword/ResetPassword.jsx';
 import { CookiesProvider, useCookies } from "react-cookie";
 import {BrowserRouter as Router, Routes, Route }
 from 'react-router-dom';
@@ -30,6 +32,8 @@ function App() {
               <Route path='/signin' element={<RegisterPage/>} />
               <Route path='/profile' element={<UserProfile/>} />
               <Route path='/admindash' element={<AdminDash/>} />
+              <Route path='/teamselection' element={<TeamSelectionPage/>} />
+              <Route path='/reset' element={<ResetPassword/>} />
             </Routes>
         </Router>
   </div>

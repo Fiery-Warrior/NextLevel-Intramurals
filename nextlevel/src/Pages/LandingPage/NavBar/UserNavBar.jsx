@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, Avatar } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 import { useCookies } from 'react-cookie';
+import Keagan from './Keagan.jpg';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +77,7 @@ export default function UserNavBar() {
                 </div>
               }
             >
-              <Avatar alt={userData && userData.firstName} src="./Keagan.jpg" className={classes.button} />
+              <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.button} />
             </Tooltip>
           </div>
         </Toolbar>

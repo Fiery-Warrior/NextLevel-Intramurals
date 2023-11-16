@@ -26,7 +26,9 @@ function UserProfile() {
             <UserNavBar/>
             {/* <Typography variant="h4">{email} Profile</Typography> */}
             <br/>
-            <Typography variant="h6">Welcome to your profile, {userData && userData.firstName}!</Typography>
+            <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
+
+            <h2>Feel Free to choose from some of these clubs nearby</h2>
             
             {/* {userData && (
                 <div>
@@ -38,6 +40,8 @@ function UserProfile() {
                     <Typography variant="body1">Sport: {userData.sportName}</Typography>
                 </div>
             )} */}
+            <br/>
+            <br/>
             <br/>
             <CardDesign/>
         </div>

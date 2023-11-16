@@ -176,6 +176,115 @@ app.delete('/deleteUser/:stuID', (req, res) => {
   });
 });
 
+app.get('/api/teams', (req, res) => {
+  connection.query('SELECT TeamName FROM team', (err, results) => {
+      if (err) {
+          return res.status(500).send('Error fetching teams');
+      }
+      res.json(results.map(team => team.TeamName));
+  });
+});
+
+//Big bertha endpoint. It runs a lot of queries at once to update a captain. It can probably be changed to achieve all of this in much fewer queries but it is 1:00 AM and I don't want to think about this any more. Mess with at your own risk.
+app.post('/updateCaptain', (req, res) => {
+  const { userId, teamName } = req.body;
+
+  // Query to get the current captain's ID
+  const getCurrentCaptainQuery = 'SELECT Captain FROM team WHERE TeamName = ?';
+
+  // Queries to update roles
+  const updateOldCaptainRoleQuery = 'UPDATE user SET role = 1 WHERE stuID = ?';
+  const updateUserRoleQuery = 'UPDATE user SET role = 2 WHERE stuID = ?';
+  
+  // Query to update the team captain
+  const updateCaptainQuery = 'UPDATE team SET Captain = ? WHERE TeamName = ?';
+  const getTeamIdQuery = 'SELECT teamID FROM team WHERE TeamName = ?';
+  const updateTeamIdQuery = 'UPDATE user SET teamID = ? WHERE stuID = ?';
+  // Start a transaction
+  connection.beginTransaction((err) => {
+      if (err) {
+          console.error('Transaction start error:', err);
+          return res.status(500).send('Failed to update captain');
+      }
+
+      // Query to get the teamID for the given teamName
+      
+      connection.query(getTeamIdQuery, [teamName], (err, results) => {
+        if (err || results.length === 0) {
+          return connection.rollback(() => {
+              console.error('Error finding current teamID:', err);
+              res.status(500).send('Failed to find current teamID');
+          });
+        }
+        const teamId = results[0].teamID;
+        console.log(teamId);
+
+        // Get the current captain's ID
+        connection.query(getCurrentCaptainQuery, [teamName], (err, results) => {
+            if (err || results.length === 0) {
+                return connection.rollback(() => {
+                    console.error('Error finding current captain:', err);
+                    res.status(500).send('Failed to find current captain');
+                });
+            }
+
+            const currentCaptainId = results[0].Captain;
+            // Update the old captain's role
+            connection.query(updateOldCaptainRoleQuery, [currentCaptainId], (err, results) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error('Error updating old captain role:', err);
+                        res.status(500).send('Failed to update old captain role');
+                    });
+                }
+
+                // Update the team captain
+                connection.query(updateCaptainQuery, [userId, teamName], (err, results) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error('Error updating captain:', err);
+                            res.status(500).send('Failed to update captain');
+                        });
+                    }
+
+                    // Update the new captain's role
+                    connection.query(updateUserRoleQuery, [userId], (err, results) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.error('Error updating new captain role:', err);
+                                res.status(500).send('Failed to update new captain role');
+                            });
+                        }
+
+                          connection.query(updateTeamIdQuery, [teamId, userId], (err, results) => {
+                            if (err) {
+                              return connection.rollback(() => {
+                                console.error('Error updating new captain team:', err);
+                                res.status(500).send('Failed to update new captain role');
+                            });
+                            }
+
+                          // Commit the transaction
+                          connection.commit((err) => {
+                              if (err) {
+                                  return connection.rollback(() => {
+                                      console.error('Error committing transaction:', err);
+                                      res.status(500).send('Failed to update captain and roles');
+                                  });
+                              }
+
+                              res.status(200).send('Captain and roles updated successfully');
+                            });
+                        });
+                      });
+                  });
+              });
+          });
+      });
+  });
+});
+
+
 
 // Start the server
 const PORT = 3001;

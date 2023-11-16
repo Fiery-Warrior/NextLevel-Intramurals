@@ -11,7 +11,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
-
+import { MenuItem, Menu } from '@mui/material';
 
 
 export default function Users() {
@@ -20,34 +20,73 @@ export default function Users() {
     const [users, setUsers] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [modalScreen, setModalScreen] = useState('default'); // New state for modal screen
+    const [captainSelection, setCaptainSelection] = useState(''); // New state for dropdown selection
+    const [teams, setTeams] = useState([]);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/admindash');
+            const updatedUsers = response.data.map(user => {
+                let userPosition = 'NA';
+                switch (user.role) {
+                    case 4: userPosition = 'Super Admin'; break;
+                    case 3: userPosition = 'Admin'; break;
+                    case 2: userPosition = 'Captain'; break;
+                    case 1: userPosition = 'Player'; break;                         
+                    default: break;
+                }
+                return { ...user, userPosition }; // Add userPosition to each user object
+            });
+            setUsers(updatedUsers);
+        } catch (error) {
+            console.error(`There is error retrieving the user data: ${error}`);
+        }
+    };
+
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/admindash');
-                const updatedUsers = response.data.map(user => {
-                    let userPosition = 'NA';
-                    switch (user.role) {
-                        case 4: userPosition = 'Super Admin'; break;
-                        case 3: userPosition = 'Admin'; break;
-                        case 2: userPosition = 'Captain'; break;
-                        case 1: userPosition = 'Player'; break;                         
-                        default: break;
-                    }
-                    return { ...user, userPosition }; // Add userPosition to each user object
-                });
-                setUsers(updatedUsers);
-            } catch (error) {
-                console.error(`There is error retrieving the user data: ${error}`);
-            }
-        };
-    
+        fetch('http://localhost:3001/api/teams')
+            .then(response => response.json())
+            .then(data => setTeams(data))
+            .catch(error => console.error('Error fetching teams:', error));
         fetchUsers();
     }, []);
     
 
     const handleRowClick = (user) => {
         setSelectedUser(user);
+        setModalScreen('default');
         setOpenModal(true);
+    };
+
+    const handlePromoteToCaptain = () => {
+        setModalScreen('promoteToCaptain');
+    };
+
+    const handleSubmitNewCaptain = async () => {
+        const selectedTeam = document.getElementById('teamSelect').value;
+        if (selectedUser && selectedTeam) {
+            try {
+                const response = await axios.post('http://localhost:3001/updateCaptain', {
+                    userId: selectedUser.stuID, 
+                    teamName: selectedTeam
+                });
+    
+                if (response.status === 200) {
+                    alert('Captain updated successfully');
+                    fetchUsers(); //To update the roles in the table in real time, we fetch the entire list again. If this ends up having a significant performance impact, we will need to refactor to only update affected rows.
+                    setOpenModal(false);
+                }
+            } catch (error) {
+                console.error('Error updating captain:', error);
+                alert('Failed to update captain');
+            }
+        }
+    };
+    
+
+    const handleBack = () => {
+        setModalScreen('default');
     };
 
     const deleteUser = async () => {
@@ -75,10 +114,6 @@ export default function Users() {
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
-    };
-
-    const handleClose = () => {
-        setOpenModal(false);
     };
 
     function preventDefault(event) {
@@ -126,11 +161,13 @@ export default function Users() {
             </Card>
             <Modal
                 open={openModal}
-                onClose={handleClose}
+                onClose={() => setOpenModal(false)}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
             >
                 <Box sx={modalStyle}>
+                    {modalScreen === 'default' ? (
+                        <React.Fragment>
                     <h2 id="modal-title">
                         {selectedUser ? `User #s${selectedUser.stuID}` : 'User'}
                     </h2>
@@ -141,7 +178,20 @@ export default function Users() {
                         {selectedUser ? `Role: ${selectedUser.userPosition}`:''}
                     </p>
                     <Button variant="contained" color="error" onClick={deleteUser}>Delete User</Button>
+                    <Button variant="contained" color="error" onClick={handlePromoteToCaptain}>Promote to Captain</Button>
                     {/* You can add more user details here */}
+                    </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <h3>{selectedUser ? `Select team that ${selectedUser.firstName} ${selectedUser.lastName} will be the captain of` : ''}</h3>
+                            <Button onClick={handleBack}>Back</Button>
+                            <select name="TeamName" id="teamSelect">
+                                {teams.map(TeamName => (<option key={TeamName} value={TeamName}>{TeamName}</option>))} 
+                            </select>
+                            <Button onClick={handleSubmitNewCaptain} variant="contained" color="error">Set Captain</Button>
+                        </React.Fragment>
+                        
+                    )}
                 </Box>
             </Modal>
         </React.Fragment>

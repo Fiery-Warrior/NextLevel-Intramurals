@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'sys'
+  database: 'nlidb'
 });
 
 connection.connect((err) => {
@@ -157,12 +157,23 @@ app.get('/admindash', (req, res) => {
     if (err) throw err;
     res.json(results);
     console.log(results);
-
+  
   });
 
-  
-
   //Users sport and user team data will also be displayed here
+});
+
+app.delete('/deleteUser/:stuID', (req, res) => {
+  const stuID = req.params.stuID;
+  connection.query('DELETE FROM user WHERE stuID = ?', [stuID], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error deleting the user');
+    } else {
+      console.log(results);
+      res.status(200).send('User deleted successfully');
+    }
+  });
 });
 
 

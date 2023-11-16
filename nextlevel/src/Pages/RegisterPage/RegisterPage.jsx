@@ -61,7 +61,8 @@ export default function RegisterPage() {
       console.log(response.data);
       // On successful registration, you might want to clear the error or navigate the user to a different page
       setRegistrationError('Registration Success!');
-      window.history.pushState(null, '', '/profile');
+      window.location.href = `/profile?email=${userData.email}`; // Redirect to profile page with email as query parameter
+
     } catch (error) {
       console.error('An error occurred during registration:', error);
       // Display backend error message or a default error message

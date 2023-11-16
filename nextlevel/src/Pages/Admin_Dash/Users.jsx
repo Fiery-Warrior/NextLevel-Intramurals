@@ -10,8 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import { Button } from '@material-ui/core';
-import { MenuItem, Menu } from '@mui/material';
+
 
 
 export default function Users() {
@@ -23,6 +22,7 @@ export default function Users() {
     const [modalScreen, setModalScreen] = useState('default'); // New state for modal screen
     const [captainSelection, setCaptainSelection] = useState(''); // New state for dropdown selection
     const [teams, setTeams] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchUsers = async () => {
         try {
@@ -120,10 +120,53 @@ export default function Users() {
         event.preventDefault();
     }
 
+    const filteredUsers = users.filter((user) => {
+        const searchRegex = new RegExp(searchTerm, 'i');
+        return (
+            searchRegex.test(user.firstName) ||
+            searchRegex.test(user.lastName) ||
+            searchRegex.test(user.sportName) ||
+            searchRegex.test(user.stuID) ||
+            searchRegex.test(getUserPosition(user.role)) ||
+            searchRegex.test(user.TeamName)
+        );
+    });
+
+    function getUserPosition(role) {
+        switch (role) {
+            case 1:
+                return 'Player';
+            case 2:
+                return 'Captain';
+            case 3:
+                return 'Admin';
+            case 4:
+                return 'Super Admin';
+            default:
+                return 'NA';
+        }
+    }
+
     return (
         <React.Fragment>
             <Card>
                 <CardHeader title="User" />
+                <TextField
+                    label="Search"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="normal"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                />
                 <Table size="small">
                     <TableHead>
                         <TableRow>
@@ -138,7 +181,7 @@ export default function Users() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user, index) =>  {
+                        {filteredUsers.map((user, index) => {
                             return (
                                 <TableRow key={index} onClick={() => handleRowClick(user)}
                                 style={{ cursor: 'pointer' }}>

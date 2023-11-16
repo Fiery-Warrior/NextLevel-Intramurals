@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'nlidb'
+  database: 'sys'
 });
 
 connection.connect((err) => {
@@ -286,6 +286,17 @@ app.post('/updateCaptain', (req, res) => {
   });
 });
 
+
+
+//For User Profile
+app.get('/userprofile/:email', (req, res) => {
+  const userEmail = req.params.email;
+  connection.query('SELECT u.firstName, u.lastName, u.role, u.email, u.stuID, u.sex, t.TeamName, s.sportName FROM user u LEFT JOIN team t ON u.teamID = t.teamID LEFT JOIN sport s ON t.sport_idSport = s.idSport WHERE u.email = ?', [userEmail], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+    console.log(results);
+  });
+});
 
 
 // Start the server

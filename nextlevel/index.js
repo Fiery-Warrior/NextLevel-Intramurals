@@ -160,9 +160,17 @@ app.get('/admindash', (req, res) => {
 
   });
 
-  
+});
 
-  //Users sport and user team data will also be displayed here
+
+//For User Profile
+app.get('/userprofile/:email', (req, res) => {
+  const userEmail = req.params.email;
+  connection.query('SELECT u.firstName, u.lastName, u.role, u.email, u.stuID, u.sex, t.TeamName, s.sportName FROM user u LEFT JOIN team t ON u.teamID = t.teamID LEFT JOIN sport s ON t.sport_idSport = s.idSport WHERE u.email = ?', [userEmail], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+    console.log(results);
+  });
 });
 
 

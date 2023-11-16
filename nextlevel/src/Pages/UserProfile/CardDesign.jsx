@@ -20,7 +20,7 @@ export default function SquareCorners() {
     return (
         <>
         <Stack direction="row" spacing={1}>
-            <TopNavBar/>
+            {/* <TopNavBar/> */}
                 {/* <Box sx={{ position: 'fixed', top: 15 }}>
                         <Avatar alt="Remy Sharp" src="/static/images/baseball.png" />
                 </Box> */}

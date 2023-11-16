@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie'; // import useCookies hook
+import { useCookies } from 'react-cookie';
 import CardDesign from './CardDesign';
+import { Typography } from '@material-ui/core';
+import UserNavBar from '../LandingPage/NavBar/UserNavBar';
 
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
     const [email, setEmail] = useState('');
-    console.log('Cookie is: ', cookies);
-    console.log('email is: ', email);
+    const [userData, setUserData] = useState(null);
+
     useEffect(() => {
-        if (cookies.myCookie && !email) { // add a check to see if email state has already been set
+        if (cookies.myCookie && !email) {
             setEmail(cookies.myCookie.email);
         }
-    }, [cookies, email]); // add email state to dependency array
+    }, [cookies, email]);
+
+    useEffect(() => {
+        fetch(`http://localhost:3001/userprofile/${email}`)
+            .then(response => response.json())
+            .then(data => setUserData(data[0])); // assuming the response is an array
+    }, [email]);
 
     return (
         <div>
-            <h1>{email} Profile</h1>
-            <h1>Welcome to your profile, {email}!</h1>
+            <UserNavBar/>
+            {/* <Typography variant="h4">{email} Profile</Typography> */}
+            <br/>
+            <Typography variant="h6">Welcome to your profile, {userData && userData.firstName}!</Typography>
+            
+            {/* {userData && (
+                <div>
+                    <Typography variant="body1">Name: {userData.firstName} {userData.lastName}</Typography>
+                    <Typography variant="body1">Role: {userData.role}</Typography>
+                    <Typography variant="body1">Student ID: {userData.stuID}</Typography>
+                    <Typography variant="body1">Sex: {userData.sex}</Typography>
+                    <Typography variant="body1">Team: {userData.TeamName}</Typography>
+                    <Typography variant="body1">Sport: {userData.sportName}</Typography>
+                </div>
+            )} */}
+            <br/>
             <CardDesign/>
         </div>
     );
-
 }
 
 export default UserProfile;
-

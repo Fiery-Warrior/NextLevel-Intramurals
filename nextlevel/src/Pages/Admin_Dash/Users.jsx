@@ -224,7 +224,6 @@ export default function Users() {
                     </p>
                     <Button variant="contained" color="error" onClick={deleteUser}>Delete User</Button>
                     <Button variant="contained" color="error" onClick={handlePromoteToCaptain}>Promote to Captain</Button>
-                    {/* You can add more user details here */}
                     </React.Fragment>
                     ) : (
                         <React.Fragment>

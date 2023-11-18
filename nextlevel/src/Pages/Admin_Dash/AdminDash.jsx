@@ -19,6 +19,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import HomeIcon from '@mui/icons-material/Home';
 import Card from '@material-ui/core/Card';
+import axios from 'axios';
 import CardContent from '@material-ui/core/CardContent';
 import './admindash.css';
 import Users from './Users.jsx';
@@ -90,6 +91,39 @@ const useStyles = makeStyles((theme) => ({
 function AdminDash() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalTeams, setTotalTeams] = useState(0);
+    const [totalSports, setTotalSports] = useState(0);
+
+    const getUserCount = async() => {
+        try{
+            const response = await axios.get('http://localhost:3001/getUserCount');
+            setTotalUsers(response.data.userCount);
+        } catch(error){
+            console.log(`There was an error retrieving the user count: ${error}`)
+        }
+    }
+    const getTeamCount = async() => {
+        try{
+            const response = await axios.get('http://localhost:3001/getTeamCount');
+            setTotalTeams(response.data.teamCount);
+        } catch(error){
+            console.log(`There was an error retrieving the team count: ${error}`)
+        }
+    }
+    const getSportCount = async() => {
+        try{
+            const response = await axios.get('http://localhost:3001/getSportCount');
+            setTotalSports(response.data.sportCount);
+        } catch(error){
+            console.log(`There was an error retrieving the sport count: ${error}`)
+        }
+    }
+    useEffect(() => {
+        getUserCount();
+        getTeamCount();
+        getSportCount();
+    }, []);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -180,7 +214,8 @@ function AdminDash() {
                             Total Users
                         </Typography>
                         <Typography color="textSecondary">
-                            100
+                            
+                            {totalUsers}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -191,7 +226,7 @@ function AdminDash() {
                             Total Teams
                         </Typography>
                         <Typography color="textSecondary">
-                            100
+                            {totalTeams}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -202,7 +237,7 @@ function AdminDash() {
                             Total Sports
                         </Typography>
                         <Typography color="textSecondary">
-                            50
+                            {totalSports}
                         </Typography>
                     </CardContent>
                 </Card>

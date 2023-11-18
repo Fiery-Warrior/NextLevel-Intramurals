@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'sys'
+  database: 'nlidb'
 });
 
 connection.connect((err) => {
@@ -177,6 +177,40 @@ app.delete('/deleteUser/:stuID', (req, res) => {
     }
   });
 });
+
+app.get('/getUserCount', (req, res) => {
+  connection.query('SELECT COUNT(*) AS count FROM user', (err, results) => {
+    if (err) {
+      // Send a server error response if there's an error
+      return res.status(500).send('Error getting user count');
+    }
+    // Send back the count if no error
+    res.json({ userCount: results[0].count });
+  });
+});
+
+app.get('/getTeamCount', (req, res) => {
+  connection.query('SELECT COUNT(*) AS count FROM team', (err, results) => {
+    if (err) {
+      // Send a server error response if there's an error
+      return res.status(500).send('Error getting user count');
+    }
+    // Send back the count if no error
+    res.json({ teamCount: results[0].count });
+  });
+});
+
+app.get('/getSportCount', (req, res) => {
+  connection.query('SELECT COUNT(*) AS count FROM sport', (err, results) => {
+    if (err) {
+      // Send a server error response if there's an error
+      return res.status(500).send('Error getting user count');
+    }
+    // Send back the count if no error
+    res.json({ sportCount: results[0].count });
+  });
+});
+
 
 app.get('/api/teams', (req, res) => {
   connection.query('SELECT TeamName FROM team', (err, results) => {

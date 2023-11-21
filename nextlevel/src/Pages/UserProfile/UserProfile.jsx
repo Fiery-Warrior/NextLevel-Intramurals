@@ -14,6 +14,21 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
+
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
@@ -72,11 +87,13 @@ function UserProfile() {
                     });
             }
         }, [teamName]); // This will run whenever teamName changes /each user profile
+
+        
       
     return (
         <div>
             <UserNavBar/>
-            {/* <Typography variant="h4">{email} Profile</Typography> */}
+            {/* <Typography variant="h4">{email} Profile</Typography>  */}
             <br/>
             <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
 
@@ -87,7 +104,7 @@ function UserProfile() {
             <br/>
             {teamName && (
                 <div>
-                    <h1 className="activity-cards-title">Activity Central</h1>
+                    <h1 className="activity-cards-title-central">Activity Central</h1>
 
 
 
@@ -113,17 +130,27 @@ function UserProfile() {
                                     <Typography gutterBottom variant="h5" component="div" >
                                         {teamName} | {sportName}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary" >
-                     
-                                            <Typography variant="h5" component="h2">
-                                                Player Roster
-                                            </Typography>
-                                            {teamMembers.map(member => (
-    <p key={member.id}>{member.firstName} {member.lastName}</p>
-))}
-                                    </Typography>
+
+                                        <Typography variant="h5" component="h2">
+                                            <Button onClick={handleOpen}> Player Roster</Button>
+                                            <Modal
+                                                open={open}
+                                                onClose={handleClose}
+                                                aria-labelledby="modal-modal-title"
+                                                aria-describedby="modal-modal-description"
+                                            >
+                                                <Box sx={style}>
+                                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                                        <h2>{teamName} Roster</h2>
+                                                        {teamMembers.map(member => (
+                                                            <p key={member.id}>{member.firstName} {member.lastName}</p>
+                                                        ))}
+                                                    </Typography>
+                                                </Box>
+                                            </Modal>
+                                        </Typography>
+
                                 </CardContent>
-                  
                             </Card>
                         </Container>
                     </Container>

@@ -299,6 +299,29 @@ app.get('/userprofile/:email', (req, res) => {
 });
 
 
+// app.get('/roster/:teamID', (req, res) => {
+//   const teamID = req.params.teamID;
+//   connection.query('SELECT u.firstName, u.lastName FROM user u WHERE u.teamID = ?', [teamID], (err, results) => {
+//     if (err) throw err;
+//     res.json(results);
+//     console.log(results);
+//     console.log(teamID);
+//   });
+// });
+
+
+app.get('/team/:teamName', (req, res) => {
+  const teamName = req.params.teamName;
+  connection.query('SELECT u.firstName, u.lastName FROM user u JOIN team t ON u.teamID = t.teamID WHERE t.TeamName = ?', [teamName], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error fetching team members');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // Start the server
 const PORT = 3001;
 app.listen(PORT, () => {

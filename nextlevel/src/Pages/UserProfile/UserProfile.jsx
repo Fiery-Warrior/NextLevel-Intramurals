@@ -18,9 +18,11 @@ import Modal from '@mui/material/Modal';
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
     const [email, setEmail] = useState('');
+    const [teamID, setteamID] = useState('');
     const [userData, setUserData] = useState(null);
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
+    const [rosterData, setRosterData] = useState(null); //for roster by teamID
 
     //Modal
     const [open, setOpen] = React.useState(false);
@@ -50,8 +52,27 @@ function UserProfile() {
             .catch(error => {
                 console.error('Error fetching user profile:', error);
             });
-    }, [email]);
+        }, [email]);
 
+
+        const [teamMembers, setTeamMembers] = useState([]);
+        useEffect(() => {
+            if (teamName) {
+                fetch(`http://localhost:3001/team/${teamName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (Array.isArray(data)) {
+                            setTeamMembers(data);
+                        } else {
+                            console.error('Invalid response data:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching team members:', error);
+                    });
+            }
+        }, [teamName]); // This will run whenever teamName changes /each user profile
+      
     return (
         <div>
             <UserNavBar/>
@@ -70,7 +91,6 @@ function UserProfile() {
 
 
 
-
                     <Container maxWidth="md" className='all-of-sport-card' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <Container maxWidth="sm" className='calender'>
@@ -79,7 +99,7 @@ function UserProfile() {
                                 </LocalizationProvider>
                             </Container>
                             <Container className='next-game' style={{display: 'flex', flexDirection: 'column'}}>
-                                <section>Name Game</section>
+                                <section>Upcoming Game</section>
                             </Container>
                         </div>
                         <Container maxWidth="sm" style={{marginLeft: '2%'}} className='sport-card'>
@@ -94,32 +114,16 @@ function UserProfile() {
                                         {teamName} | {sportName}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" >
-                                    <Button size="large" className='roster-modal' onClick={() => {handleOpen(); handleRosterClick();}}>Roster</Button>
-                                    <Modal
-                                        open={open}
-                                        onClose={handleClose}
-                                        aria-labelledby="modal-modal-title"
-                                        aria-describedby="modal-modal-description"
-                                    >
-                                        {rosterClicked ? (
-                                            <div>
-                                                <Typography variant="h5" component="h2">
-                                                    Success!
-                                                </Typography>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <Typography variant="h5" component="h2">
-                                                    Roster
-                                                </Typography>
-                                            </div>
-                                        )}
-                                    </Modal>
+                     
+                                            <Typography variant="h5" component="h2">
+                                                Player Roster
+                                            </Typography>
+                                            {teamMembers.map(member => (
+    <p key={member.id}>{member.firstName} {member.lastName}</p>
+))}
                                     </Typography>
                                 </CardContent>
-                                {/* <CardActions>
-            
-                                </CardActions> */}
+                  
                             </Card>
                         </Container>
                     </Container>
@@ -130,7 +134,10 @@ function UserProfile() {
                 </div>
             )}
 
+<br/>
+
             <CardDesign/>
+
         </div>
     );
 }

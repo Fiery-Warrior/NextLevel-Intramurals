@@ -24,26 +24,7 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
 export default function SquareCorners() {
     return (
         <>
-        {/* <div className='not-logged-in'>
-            <h1>You are not logged in</h1>
-                <p>Sorry, you need to log in to access this.</p>
-                <Button component={Link} to="/login" variant="contained" color="primary">
-                    Login
-                </Button>
-                <Button component={Link} to="/" variant="contained" color="primary">
-                    Home
-                </Button>
-        </div> */}
-
-        {/* <Stack direction="row" spacing={1}> */}
-            {/* <TopNavBar/> */}
-                {/* <Box sx={{ position: 'fixed', top: 15 }}>
-                        <Avatar alt="Remy Sharp" src="/static/images/baseball.png" />
-                </Box> */}
-
-
-                {/* <Row/> */}
-        {/* </Stack> */}
+     
                 <Footer/>
                 </>
     );

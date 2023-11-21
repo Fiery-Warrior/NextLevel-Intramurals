@@ -5,7 +5,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { useCookies } from 'react-cookie';
 import Keagan from './Keagan.jpg';
 import './usernavbar.css';
-
+import { TextField } from '@material-ui/core';
+import HomeIcon from '@mui/icons-material/Home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +36,8 @@ export default function UserNavBar() {
   const [cookies, setCookie, removeCookie] = useCookies(['myCookie']);
   const [email, setEmail] = useState('');
   const [userData, setUserData] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (cookies.myCookie && !email) {
@@ -47,6 +50,17 @@ export default function UserNavBar() {
       .then((response) => response.json())
       .then((data) => setUserData(data[0])); 
   }, [email]);
+
+
+
+  useEffect(() => {
+    if (searchTerm) {
+      fetch(`http://localhost:3001/teams-sports?search=${searchTerm}`)
+        .then((response) => response.json())
+        .then((data) => setSearchResults(data)); 
+    }
+  }, [searchTerm]);
+
 
 
   const handleLogout = () => {
@@ -62,16 +76,33 @@ export default function UserNavBar() {
             NextLevel
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center' }}>
+     
+
+                <TextField 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by team or sport"
+                  style={{ marginLeft: '10px', marginTop: '20px'}}
+                />
+                {searchTerm && (
+                  <div className="dropdown-menu">
+                    {searchResults.length > 0 ? (
+                      <div>
+                        {searchResults.filter(result => result.toLowerCase().includes(searchTerm.toLowerCase())).map((result) => (
+                          <p className="dropdown-item" key={result}>{result}</p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>No results found.</p>
+                    )}
+                  </div>
+                )}
+
+
             <Button color="inherit" href="/"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
-              Home
+              <HomeIcon style ={{fontSize:50}} />
             </Button>
-            <Button color="inherit" className={classes.button} href="/teamselection"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
-              Teams
-            </Button>
-  
-            {/* <Button color="inherit" className={classes.button} onClick={handleLogout} style={{ fontSize: '25px', paddingTop: '8%' }}>
-              Logout
-            </Button> */}
+
             <Tooltip
               title={
                 <div>
@@ -92,7 +123,6 @@ export default function UserNavBar() {
                 </div>
               }
             >
-              {/* <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.button} /> */}
               <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.avatar} />
             </Tooltip>
           </div>

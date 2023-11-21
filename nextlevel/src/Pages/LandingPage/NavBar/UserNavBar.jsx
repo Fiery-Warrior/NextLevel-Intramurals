@@ -68,16 +68,14 @@ export default function UserNavBar() {
             <Button color="inherit" className={classes.button} href="/teamselection"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
               Teams
             </Button>
-            {/* <Button color="inherit" className={classes.button} href="/login"  style={{ fontSize: '25px', paddingTop: '8%' }}>
+  
+            {/* <Button color="inherit" className={classes.button} onClick={handleLogout} style={{ fontSize: '25px', paddingTop: '8%' }}>
               Logout
             </Button> */}
-            <Button color="inherit" className={classes.button} onClick={handleLogout} style={{ fontSize: '25px', paddingTop: '8%' }}>
-              Logout
-            </Button>
             <Tooltip
               title={
                 <div>
-                  <Typography variant="body1">
+                  <Typography variant="body1" style={{ marginTop: '5%'}}>
                     Name: {userData && `${userData.firstName} ${userData.lastName}`}
                   </Typography>
                   <Typography variant="body1">Student ID: {userData && userData.stuID}</Typography>
@@ -88,6 +86,9 @@ export default function UserNavBar() {
                   <Typography variant="body1">
                     Sport: {userData ? userData.sportName : 'Join one now'}
                   </Typography>
+                  <Button color="primary" variant="contained" className={classes.button} onClick={handleLogout} style={{ fontSize: '10px', padding: '5%', marginTop: '10%'}}>
+                    Logout
+                  </Button>
                 </div>
               }
             >

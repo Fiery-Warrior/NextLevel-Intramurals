@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, Avatar } from '@material-ui/core';
 import Tooltip from '@mui/material/Tooltip';
 import { useCookies } from 'react-cookie';
 import Keagan from './Keagan.jpg';
+import './usernavbar.css';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,13 +22,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   button: {
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(1.5),
+  },
+  avatar: {
+    width: theme.spacing(8.5),
+    height: theme.spacing(8.5),
   },
 }));
 
 export default function UserNavBar() {
   const classes = useStyles();
-  const [cookies] = useCookies(['myCookie']);
+  const [cookies, setCookie, removeCookie] = useCookies(['myCookie']);
   const [email, setEmail] = useState('');
   const [userData, setUserData] = useState(null);
 
@@ -40,8 +45,14 @@ export default function UserNavBar() {
   useEffect(() => {
     fetch(`http://localhost:3001/userprofile/${email}`)
       .then((response) => response.json())
-      .then((data) => setUserData(data[0])); // assuming the response is an array
+      .then((data) => setUserData(data[0])); 
   }, [email]);
+
+
+  const handleLogout = () => {
+    removeCookie('myCookie'); // remove the cookie
+    window.location.href = '/login'; // redirect to login
+  };
 
   return (
     <div className={classes.root}>
@@ -51,14 +62,17 @@ export default function UserNavBar() {
             NextLevel
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Button color="inherit" href="/">
+            <Button color="inherit" href="/"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
               Home
             </Button>
-            <Button color="inherit" className={classes.button} href="/teamselection">
+            <Button color="inherit" className={classes.button} href="/teamselection"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
               Teams
             </Button>
-            <Button color="inherit" className={classes.button} href="/login">
-              Login
+            {/* <Button color="inherit" className={classes.button} href="/login"  style={{ fontSize: '25px', paddingTop: '8%' }}>
+              Logout
+            </Button> */}
+            <Button color="inherit" className={classes.button} onClick={handleLogout} style={{ fontSize: '25px', paddingTop: '8%' }}>
+              Logout
             </Button>
             <Tooltip
               title={
@@ -77,7 +91,8 @@ export default function UserNavBar() {
                 </div>
               }
             >
-              <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.button} />
+              {/* <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.button} /> */}
+              <Avatar alt={userData && userData.firstName} src={Keagan} className={classes.avatar} />
             </Tooltip>
           </div>
         </Toolbar>

@@ -27,3 +27,12 @@
   .dropdown-item:hover {
     background-color: #f9f9f9;
   }
+
+
+  .search-input input {
+    color: transparent;
+  }
+  
+  .search-input:hover input {
+    color: inherit;
+  }

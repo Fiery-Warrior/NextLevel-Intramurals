@@ -7,6 +7,8 @@ import Keagan from './Keagan.jpg';
 import './usernavbar.css';
 import { TextField } from '@material-ui/core';
 import HomeIcon from '@mui/icons-material/Home';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +80,7 @@ export default function UserNavBar() {
           <div style={{ display: 'flex', alignItems: 'center' }}>
      
 
-                <TextField 
+                {/* <TextField 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search by team or sport"
@@ -96,11 +98,39 @@ export default function UserNavBar() {
                       <p>No results found.</p>
                     )}
                   </div>
-                )}
+                )} */}
+
+<TextField 
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  placeholder="Search by team or sport"
+  style={{ marginLeft: '10px', marginTop: '20px'}}
+  InputProps={{
+    startAdornment: (
+      <InputAdornment position="start">
+        <SearchIcon />
+      </InputAdornment>
+    ),
+  }}
+  className="search-input"
+/>
+{searchTerm && (
+  <div className="dropdown-menu">
+    {searchResults.length > 0 ? (
+      <div>
+        {searchResults.filter(result => result.toLowerCase().includes(searchTerm.toLowerCase())).map((result) => (
+          <p className="dropdown-item" key={result}>{result}</p>
+        ))}
+      </div>
+    ) : (
+      <p>No results found.</p>
+    )}
+  </div>
+)}
 
 
             <Button color="inherit" href="/"  style={{ fontSize: '25px', paddingTop: '8%'  }}>
-              <HomeIcon style ={{fontSize:50}} />
+              <HomeIcon style ={{fontSize:50, color: 'Black'}} />
             </Button>
 
             <Tooltip

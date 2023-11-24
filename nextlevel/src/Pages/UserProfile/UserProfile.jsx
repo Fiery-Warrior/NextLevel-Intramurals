@@ -46,6 +46,34 @@ function UserProfile() {
     const handleClose = () => setOpen(false);
     const handleRosterClick = () => setRosterClicked(true);
 
+
+    //Sport
+    const userSport = sportName.toLowerCase();
+    // Function to map sport to image
+    const getSportImage = (sport) => {
+        switch(sport) {
+            case 'football':
+                return "/static/images/football.png";
+            case 'basketball':
+                return "/static/images/basketball.jpg";
+            case 'soccer':
+                return "/static/images/soccer.png";
+            case 'hockey':
+                return "/static/images/hockey.png";
+            case 'tennis':
+                return "/static/images/tennis.png";
+            case 'softball':
+                return "/static/images/softball.png";
+            case 'volleyball':
+                return "/static/images/volleyball.png";
+            case 'table tennis':
+                return "/static/images/tabletennis.png";   
+            default:
+                return "/static/images/default.png"; // default image
+        }
+    }
+
+
     useEffect(() => {
         if (cookies.myCookie && !email) {
             setEmail(cookies.myCookie.email);
@@ -123,7 +151,8 @@ function UserProfile() {
                             <Card sx={{ maxWidth: 345, minWidth: 345 }}>
                                 <CardMedia
                                     sx={{ height: 180 }}
-                                    image="/static/images/football.png"
+                                    // image="/static/images/football.png"
+                                    image={getSportImage(userSport)}
                                     title="Sport Card"
                                 />
                                 <CardContent>

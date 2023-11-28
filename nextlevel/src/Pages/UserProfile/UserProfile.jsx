@@ -47,10 +47,17 @@ function UserProfile() {
     const handleRosterClick = () => setRosterClicked(true);
 
 
-    //Sport
-    const userSport = sportName.toLowerCase();
-    // Function to map sport to image
+    //sport image chooser
+    //this '?' checks to make sure that sportname is not null
+    const userSport = sportName ? sportName.toLowerCase() : null;
+
     const getSportImage = (sport) => {
+        if (!sport) {
+            return;
+        }
+    
+        sport = sport.toLowerCase();
+    
         switch(sport) {
             case 'football':
                 return "/static/images/football.png";
@@ -81,7 +88,7 @@ function UserProfile() {
     }, [cookies, email]);
 
     useEffect(() => {
-        fetch(`http://localhost:3001/userprofile/${email}`)
+        fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/userprofile/${email}`)
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -101,7 +108,7 @@ function UserProfile() {
         const [teamMembers, setTeamMembers] = useState([]);
         useEffect(() => {
             if (teamName) {
-                fetch(`http://localhost:3001/team/${teamName}`)
+                fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/team/${teamName}`)
                     .then(response => response.json())
                     .then(data => {
                         if (Array.isArray(data)) {
@@ -122,14 +129,24 @@ function UserProfile() {
         <div>
             <UserNavBar/>
             {/* <Typography variant="h4">{email} Profile</Typography>  */}
-            <br/>
-            <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
 
 
-            <h2>Feel Free to choose from some of these clubs nearby</h2>
-            
+            {teamName ? (
+                <React.Fragment>
+                    {/* <Typography variant="h3">Welcome to your team, {teamName}!</Typography>
+                    <h2>You are part of {teamName}</h2> */}
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <br/>
+                    <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
+                    <h2>Feel Free to choose from some of these clubs nearby</h2>
+                    <br/>
+                </React.Fragment>
+            )}
 
-            <br/>
+
+
             {teamName && (
                 <div>
                     <h1 className="activity-cards-title-central">Activity Central</h1>

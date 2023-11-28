@@ -28,7 +28,7 @@ export default function Users() {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/admindash');
+            const response = await axios.get('https://1zsncd03-3001.usw3.devtunnels.ms/admindash');
             const updatedUsers = response.data.map(user => {
                 let userPosition = 'NA';
                 switch (user.role) {
@@ -47,7 +47,7 @@ export default function Users() {
     };
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/teams')
+        fetch('https://1zsncd03-3001.usw3.devtunnels.ms/api/teams')
             .then(response => response.json())
             .then(data => setTeams(data))
             .catch(error => console.error('Error fetching teams:', error));
@@ -69,7 +69,7 @@ export default function Users() {
         const selectedTeam = document.getElementById('teamSelect').value;
         if (selectedUser && selectedTeam) {
             try {
-                const response = await axios.post('http://localhost:3001/updateCaptain', {
+                const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/updateCaptain', {
                     userId: selectedUser.stuID, 
                     teamName: selectedTeam
                 });
@@ -94,7 +94,7 @@ export default function Users() {
     const deleteUser = async () => {
         if (selectedUser && window.confirm("Are you sure you want to delete this user?")) {
             try {
-                const response = await axios.delete(`http://localhost:3001/deleteUser/${selectedUser.stuID}`);
+                const response = await axios.delete(`https://1zsncd03-3001.usw3.devtunnels.ms/deleteUser/${selectedUser.stuID}`);
                 if (response.status === 200) {
                     setUsers(users.filter(user => user.stuID !== selectedUser.stuID));
                     setOpenModal(false);

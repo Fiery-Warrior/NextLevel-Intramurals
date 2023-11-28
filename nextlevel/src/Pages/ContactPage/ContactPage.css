@@ -1,0 +1,41 @@
+.side_image {
+    padding: 30px;
+    height: 600px;
+    max-width: 800px;
+}
+
+.contact_style {
+    color: white; 
+}
+.contact_form {
+    margin: 0 auto;
+}
+.contact_form textarea {
+    resize: none;
+    width: 500px;
+    height: 400px;
+}
+
+.name_input {
+    margin: 5px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.email_input {
+    margin: 5px;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.message_input {
+    margin: 5px;
+    border-radius: 8px;
+}
+.flex_container {
+   display: flex;
+   justify-content: space-between;
+   margin: 0 auto;
+   max-width: 1600px;
+   background-image: linear-gradient(#4b6d7b, whitesmoke);
+}

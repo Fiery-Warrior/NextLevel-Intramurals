@@ -2,14 +2,16 @@ import React from 'react';
 import './landingImage.css';
 import './NLCI.css';
 // import { Button } from '@aws-amplify/ui-react';
-import {Button } from '@material-ui/core';
-
+import { Button } from '@material-ui/core';
 import '@aws-amplify/ui-react/styles.css';
 import PrivacyNotification from './NavBar/PrivacyNotification';
 import Footer from './NavBar/Footer';
 import ActivityCenter from './ActivityCentral/ActivityCenter.jsx';
+import testimage1 from "./imgs/testimage1.JPG";
+import testimage2 from "./imgs/testimage2.JPG";
+import testimage3 from "./imgs/testimage3.JPG";
 
-
+const IMAGES = [testimage1, testimage2, testimage3]
 
 function TopLanding() {
   return (

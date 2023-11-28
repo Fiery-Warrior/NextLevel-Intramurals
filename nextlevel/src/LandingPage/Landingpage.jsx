@@ -11,7 +11,7 @@ function LandingPage() {
       <div className="landing-page-text">
         <h1>Next Level</h1>
         <h2>Community</h2>
-        <h2>Intramurals</h2>
+        <h2>Intramurals </h2>
 
         <p> Since 2023 </p>
 

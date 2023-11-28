@@ -33,9 +33,9 @@ export default function TopNavBar() {
           </Typography>
           <div>
             <Button color="inherit" href = "/">Home</Button>
-            <Button color="inherit" className={classes.button}>About</Button>
+            <Button color="inherit" className={classes.button} >About</Button>
             <Button color="inherit" className={classes.button} href='/login'>Login</Button>
-            <Button color="inherit" className={classes.button} href='/teamselection'>Contact</Button>
+            <Button color="inherit" className={classes.button} href='/contactpage'>Contact</Button>
           </div>
         </Toolbar>
       </AppBar>

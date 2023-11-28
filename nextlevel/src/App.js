@@ -5,7 +5,7 @@ import AdminLoginPage from './Pages/AdminLogininPage/Adminloginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
-import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
+import ContactPage from './Pages/ContactPage/ContactPage.jsx';
 import ResetPassword from './Pages/ResetPassword/ResetPassword.jsx';
 import { CookiesProvider, useCookies } from "react-cookie";
 import {BrowserRouter as Router, Routes, Route, useNavigate }
@@ -42,7 +42,7 @@ function App() {
             <Route path='/register' element={<RegisterPage/>} />
             <Route path='/profile' element={<UserProfile/>} />
             <Route path='/admindash' element={<AdminDash/>} />
-            <Route path='/teamselection' element={<TeamSelectionPage/>} />
+            <Route path='/contactpage' element={<ContactPage/>} />
             <Route path='/reset' element={<ResetPassword/>} />
             <Route path='/adminnotloggedin' element={<NotAdmin/>} />
             <Route path='/usernotloggedin' element={<NotUser/>} />

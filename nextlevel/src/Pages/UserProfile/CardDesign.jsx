@@ -7,6 +7,9 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import TopNavBar from '../LandingPage/NavBar/NavBar';
 import Footer from '../LandingPage/NavBar/Footer';
+import './carddesign.css';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
     width: 120,
@@ -16,16 +19,12 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
 }));
 
+
+
 export default function SquareCorners() {
     return (
         <>
-        <Stack direction="row" spacing={1}>
-            {/* <TopNavBar/> */}
-                {/* <Box sx={{ position: 'fixed', top: 15 }}>
-                        <Avatar alt="Remy Sharp" src="/static/images/baseball.png" />
-                </Box> */}
-                <Row/>
-        </Stack>
+     
                 <Footer/>
                 </>
     );

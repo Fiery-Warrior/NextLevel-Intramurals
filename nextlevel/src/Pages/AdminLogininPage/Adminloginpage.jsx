@@ -50,7 +50,7 @@ export default function LoginPage() {
 
     try {
       // Sending login data to the backend API
-      const response = await axios.post('http://localhost:3001/admin-login', userData);
+      const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/admin-login', userData);
       if (response.status === 200) {
         setAuthMessage('Login successful!');
         setCookie('myCookie', { email: userData.email }, { path: '/' }); // Set the cookie
@@ -146,7 +146,7 @@ export default function LoginPage() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

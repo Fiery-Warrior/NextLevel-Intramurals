@@ -4,6 +4,8 @@ npm i -f
 
 npm install @material-ui/core --save -f
 
+npm i keep-react -f
+
 npm install -f @mui/material @emotion/react @emotion/styled
 
 npm install -f express mysql body-parser

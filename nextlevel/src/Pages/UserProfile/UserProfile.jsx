@@ -14,13 +14,30 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+
+
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
     const [email, setEmail] = useState('');
+    const [teamID, setteamID] = useState('');
     const [userData, setUserData] = useState(null);
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
+    const [rosterData, setRosterData] = useState(null); //for roster by teamID
 
     //Modal
     const [open, setOpen] = React.useState(false);
@@ -29,6 +46,41 @@ function UserProfile() {
     const handleClose = () => setOpen(false);
     const handleRosterClick = () => setRosterClicked(true);
 
+
+    //sport image chooser
+    //this '?' checks to make sure that sportname is not null
+    const userSport = sportName ? sportName.toLowerCase() : null;
+
+    const getSportImage = (sport) => {
+        if (!sport) {
+            return;
+        }
+    
+        sport = sport.toLowerCase();
+    
+        switch(sport) {
+            case 'football':
+                return "/static/images/football.png";
+            case 'basketball':
+                return "/static/images/basketball.jpg";
+            case 'soccer':
+                return "/static/images/soccer.png";
+            case 'hockey':
+                return "/static/images/hockey.png";
+            case 'tennis':
+                return "/static/images/tennis.png";
+            case 'softball':
+                return "/static/images/softball.png";
+            case 'volleyball':
+                return "/static/images/volleyball.png";
+            case 'table tennis':
+                return "/static/images/tabletennis.png";   
+            default:
+                return "/static/images/default.png"; // default image
+        }
+    }
+
+
     useEffect(() => {
         if (cookies.myCookie && !email) {
             setEmail(cookies.myCookie.email);
@@ -36,7 +88,7 @@ function UserProfile() {
     }, [cookies, email]);
 
     useEffect(() => {
-        fetch(`http://localhost:3001/userprofile/${email}`)
+        fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/userprofile/${email}`)
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -50,24 +102,54 @@ function UserProfile() {
             .catch(error => {
                 console.error('Error fetching user profile:', error);
             });
-    }, [email]);
+        }, [email]);
 
+
+        const [teamMembers, setTeamMembers] = useState([]);
+        useEffect(() => {
+            if (teamName) {
+                fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/team/${teamName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (Array.isArray(data)) {
+                            setTeamMembers(data);
+                        } else {
+                            console.error('Invalid response data:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching team members:', error);
+                    });
+            }
+        }, [teamName]); // This will run whenever teamName changes /each user profile
+
+        
+      
     return (
         <div>
             <UserNavBar/>
-            {/* <Typography variant="h4">{email} Profile</Typography> */}
-            <br/>
-            <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
+            {/* <Typography variant="h4">{email} Profile</Typography>  */}
 
 
-            <h2>Feel Free to choose from some of these clubs nearby</h2>
-            
+            {teamName ? (
+                <React.Fragment>
+                    {/* <Typography variant="h3">Welcome to your team, {teamName}!</Typography>
+                    <h2>You are part of {teamName}</h2> */}
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <br/>
+                    <Typography variant="h3">Welcome to your profile, {userData && userData.firstName}!</Typography>
+                    <h2>Feel Free to choose from some of these clubs nearby</h2>
+                    <br/>
+                </React.Fragment>
+            )}
 
-            <br/>
+
+
             {teamName && (
                 <div>
-                    <h1 className="activity-cards-title">Activity Central</h1>
-
+                    <h1 className="activity-cards-title-central">Activity Central</h1>
 
 
 
@@ -79,47 +161,42 @@ function UserProfile() {
                                 </LocalizationProvider>
                             </Container>
                             <Container className='next-game' style={{display: 'flex', flexDirection: 'column'}}>
-                                <section>Name Game</section>
+                                <section>Upcoming Game</section>
                             </Container>
                         </div>
                         <Container maxWidth="sm" style={{marginLeft: '2%'}} className='sport-card'>
                             <Card sx={{ maxWidth: 345, minWidth: 345 }}>
                                 <CardMedia
                                     sx={{ height: 180 }}
-                                    image="/static/images/football.png"
+                                    // image="/static/images/football.png"
+                                    image={getSportImage(userSport)}
                                     title="Sport Card"
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div" >
                                         {teamName} | {sportName}
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary" >
-                                    <Button size="large" className='roster-modal' onClick={() => {handleOpen(); handleRosterClick();}}>Roster</Button>
-                                    <Modal
-                                        open={open}
-                                        onClose={handleClose}
-                                        aria-labelledby="modal-modal-title"
-                                        aria-describedby="modal-modal-description"
-                                    >
-                                        {rosterClicked ? (
-                                            <div>
-                                                <Typography variant="h5" component="h2">
-                                                    Success!
-                                                </Typography>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <Typography variant="h5" component="h2">
-                                                    Roster
-                                                </Typography>
-                                            </div>
-                                        )}
-                                    </Modal>
-                                    </Typography>
+
+                                        <Typography variant="h5" component="h2">
+                                            <Button onClick={handleOpen}> Player Roster</Button>
+                                            <Modal
+                                                open={open}
+                                                onClose={handleClose}
+                                                aria-labelledby="modal-modal-title"
+                                                aria-describedby="modal-modal-description"
+                                            >
+                                                <Box sx={style}>
+                                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                                        <h2>{teamName} Roster</h2>
+                                                        {teamMembers.map(member => (
+                                                            <p key={member.id}>{member.firstName} {member.lastName}</p>
+                                                        ))}
+                                                    </Typography>
+                                                </Box>
+                                            </Modal>
+                                        </Typography>
+
                                 </CardContent>
-                                {/* <CardActions>
-            
-                                </CardActions> */}
                             </Card>
                         </Container>
                     </Container>
@@ -130,7 +207,10 @@ function UserProfile() {
                 </div>
             )}
 
+<br/>
+
             <CardDesign/>
+
         </div>
     );
 }

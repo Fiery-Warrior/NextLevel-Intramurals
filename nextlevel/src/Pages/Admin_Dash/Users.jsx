@@ -47,7 +47,7 @@ export default function Users() {
     };
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/teams')
+        fetch('https://1zsncd03-3001.usw3.devtunnels.ms/api/teams')
             .then(response => response.json())
             .then(data => setTeams(data))
             .catch(error => console.error('Error fetching teams:', error));
@@ -69,7 +69,7 @@ export default function Users() {
         const selectedTeam = document.getElementById('teamSelect').value;
         if (selectedUser && selectedTeam) {
             try {
-                const response = await axios.post('http://localhost:3001/updateCaptain', {
+                const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/updateCaptain', {
                     userId: selectedUser.stuID, 
                     teamName: selectedTeam
                 });

@@ -9,9 +9,11 @@ import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
 import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
 import ResetPassword from './Pages/ResetPassword/ResetPassword.jsx';
 import { CookiesProvider, useCookies } from "react-cookie";
-import {BrowserRouter as Router, Routes, Route }
+import {BrowserRouter as Router, Routes, Route, useNavigate }
 from 'react-router-dom';
 import sha256 from 'js-sha256';
+import NotAdmin from './Pages/NotLoggedIn/NotAdmin';
+import NotUser from './Pages/NotLoggedIn/NotUser';
 
 function App() {
   const [cookies, setCookie] = useCookies(["user"]);
@@ -43,6 +45,8 @@ function App() {
             <Route path='/admindash' element={<AdminDash/>} />
             <Route path='/teamselection' element={<TeamSelectionPage/>} />
             <Route path='/reset' element={<ResetPassword/>} />
+            <Route path='/adminnotloggedin' element={<NotAdmin/>} />
+            <Route path='/usernotloggedin' element={<NotUser/>} />
             <Route path='/admindash2' element={<Admindash2/>} />
           </Routes>
         </Router>

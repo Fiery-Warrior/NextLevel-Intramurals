@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
+import AdminDash from './AdminDash';
 
 export default function Users() {
     //Use 'users' to display this data on website
@@ -22,13 +23,12 @@ export default function Users() {
     const [openModal, setOpenModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [modalScreen, setModalScreen] = useState('default'); // New state for modal screen
-    const [captainSelection, setCaptainSelection] = useState(''); // New state for dropdown selection
     const [teams, setTeams] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/admindash');
+            const response = await axios.get('http://localhost:3001/admindashusers');
             const updatedUsers = response.data.map(user => {
                 let userPosition = 'NA';
                 switch (user.role) {

@@ -11,8 +11,8 @@ app.use(cors());
 
 // MySQL configuration and connection
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: '47.186.237.244',
+  user: 'asher',
   password: 'password',
   database: 'nlidb'
 });
@@ -152,18 +152,26 @@ app.post('/reset', (req, res) => {
 
 
 //For Admin Dashboard
-app.get('/admindash', (req, res) => {
+app.get('/admindashusers', (req, res) => {
   connection.query('SELECT u.firstName, u.lastName, u.role, u.email, u.stuID, u.sex, t.TeamName, s.sportName FROM user u LEFT JOIN team t ON u.teamID = t.teamID LEFT JOIN sport s ON t.sport_idSport = s.idSport', (err, results) => {
     if (err) throw err;
     res.json(results);
     console.log(results);
   
   });
-
-  
-
   //Users sport and user team data will also be displayed here
 });
+
+app.get('/admindashgames', (req, res) => {
+  connection.query('SELECT * FROM game', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+    console.log(results);
+  
+  });
+  //Users sport and user team data will also be displayed here
+});
+
 
 app.delete('/deleteUser/:stuID', (req, res) => {
   const stuID = req.params.stuID;
@@ -221,105 +229,68 @@ app.get('/api/teams', (req, res) => {
   });
 });
 
-//Big bertha endpoint. It runs a lot of queries at once to update a captain. It can probably be changed to achieve all of this in much fewer queries but it is 1:00 AM and I don't want to think about this any more. Mess with at your own risk.
-app.post('/updateCaptain', (req, res) => {
-  const { userId, teamName } = req.body;
 
-  // Query to get the current captain's ID
-  const getCurrentCaptainQuery = 'SELECT Captain FROM team WHERE TeamName = ?';
+app.post('/updateCaptain', async (req, res) => {
+  try {
+    const { userId, teamName } = req.body;
 
-  // Queries to update roles
-  const updateOldCaptainRoleQuery = 'UPDATE user SET role = 1 WHERE stuID = ?';
-  const updateUserRoleQuery = 'UPDATE user SET role = 2 WHERE stuID = ?';
-  
-  // Query to update the team captain
-  const updateCaptainQuery = 'UPDATE team SET Captain = ? WHERE TeamName = ?';
-  const getTeamIdQuery = 'SELECT teamID FROM team WHERE TeamName = ?';
-  const updateTeamIdQuery = 'UPDATE user SET teamID = ? WHERE stuID = ?';
-  // Start a transaction
-  connection.beginTransaction((err) => {
-      if (err) {
-          console.error('Transaction start error:', err);
-          return res.status(500).send('Failed to update captain');
-      }
+    // Start a transaction
+    await queryAsync('START TRANSACTION');
 
-      // Query to get the teamID for the given teamName
-      
-      connection.query(getTeamIdQuery, [teamName], (err, results) => {
-        if (err || results.length === 0) {
-          return connection.rollback(() => {
-              console.error('Error finding current teamID:', err);
-              res.status(500).send('Failed to find current teamID');
-          });
-        }
-        const teamId = results[0].teamID;
-        console.log(teamId);
+    // Get the teamID for the given teamName
+    const teamIdResults = await queryAsync('SELECT teamID FROM team WHERE TeamName = ?', [teamName]);
+    if (teamIdResults.length === 0) {
+      throw new Error('Failed to find current teamID');
+    }
 
-        // Get the current captain's ID
-        connection.query(getCurrentCaptainQuery, [teamName], (err, results) => {
-            if (err || results.length === 0) {
-                return connection.rollback(() => {
-                    console.error('Error finding current captain:', err);
-                    res.status(500).send('Failed to find current captain');
-                });
-            }
+    const teamId = teamIdResults[0].teamID;
 
-            const currentCaptainId = results[0].Captain;
-            // Update the old captain's role
-            connection.query(updateOldCaptainRoleQuery, [currentCaptainId], (err, results) => {
-                if (err) {
-                    return connection.rollback(() => {
-                        console.error('Error updating old captain role:', err);
-                        res.status(500).send('Failed to update old captain role');
-                    });
-                }
+    // Get the current captain's ID
+    const currentCaptainResults = await queryAsync('SELECT Captain FROM team WHERE TeamName = ?', [teamName]);
+    if (currentCaptainResults.length === 0) {
+      throw new Error('Failed to find current captain');
+    }
 
-                // Update the team captain
-                connection.query(updateCaptainQuery, [userId, teamName], (err, results) => {
-                    if (err) {
-                        return connection.rollback(() => {
-                            console.error('Error updating captain:', err);
-                            res.status(500).send('Failed to update captain');
-                        });
-                    }
+    const currentCaptainId = currentCaptainResults[0].Captain;
 
-                    // Update the new captain's role
-                    connection.query(updateUserRoleQuery, [userId], (err, results) => {
-                        if (err) {
-                            return connection.rollback(() => {
-                                console.error('Error updating new captain role:', err);
-                                res.status(500).send('Failed to update new captain role');
-                            });
-                        }
+    // Update the old captain's role
+    await queryAsync('UPDATE user SET role = 1 WHERE stuID = ?', [currentCaptainId]);
 
-                          connection.query(updateTeamIdQuery, [teamId, userId], (err, results) => {
-                            if (err) {
-                              return connection.rollback(() => {
-                                console.error('Error updating new captain team:', err);
-                                res.status(500).send('Failed to update new captain role');
-                            });
-                            }
+    // Update the team captain
+    await queryAsync('UPDATE team SET Captain = ? WHERE TeamName = ?', [userId, teamName]);
 
-                          // Commit the transaction
-                          connection.commit((err) => {
-                              if (err) {
-                                  return connection.rollback(() => {
-                                      console.error('Error committing transaction:', err);
-                                      res.status(500).send('Failed to update captain and roles');
-                                  });
-                              }
+    // Update the new captain's role
+    await queryAsync('UPDATE user SET role = 2 WHERE stuID = ?', [userId]);
 
-                              res.status(200).send('Captain and roles updated successfully');
-                            });
-                        });
-                      });
-                  });
-              });
-          });
-      });
-  });
+    // Update the new captain's teamID
+    await queryAsync('UPDATE user SET teamID = ? WHERE stuID = ?', [teamId, userId]);
+
+    // Commit the transaction
+    await queryAsync('COMMIT');
+
+    res.status(200).send('Captain and roles updated successfully');
+  } catch (error) {
+    console.error('Error updating captain and roles:', error);
+    
+    // Rollback the transaction in case of an error
+    await queryAsync('ROLLBACK');
+    
+    res.status(500).send('Failed to update captain and roles');
+  }
 });
 
+// Helper function to promisify MySQL queries
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 
 //For User Profile
@@ -332,6 +303,179 @@ app.get('/userprofile/:email', (req, res) => {
   });
 });
 
+app.get('/gamedata', (req, res) => {
+  const query = `
+      SELECT g.gameID, 
+      g.location, 
+      g.date,
+      MAX(CASE WHEN thg.seq = 1 THEN t.TeamName END) AS Team1Name,
+      MAX(CASE WHEN thg.seq = 1 THEN thg.score END) AS Team1Score,
+      MAX(CASE WHEN thg.seq = 2 THEN t.TeamName END) AS Team2Name,
+      MAX(CASE WHEN thg.seq = 2 THEN thg.score END) AS Team2Score
+      FROM game g
+      LEFT JOIN (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY game_gameID ORDER BY team_teamID) AS seq
+      FROM team_has_game
+      ) thg ON g.gameID = thg.game_gameID
+      LEFT JOIN team t ON t.teamID = thg.team_teamID
+      GROUP BY g.gameID, g.location, g.date
+      ORDER BY g.gameID;
+  `;
+
+  connection.query(query, (err, results) => {
+      if (err) {
+          res.status(500).send('Error in fetching game data');
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+
+app.post('/addGame', async (req, res) => {
+  try {
+    const { location, date, team1Name, team2Name } = req.body;
+
+    // Insert a new game
+    const insertGameSql = 'INSERT INTO game (location, date) VALUES (?, ?)';
+    const gameInsertResults = await queryAsync(insertGameSql, [location, date]);
+
+    const gameId = gameInsertResults.insertId;
+
+    // Get team1 ID
+    const team1IDQuery = 'SELECT teamID FROM team WHERE teamName = ?';
+    const team1Results = await queryAsync(team1IDQuery, [team1Name]);
+    const team1Id = team1Results[0].teamID;
+
+    // Get team1 sport ID
+    const team1SportIdQuery = 'SELECT sport_idSport FROM team WHERE teamID = ?';
+    const team1SportResults = await queryAsync(team1SportIdQuery, [team1Id]);
+    const team1Sport = team1SportResults[0].sport_idSport;
+
+    // Link team1 to the game
+    const insertTeamGameSql = 'INSERT INTO team_has_game (team_teamID, team_sport_idSport, game_gameID) VALUES (?, ?, ?)';
+    await queryAsync(insertTeamGameSql, [team1Id, team1Sport, gameId]);
+
+    // Get team2 ID
+    const team2Results = await queryAsync(team1IDQuery, [team2Name]);
+    const team2Id = team2Results[0].teamID;
+
+    // Get team2 sport ID
+    const team2SportResults = await queryAsync(team1SportIdQuery, [team2Id]);
+    const team2Sport = team2SportResults[0].sport_idSport;
+
+    // Link team2 to the game
+    await queryAsync(insertTeamGameSql, [team2Id, team2Sport, gameId]);
+
+    res.send('Game and team links created successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Helper function to promisify MySQL queries
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/editGame', async (req, res) => {
+  try {
+    const { location, date, team1Name, team2Name, score1, score2, gameID} = req.body;
+    // Get old team1ID
+    console.log(gameID);
+    const oldTeamIDQuery = 'SELECT team_teamID FROM team_has_game WHERE game_gameID = ?';
+    const oldTeamIDs = await queryAsync(oldTeamIDQuery, [gameID]);
+    const oldTeam1Id = oldTeamIDs[0].team_teamID;
+    const oldTeam2Id = oldTeamIDs[1].team_teamID;
+    console.log(oldTeam1Id);
+    console.log(oldTeam2Id);
+
+    // Get team1 ID
+    const team1IDQuery = 'SELECT teamID FROM team WHERE teamName = ?';
+    const team1Results = await queryAsync(team1IDQuery, [team1Name]);
+    const team1Id = team1Results[0].teamID;
+
+    // Get team1 sport ID
+    const team1SportIdQuery = 'SELECT sport_idSport FROM team WHERE teamID = ?';
+    const team1SportResults = await queryAsync(team1SportIdQuery, [team1Id]);
+    const team1Sport = team1SportResults[0].sport_idSport;
+
+    // Get team2 ID
+    const team2Results = await queryAsync(team1IDQuery, [team2Name]);
+    const team2Id = team2Results[0].teamID;
+
+    // Get team2 sport ID
+    const team2SportResults = await queryAsync(team1SportIdQuery, [team2Id]);
+    const team2Sport = team2SportResults[0].sport_idSport;
+
+    //Update Game
+    const updateGameQuery = 'UPDATE game SET location = ?, date = ? WHERE gameID = ?';
+    await queryAsync(updateGameQuery, [location, date, gameID]);
+    
+    //Update Team 1 Score
+    const updateTeamQuery = 'UPDATE team_has_game SET score = ?, team_teamID = ? WHERE game_gameID = ? AND team_teamID = ?';
+    await queryAsync(updateTeamQuery, [score1, team1Id, gameID, oldTeam1Id]);
+
+    //Update Team 2 Score
+    await queryAsync(updateTeamQuery, [score2, team2Id, gameID, oldTeam2Id]);
+
+    res.send('Game and team links created successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Helper function to promisify MySQL queries
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+app.post('/deleteGame', async (req, res) => {
+  try {
+    const {gameID} = req.body;
+    const deleteTeamHasGameQuery = 'DELETE FROM team_has_game WHERE game_gameID = ?';
+    const deleteGameQuery = 'DELETE FROM game WHERE gameID = ?';
+    await queryAsync(deleteTeamHasGameQuery, [gameID]);
+    await queryAsync(deleteGameQuery, [gameID]);
+    res.send('Game deleted successfully!');
+
+  } catch (error) {
+    console.error(error);
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Helper function to promisify MySQL queries
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 
 // Start the server
 const PORT = 3001;

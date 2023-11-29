@@ -4,6 +4,7 @@ import LoginPage from './Pages/LogininPage/loginpage';
 import AdminLoginPage from './Pages/AdminLogininPage/Adminloginpage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import UserProfile from './Pages/UserProfile/UserProfile';
+import Admindash2 from './Pages/Admin_Dash/admindash2.jsx';
 import AdminDash from './Pages/Admin_Dash/AdminDash.jsx';
 import TeamSelectionPage from './Pages/TeamSelectionPage/TeamSelection';
 import ResetPassword from './Pages/ResetPassword/ResetPassword.jsx';
@@ -42,6 +43,7 @@ function App() {
             <Route path='/admindash' element={<AdminDash/>} />
             <Route path='/teamselection' element={<TeamSelectionPage/>} />
             <Route path='/reset' element={<ResetPassword/>} />
+            <Route path='/admindash2' element={<Admindash2/>} />
           </Routes>
         </Router>
       </div>

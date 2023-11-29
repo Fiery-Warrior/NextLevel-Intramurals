@@ -22,8 +22,7 @@ import Card from '@material-ui/core/Card';
 import axios from 'axios';
 import CardContent from '@material-ui/core/CardContent';
 //import './admindash2.jsx/index.js';
-import Users from './Users.jsx';
-import Game from './Game';
+import Users from './Game.jsx';
 
 const drawerWidth = 240;
 
@@ -89,13 +88,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function AdminDash() {
+function Admindash2() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalTeams, setTotalTeams] = useState(0);
     const [totalSports, setTotalSports] = useState(0);
-    const [currentPage, setCurrentPage] = useState('Users');
 
     const getUserCount = async() => {
         try{
@@ -121,20 +119,6 @@ function AdminDash() {
             console.log(`There was an error retrieving the sport count: ${error}`)
         }
     }
-
-    
-  const renderPage = () => {
-    console.log("I tried to render")
-    switch(currentPage) {
-      case 'Users':
-        return <Users />;
-      case 'Game':
-        return <Game />;
-      default:
-        return <Users />;
-    }
-  };
-
     useEffect(() => {
         getUserCount();
         getTeamCount();
@@ -193,17 +177,23 @@ function AdminDash() {
                         </ListItemIcon>
                         <ListItemText primary="Dashboard" />
                     </ListItem>
-                    <ListItem button onClick={() => setCurrentPage('Users')}>
+                    <ListItem button>
                         <ListItemIcon>
                             <PeopleIcon />
                         </ListItemIcon>
                         <ListItemText primary="Users" />
                     </ListItem>
-                    <ListItem button onClick={() => setCurrentPage('Game')}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <BarChartIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Reports" />
+                    </ListItem>
+                    <ListItem button>
                         <ListItemIcon>
                             <LayersIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Games" />
+                        <ListItemText primary="Integrations" />
                     </ListItem>
                 </List>
                 <Divider />
@@ -252,10 +242,11 @@ function AdminDash() {
                     </CardContent>
                 </Card>
                 <div className='card-space'/>
-                {renderPage()}
+                <Users/>
+
             </main>        
             </div>
     );
 }
 
-export default AdminDash;
+export default Admindash2;

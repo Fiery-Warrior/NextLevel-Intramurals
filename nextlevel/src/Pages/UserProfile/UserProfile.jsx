@@ -53,11 +53,12 @@ function UserProfile() {
 
     const getSportImage = (sport) => {
         if (!sport) {
+            console.log("No sport");
             return;
         }
     
         sport = sport.toLowerCase();
-    
+        console.log(sport);
         switch(sport) {
             case 'football':
                 return "/static/images/football.png";
@@ -68,13 +69,13 @@ function UserProfile() {
             case 'hockey':
                 return "/static/images/hockey.png";
             case 'tennis':
-                return "/static/images/tennis.png";
+                return "/static/images/tennis.jpg";
             case 'softball':
-                return "/static/images/softball.png";
+                return "/static/images/softball.jpg";
             case 'volleyball':
-                return "/static/images/volleyball.png";
+                return "/static/images/volleyball.jpg";
             case 'table tennis':
-                return "/static/images/tabletennis.png";   
+                return "/static/images/tabletennis.jpg";   
             default:
                 return "/static/images/default.png"; // default image
         }
@@ -88,7 +89,7 @@ function UserProfile() {
     }, [cookies, email]);
 
     useEffect(() => {
-        fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/userprofile/${email}`)
+        fetch(`http://localhost:3001/userprofile/${email}`)
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -108,7 +109,7 @@ function UserProfile() {
         const [teamMembers, setTeamMembers] = useState([]);
         useEffect(() => {
             if (teamName) {
-                fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/team/${teamName}`)
+                fetch(`http://localhost:3001/team/${teamName}`)
                     .then(response => response.json())
                     .then(data => {
                         if (Array.isArray(data)) {
@@ -168,7 +169,7 @@ function UserProfile() {
                             <Card sx={{ maxWidth: 345, minWidth: 345 }}>
                                 <CardMedia
                                     sx={{ height: 180 }}
-                                    // image="/static/images/football.png"
+                                    //image="/static/images/football.png"
                                     image={getSportImage(userSport)}
                                     title="Sport Card"
                                 />

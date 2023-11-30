@@ -48,7 +48,7 @@ export default function UserNavBar() {
   }, [cookies, email]);
 
   useEffect(() => {
-    fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/userprofile/${email}`)
+    fetch(`http://localhost:3001/userprofile/${email}`)
       .then((response) => response.json())
       .then((data) => setUserData(data[0])); 
   }, [email]);
@@ -57,7 +57,7 @@ export default function UserNavBar() {
 
   useEffect(() => {
     if (searchTerm) {
-      fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/teams-sports?search=${searchTerm}`)
+      fetch(`http://localhost:3001/teams-sports?search=${searchTerm}`)
         .then((response) => response.json())
         .then((data) => setSearchResults(data)); 
     }

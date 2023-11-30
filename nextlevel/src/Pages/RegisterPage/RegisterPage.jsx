@@ -57,7 +57,7 @@ export default function RegisterPage() {
   
     try {
       // Sending data to the backend API
-      const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/register', userData);
+      const response = await axios.post('http://localhost:3001/register', userData);
       console.log(response.data);
       // On successful registration, you might want to clear the error or navigate the user to a different page
       setRegistrationError('Registration Success!');

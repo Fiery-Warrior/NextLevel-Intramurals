@@ -10,9 +10,10 @@ import ActivityCenter from './ActivityCentral/ActivityCenter.jsx';
 import testimage1 from "./imgs/testimage1.JPG";
 import testimage2 from "./imgs/testimage2.JPG";
 import testimage3 from "./imgs/testimage3.JPG";
+import CarouselFadeExample from './Imagecarousel.jsx';
 
 const IMAGES = [testimage1, testimage2, testimage3];
-import CarouselFadeExample from './Imagecarousel.jsx';
+
 
 
 function TopLanding() {

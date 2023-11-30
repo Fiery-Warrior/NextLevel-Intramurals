@@ -1,4 +1,5 @@
 const express = require('express');
+const nodemailer = require('nodemailer'); //For Emailing Form
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
@@ -529,3 +530,6 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+//Form Emailing
+require('dotenv').config();

@@ -26,7 +26,7 @@ export default function Footer() {
         <Grid item xs={12} sm={6}>
           <Typography variant="h6">Contact Us</Typography>
           <Typography variant="body1">
-            Email: <Link href="mailto:nextlevel@gmail.com" className={classes.link}>nextlevel@gmail.com</Link>
+            Email: <Link href="mailto:nextlevelintramurals@gmail.com" className={classes.link}>nextlevelintramurals@gmail.com</Link>
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>

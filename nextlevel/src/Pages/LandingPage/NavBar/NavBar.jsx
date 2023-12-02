@@ -28,8 +28,8 @@ export default function TopNavBar() {
     <div className={classes.root}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title} style={{ visibility: "hidden" }}>
-            NextLevel
+          <Typography variant="h6" className={classes.title}>
+            Next Level Intramurals
           </Typography>
           <div>
             <Button color="inherit" href = "/">Home</Button>

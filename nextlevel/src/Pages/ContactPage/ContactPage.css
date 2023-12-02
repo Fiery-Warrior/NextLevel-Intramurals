@@ -1,9 +1,15 @@
 .side_image {
-    padding: 5vw;
+    display: block;
     max-width: 50vw;
+    margin: 0;
+    border: 2px solid black;
+    border-radius: 18px;
+    box-shadow: black 10px 10px;
 }
 
 .contact_style {
+    padding-top: 50px;
+    font-family: sans-serif;
     color: white; 
 }
 .contact_form {
@@ -15,7 +21,7 @@
     resize: none;
     width: 80vw;
     max-width: 400px;
-    height: 150px;
+    height: 100px;
 }
 .name_container, .email_container {
     display: flex;
@@ -27,6 +33,7 @@
     border-radius: 8px;
     width: 80vw;
     max-width: 400px;
+    box-shadow: 2px 2px;
 }
 
 .Name {
@@ -54,7 +61,7 @@
 }
 
 .button_input:hover {
-    background-color: rgb(52, 50, 50);
+    background-color:#256a88;
     cursor: pointer;
 }
 .flex_container {

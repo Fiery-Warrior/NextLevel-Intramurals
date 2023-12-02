@@ -17,6 +17,7 @@ const ContactPage = () => {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,13 +35,14 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     try {
-      emailjs.sendForm('service_45r62pq', 'template_87xax4b', e.target, 'f3EnDG36a56g54ySb');
-      console.log('Email sent Successfully');
+      await emailjs.sendForm('service_45r62pq', 'template_87xax4b', e.target, 'f3EnDG36a56g54ySb');
+      setSubmitMessage('Email Sent Successfully');
 
       //Resets Form Data
       setFormData({name: '', email: '', message: ''});
     } catch (error) {
       console.error('Error sending email', error);
+      setSubmitMessage('Failed to send email');
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +70,10 @@ const ContactPage = () => {
         <textarea className='message_input' name="message" value={formData.message} onChange={handleChange} />
       </label>
       <br/>
-      <button className='button_input' type="submit">Submit</button>
+      <button className='button_input' type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Submitting...': 'Submit'}
+      </button>
+      <p className='submit_message'>{submitMessage}</p>
     </form>
     </div>
     </div>

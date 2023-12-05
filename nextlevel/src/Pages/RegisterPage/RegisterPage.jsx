@@ -17,6 +17,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useCookies } from 'react-cookie';
 
 function Copyright(props) {
   return (
@@ -36,39 +37,92 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function RegisterPage() {
+  const [cookies, setCookie] = useCookies(['myCookie']);
   const [registrationError, setRegistrationError] = React.useState('');
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-      stuID: data.get('stuID'),
-      sex: data.get('sex')
-    };
   
-    // Check if email ends with "@dbu.edu"
-    if (!userData.email.endsWith("@dbu.edu")) {
-      setRegistrationError('Registration requires a DBU email address.');
-      return; // Stop the form submission
-    }
   
-    try {
-      // Sending data to the backend API
-      const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/register', userData);
-      console.log(response.data);
-      // On successful registration, you might want to clear the error or navigate the user to a different page
-      setRegistrationError('Registration Success!');
-      window.location.href = `/profile?email=${userData.email}`; // Redirect to profile page with email as query parameter
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   const userData = {
+  //     firstName: data.get('firstName'),
+  //     lastName: data.get('lastName'),
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //     stuID: data.get('stuID'),
+  //     sex: data.get('sex')
+  //   };
+  
+  //   // Check if email ends with "@dbu.edu"
+  //   if (!userData.email.endsWith("@dbu.edu")) {
+  //     setRegistrationError('Registration requires a DBU email address.');
+  //     return; // Stop the form submission
+  //   }
+  
+  //   try {
+  //     // Sending data to the backend API
+  //     const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/register', userData);
+  //     console.log(response.data);
+  //     // On successful registration, you might want to clear the error or navigate the user to a different page
+  //     setRegistrationError('Registration Success!');
+  //     window.location.href = `/profile?email=${userData.email}`; // Redirect to profile page with email as query parameter
 
-    } catch (error) {
-      console.error('An error occurred during registration:', error);
-      // Display backend error message or a default error message
-      setRegistrationError(error.response?.data?.message || 'An unexpected error occurred during registration.');
-    }
+  //     //  login after successful registration
+  //   const loginResponse = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/login', userData);
+  //   if (loginResponse.status === 200) {
+  //     // Set the cookie or authentication token after login
+  //     setCookie('myCookie', { email: userData.email }, { path: '/' });
+  //     window.location.href = `/profile?email=${userData.email}`; // Redirect to profile page
+  //   }
+    
+  //   }catch (error) {
+  //     console.error('An error occurred during registration:', error);
+  //     // Display backend error message or a default error message
+  //     setRegistrationError(error.response?.data?.message || 'An unexpected error occurred during registration.');
+  //   }
+  // };
+
+  // Inside handleSubmit function in RegisterPage.js
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const userData = {
+    firstName: data.get('firstName'),
+    lastName: data.get('lastName'),
+    email: data.get('email'),
+    password: data.get('password'),
+    stuID: data.get('stuID'),
+    sex: data.get('sex')
   };
+
+  // Check if email ends with "@dbu.edu"
+  if (!userData.email.endsWith("@dbu.edu")) {
+    setRegistrationError('Registration requires a DBU email address.');
+    return; // Stop the form submission
+  }
+
+  try {
+    // Sending data to the backend API
+    const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/register', userData);
+    console.log(response.data);
+    // On successful registration, you might want to clear the error or navigate the user to a different page
+    setRegistrationError('Registration Success!');
+
+    // Login after successful registration
+    const loginResponse = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/login', userData);
+    if (loginResponse.status === 200) {
+      // Set the cookie or authentication token after login
+      setCookie('myCookie', { email: userData.email }, { path: '/' });
+      // Redirect to profile page only after setting the cookie
+      window.location.href = `/profile?email=${userData.email}`;
+    }
+  } catch (error) {
+    console.error('An error occurred during registration:', error);
+    // Display backend error message or a default error message
+    setRegistrationError(error.response?.data?.message || 'An unexpected error occurred during registration.');
+  }
+};
+
 
   return (
     <ThemeProvider theme={defaultTheme}>

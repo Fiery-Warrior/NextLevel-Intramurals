@@ -99,6 +99,15 @@ app.post('/login', (req, res) => {
           
           //from here
           
+          // const userRole = results[0].role;
+          // if (userRole === 1) {
+          //   console.log('Player authenticated successfully');
+          //   res.send('Player authenticated successfully.');
+          // } else if (userRole === 2) {
+          //   console.log('Captain authenticated successfully');
+          //   res.send('Captain authenticated successfully.');
+          
+          // } 
           const userRole = results[0].role;
           if (userRole === 1) {
             console.log('Player authenticated successfully');
@@ -107,7 +116,14 @@ app.post('/login', (req, res) => {
             console.log('Captain authenticated successfully');
             res.send('Captain authenticated successfully.');
           
-          } else {
+          } else if (userRole === 3) {
+            console.log('Admin authenticated successfully');
+            res.send('Captain authenticated successfully.');
+          
+          } else if (userRole === 4) {
+            console.log('SuperAdmin authenticated successfully');
+            res.send('Captain authenticated successfully.');
+          }else {
             console.log('Unauthorized access');
             res.status(403).send('Unauthorized access');
           }

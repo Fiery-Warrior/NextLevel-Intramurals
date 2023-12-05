@@ -64,6 +64,14 @@ export default function UserNavBar() {
   }, [searchTerm]);
 
 
+  const roleNames = {
+    1: 'Player',
+    2: 'Captain',
+    3: 'Admin',
+    4: 'Superadmin'
+  };
+  
+
 
   const handleLogout = () => {
     removeCookie('myCookie'); // remove the cookie
@@ -141,6 +149,8 @@ export default function UserNavBar() {
                   </Typography>
                   <Typography variant="body1">Student ID: {userData && userData.stuID}</Typography>
                   <Typography variant="body1">Sex: {userData && userData.sex}</Typography>
+                  {/* <Typography variant="body1">Role: {userData && userData.role}</Typography> */}
+                  <Typography variant="body1">Role: {userData && roleNames[userData.role]}</Typography>
                   <Typography variant="body1">
                     Team: {userData ? userData.TeamName : 'Choose Now'}
                   </Typography>

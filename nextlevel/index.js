@@ -107,6 +107,14 @@ app.post('/login', (req, res) => {
             console.log('Captain authenticated successfully');
             res.send('Captain authenticated successfully.');
           
+          } else if (userRole === 3) {
+            console.log('Admin authenticated successfully');
+            res.send('Captain authenticated successfully.');
+          
+          } else if (userRole === 4) {
+            console.log('SuperAdmin authenticated successfully');
+            res.send('Captain authenticated successfully.');
+          
           } else {
             console.log('Unauthorized access');
             res.status(403).send('Unauthorized access');
@@ -343,6 +351,50 @@ app.get('/teams-sports', (req, res) => {
     }
   });
 });
+
+
+
+
+
+
+
+app.post('/updateAdminRole', (req, res) => {
+  const { userId } = req.body;
+
+  // Query to update the user's role to Admin (role 3)
+  const updateUserRoleQuery = 'UPDATE user SET role = 3 WHERE stuID = ?';
+
+  // Start a transaction
+  connection.beginTransaction((err) => {
+    if (err) {
+      console.error('Transaction start error:', err);
+      return res.status(500).send('Failed to update user role');
+    }
+
+    // Update the user's role to Admin
+    connection.query(updateUserRoleQuery, [userId], (err, results) => {
+      if (err) {
+        return connection.rollback(() => {
+          console.error('Error updating user role to Admin:', err);
+          res.status(500).send('Failed to update user role to Admin');
+        });
+      }
+
+      // Commit the transaction
+      connection.commit((err) => {
+        if (err) {
+          return connection.rollback(() => {
+            console.error('Error committing transaction:', err);
+            res.status(500).send('Failed to update user role to Admin');
+          });
+        }
+
+        res.status(200).send('User role updated to Admin successfully');
+      });
+    });
+  });
+});
+
 
 
 

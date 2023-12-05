@@ -61,6 +61,27 @@ export default function Users() {
         setOpenModal(true);
     };
 
+    const handlePromoteToAdmin = async () => {
+        if (selectedUser) {
+            try {
+                const response = await axios.post('https://1zsncd03-3001.usw3.devtunnels.ms/updateAdminRole', {
+                    userId: selectedUser.stuID,
+                    role: 3 // Role 3 signifies Admin
+                    // Add other necessary data to send to the backend
+                });
+
+                if (response.status === 200) {
+                    alert('User promoted to Admin successfully');
+                    fetchUsers(); // Update the user list after promotion
+                    setOpenModal(false);
+                }
+            } catch (error) {
+                console.error('Error promoting user to Admin:', error);
+                alert('Failed to promote user to Admin');
+            }
+        }
+    };
+
     const handlePromoteToCaptain = () => {
         setModalScreen('promoteToCaptain');
     };
@@ -222,6 +243,7 @@ export default function Users() {
                     <p>
                         {selectedUser ? `Role: ${selectedUser.userPosition}`:''}
                     </p>
+                    <Button variant="contained" color="error" onClick={handlePromoteToAdmin}>Promote to Admin</Button>
                     <Button variant="contained" color="error" onClick={deleteUser}>Delete User</Button>
                     <Button variant="contained" color="error" onClick={handlePromoteToCaptain}>Promote to Captain</Button>
                     {/* You can add more user details here */}

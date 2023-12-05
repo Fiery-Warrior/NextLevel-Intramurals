@@ -87,7 +87,7 @@ function UserProfile() {
         }
     }, [cookies, email]);
 
-    useEffect(() => {
+    useEffect(() => { 
         fetch(`https://1zsncd03-3001.usw3.devtunnels.ms/userprofile/${email}`)
             .then(response => response.json())
             .then(data => {

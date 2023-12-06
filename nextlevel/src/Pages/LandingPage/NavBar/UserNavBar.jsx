@@ -72,6 +72,42 @@ export default function UserNavBar() {
   };
   
 
+  // const handleJoinTeam = (teamName) => {
+  //   fetch('https://1zsncd03-3001.usw3.devtunnels.ms/join-team', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ userEmail: email, teamName }),
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     // Handle the response
+  //   });
+  // };
+
+  const handleJoinTeam = (teamName) => {
+    fetch('https://1zsncd03-3001.usw3.devtunnels.ms/join-team', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userEmail: email, teamName }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response
+        if (data.success) {
+          // User successfully joined the team
+          console.log('User successfully joined the team');
+        } else {
+          // Error joining the team
+          console.error(data.error);
+        }
+      });
+  };
+  
+
 
   const handleLogout = () => {
     removeCookie('myCookie'); // remove the cookie
@@ -88,26 +124,6 @@ export default function UserNavBar() {
           <div style={{ display: 'flex', alignItems: 'center' }}>
      
 
-                {/* <TextField 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search by team or sport"
-                  style={{ marginLeft: '10px', marginTop: '20px'}}
-                />
-                {searchTerm && (
-                  <div className="dropdown-menu">
-                    {searchResults.length > 0 ? (
-                      <div>
-                        {searchResults.filter(result => result.toLowerCase().includes(searchTerm.toLowerCase())).map((result) => (
-                          <p className="dropdown-item" key={result}>{result}</p>
-                        ))}
-                      </div>
-                    ) : (
-                      <p>No results found.</p>
-                    )}
-                  </div>
-                )} */}
-
 <TextField 
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
@@ -122,7 +138,7 @@ export default function UserNavBar() {
   }}
   className="search-input"
 />
-{searchTerm && (
+{/* {searchTerm && (
   <div className="dropdown-menu">
     {searchResults.length > 0 ? (
       <div>
@@ -134,7 +150,23 @@ export default function UserNavBar() {
       <p>No results found.</p>
     )}
   </div>
-)}
+)} */}
+      {searchTerm && (
+        <div className="dropdown-menu">
+          {searchResults.length > 0 ? (
+            <div>
+              {searchResults.filter(result => result.toLowerCase().includes(searchTerm.toLowerCase())).map((result) => (
+                <div key={result}>
+                  <p className="dropdown-item">{result}</p>
+                  <button onClick={() => handleJoinTeam(result)}>+</button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No results found.</p>
+          )}
+        </div>
+      )}
 
 
             <Button color="inherit" href="/"  style={{ fontSize: '25px', paddingTop: '8%'  }}>

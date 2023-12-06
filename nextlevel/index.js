@@ -397,6 +397,20 @@ app.post('/updateAdminRole', (req, res) => {
 
 
 
+// New POST route '/join-team'
+app.post('/join-team', (req, res) => {
+  const { userEmail, teamName } = req.body;
+  connection.query('UPDATE user u JOIN team t ON t.TeamName = ? SET u.teamID = t.teamID WHERE u.email = ?', [teamName, userEmail], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error joining team');
+    } else {
+      res.status(200).send('Joined team successfully');
+    }
+  });
+});
+
+
 
 // Start the server
 const PORT = 3001;

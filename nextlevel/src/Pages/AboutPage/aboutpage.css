@@ -1,0 +1,67 @@
+.about_container {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.about_page {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.image_container {
+    float: left;
+    width: 40%;
+    margin-right: 20px;
+}
+
+.image_container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.text_container {
+    flex: 1;
+    float: left;
+    width: 60%;
+    font-size: 20px;
+}
+
+.roles_text {
+    margin: 0 auto;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.About {
+    margin: 0 200px 0 200px;
+    font-size: 60px;
+    font-family: sans-serif;
+    border-bottom: 6px solid black;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+    .About {
+        margin: 0 auto;
+    }
+    .about_page {
+        flex-direction: column;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .text_container {
+        margin: 0 auto;
+    }
+
+    .image_container img {
+        width: 100%;
+    }
+}

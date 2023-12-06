@@ -11,19 +11,11 @@
     align-items: center;
   }
 
+
   
   .landing-page-image img {
     width: 785px;
     height: 480px;
     margin-left: 15%;
     padding-top: 60px;
-  }
-
-
-
-
-
-
-  .activity-center{
-    margin-top: 50%;
   }

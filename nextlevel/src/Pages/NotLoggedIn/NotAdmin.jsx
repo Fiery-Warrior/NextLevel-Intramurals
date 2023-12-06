@@ -11,7 +11,7 @@ const NotAdmin = () => {
                 Login
             </Button>
             <Button component={Link} to="/adminlogin" variant="contained" color="primary" className="button" style={{margin: '10px'}}>
-                Login
+                Admin Login
             </Button>
             <Button component={Link} to="/" variant="contained" color="primary" className="button" style={{margin: '10px'}}>
                 Home

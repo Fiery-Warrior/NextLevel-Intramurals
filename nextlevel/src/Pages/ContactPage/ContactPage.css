@@ -10,7 +10,9 @@
 .contact_style {
     padding-top: 50px;
     font-family: sans-serif;
-    color: white; 
+    font-weight: 100;
+    color: black; 
+
 }
 .contact_form {
     display:flex;
@@ -27,6 +29,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-weight: 100;
 }
 
 .name_input, .email_input, .message_input {
@@ -38,17 +41,20 @@
 
 .Name {
     font-size: 20px;
-    color: white;
+    color: black;
+    font-weight: 400;
 }
 
 .Email {
     font-size: 20px;
-    color: white;
+    color: black;
+    font-weight: 400;
 }
 
 .Message {
     font-size: 20px;
-    color: white;
+    color: black;
+    font-weight: 400;
 
 }
 
@@ -69,7 +75,7 @@
    justify-content: space-between;
    align-items: center;
    margin-top: 5vh;
-   background-image: linear-gradient(#4b6d7b, whitesmoke);
+   /*background-image: linear-gradient(#4b6d7b, whitesmoke);*/
 }
 .content_container {
     flex-grow: 1;

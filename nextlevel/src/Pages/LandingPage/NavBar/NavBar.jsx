@@ -29,11 +29,10 @@ export default function TopNavBar() {
       <AppBar className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Next Level Intramurals
           </Typography>
           <div>
             <Button color="inherit" href = "/">Home</Button>
-            <Button color="inherit" className={classes.button} >About</Button>
+            <Button color="inherit" className={classes.button} href='/about' >About</Button>
             <Button color="inherit" className={classes.button} href='/login'>Login</Button>
             <Button color="inherit" className={classes.button} href='/contactpage'>Contact</Button>
           </div>

@@ -663,8 +663,8 @@ app.post('/setInterest', async (req, res) => {
 
     const setInterestQuery = `insert into interest set stuID = ?, teamID = ?`;
     await queryAsync(setInterestQuery, [userID, teamID]);
-
-
+    res.status(200).json({ success: true, message: 'Interest set successfully' });
+    
   } catch(error){
     console.log(error);
     res.status(500).send('Internal Server Error');

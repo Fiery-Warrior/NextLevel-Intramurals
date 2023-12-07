@@ -133,7 +133,7 @@ export default function Users() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: 600,
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
@@ -243,9 +243,11 @@ export default function Users() {
                     <p>
                         {selectedUser ? `Role: ${selectedUser.userPosition}`:''}
                     </p>
-                    <Button variant="contained" color="error" onClick={handlePromoteToAdmin}>Promote to Admin</Button>
-                    <Button variant="contained" color="error" onClick={deleteUser}>Delete User</Button>
-                    <Button variant="contained" color="error" onClick={handlePromoteToCaptain}>Promote to Captain</Button>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
+                        <Button variant="contained"  onClick={handlePromoteToAdmin}>Promote to Admin</Button>
+                        <Button variant="contained"  onClick={handlePromoteToCaptain}>Promote to Captain</Button>
+                        <Button variant="contained" color="error" onClick={deleteUser}>Delete User</Button>
+                    </Box>
                     </React.Fragment>
                     ) : (
                         <React.Fragment>

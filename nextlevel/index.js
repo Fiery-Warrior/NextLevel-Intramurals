@@ -629,8 +629,16 @@ app.post('/removeTeam', async (req, res) => {
 
 app.post('/addusertoteam', async (req, res) => {
   try {
-    const {userID, teamID} = req.body;
-    // Get sportID
+    const {email, sanitizedTeamName} = req.body;
+    console.log(email, sanitizedTeamName);
+
+    const teamIDQuery = 'SELECT teamID from team where TeamName = ?';
+    teamQueryResults = await queryAsync(teamIDQuery, [sanitizedTeamName]);
+    teamID = teamQueryResults[0].teamID;
+
+    const userEmailQuery = 'SELECT stuID from user where email = ?';
+    teamQueryResults = await queryAsync(userEmailQuery, [email]);
+    userID = teamQueryResults[0].stuID;
 
     const removeUsersQuery = 'UPDATE user SET teamID = ? WHERE stuID = ?';
     await queryAsync(removeUsersQuery, [teamID, userID]);

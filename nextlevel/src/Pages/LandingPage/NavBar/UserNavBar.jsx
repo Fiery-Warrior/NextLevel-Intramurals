@@ -10,6 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import { driver } from "driver.js";
+import axios from 'axios';
 import "driver.js/dist/driver.css"
 
 
@@ -77,6 +78,7 @@ export default function UserNavBar() {
       fetch(`http://localhost:3001/teams-sports?search=${searchTerm}`)
         .then((response) => response.json())
         .then((data) => setSearchResults(data)); 
+        //console.log(searchResults);
     }
   }, [searchTerm]);
 
@@ -103,13 +105,26 @@ export default function UserNavBar() {
   //   });
   // };
 
-  const handleJoinTeam = (teamName) => {
-    fetch('http://localhost:3001/join-team', {
+  const handleJoinTeam = async(teamName) => {
+    console.log(teamName);
+    const regex = /^(.*?) \(/;
+    const match = teamName.match(regex);
+    const sanitizedTeamName = match ? match[1] : teamName;
+    console.log(sanitizedTeamName);
+    console.log(email);
+    try {
+      await axios.post('http://localhost:3001/addusertoteam', { email, sanitizedTeamName});
+  } catch (error) {
+      console.error('Error adding game:', error);
+      alert('Failed to add user to team');
+  }
+}
+   /* fetch('http://localhost:3001/addusertoteam', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userEmail: email, teamName }),
+      body: JSON.stringify({ userEmail: email, teamName: sanitizedTeamName}),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -124,7 +139,7 @@ export default function UserNavBar() {
           // Handle error scenario
         }
       });
-  };
+  };*/
 
   const handleLogout = () => {
     removeCookie('myCookie'); // remove the cookie

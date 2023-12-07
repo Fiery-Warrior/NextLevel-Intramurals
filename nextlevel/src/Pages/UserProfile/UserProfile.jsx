@@ -36,10 +36,13 @@ function UserProfile() {
     const [userData, setUserData] = useState(null);
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
+    const [rosterData, setRosterData] = useState(null); //for roster by teamID
     const [games, setGames] = useState([]); 
 
 
     const highlightedElements = useRef(null);
+
+
 
 
     //Modal

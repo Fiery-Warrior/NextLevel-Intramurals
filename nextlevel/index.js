@@ -612,7 +612,7 @@ app.post('/removeTeam', async (req, res) => {
   try {
     const {teamID} = req.body;
     // Get sportID
-    console.log(teamID);
+
     const removeUsersQuery = 'UPDATE user SET teamID = NULL WHERE teamID = ?';
     await queryAsync(removeUsersQuery, [teamID]);
 
@@ -627,8 +627,85 @@ app.post('/removeTeam', async (req, res) => {
 });
 
 
+app.post('/addusertoteam', async (req, res) => {
+  try {
+    const {userID, teamID} = req.body;
+    // Get sportID
+
+    const removeUsersQuery = 'UPDATE user SET teamID = ? WHERE stuID = ?';
+    await queryAsync(removeUsersQuery, [teamID, userID]);
+
+    res.send('User\'s team set');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
+app.post('/updateAdminRole', (req, res) => {
+  const { userId } = req.body;
+
+  // Query to update the user's role to Admin (role 3)
+  const updateUserRoleQuery = 'UPDATE user SET role = 3 WHERE stuID = ?';
+
+  // Start a transaction
+  connection.beginTransaction((err) => {
+    if (err) {
+      console.error('Transaction start error:', err);
+      return res.status(500).send('Failed to update user role');
+    }
+
+    // Update the user's role to Admin
+    connection.query(updateUserRoleQuery, [userId], (err, results) => {
+      if (err) {
+        return connection.rollback(() => {
+          console.error('Error updating user role to Admin:', err);
+          res.status(500).send('Failed to update user role to Admin');
+        });
+      }
+
+      // Commit the transaction
+      connection.commit((err) => {
+        if (err) {
+          return connection.rollback(() => {
+            console.error('Error committing transaction:', err);
+            res.status(500).send('Failed to update user role to Admin');
+          });
+        }
+
+        res.status(200).send('User role updated to Admin successfully');
+      });
+    });
+  });
+});
+
+
+
+// New POST route '/join-team'
+app.post('/join-team', (req, res) => {
+  const { userEmail, teamName } = req.body;
+  connection.query('UPDATE user u JOIN team t ON t.TeamName = ? SET u.teamID = t.teamID WHERE u.email = ?', [teamName, userEmail], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error joining team');
+    } else {
+      res.status(200).send('Joined team successfully');
+    }
+  });
+});
+
+app.get('/teams-sports', (req, res) => {
+  connection.query('SELECT t.TeamName, s.sportName FROM team t LEFT JOIN sport s ON t.sport_idSport = s.idSport', (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error fetching teams and sports');
+    } else {
+      const teamsSports = results.map(result => result.sportName ? `${result.TeamName} (${result.sportName})` : result.TeamName);
+      res.json(teamsSports);
+    }
+  });
+});
 
 
 

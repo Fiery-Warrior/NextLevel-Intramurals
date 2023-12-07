@@ -15,7 +15,7 @@ import CardContent from '@mui/material/CardContent';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-
+import axios from 'axios';
 
 
 const style = {
@@ -38,6 +38,7 @@ function UserProfile() {
     const [sportName, setSportName] = useState('');
     const [rosterData, setRosterData] = useState(null); //for roster by teamID
     const [games, setGames] = useState([]); 
+    const [interestedUsers, setInterestedUsers] = useState([]);
 
 
     const highlightedElements = useRef(null);
@@ -144,6 +145,36 @@ function UserProfile() {
             });
         }
     }, [teamName])
+
+
+    async function fetchInterest() {
+        if (teamName) {
+            try {
+                const response = await axios.post('http://localhost:3001/getInterest', { email });
+                setInterestedUsers(response.data);
+            } catch (error) {
+                console.log("error retrieving interested users.");
+            }
+        }
+    }
+    useEffect(() => {
+        // const fetchData = async () => {
+        //     if (teamName) {
+        //         try {
+        //             const response = await axios.post('http://localhost:3001/getInterest', { email });
+        //             setInterestedUsers(response.data);
+        //             console.log(interestedUsers);
+        //         } catch (error) {
+        //             console.log("error retrieving interested users.");
+        //         }
+        //     }
+        // };
+    
+        // fetchData();
+        fetchInterest();
+    }, [teamName]);
+
+
     const nearestUpcomingGame = games.length > 0 ? games[0] : null;
     const [teamMembers, setTeamMembers] = useState([]);
     useEffect(() => {
@@ -163,7 +194,19 @@ function UserProfile() {
         }
     }, [teamName]); // This will run whenever teamName changes /each user profile
 
-        
+    const addUserToTeam = async (clickedUserId) => {
+        const stuID = clickedUserId;
+        const TeamName = teamName;
+        try {
+            await axios.post('http://localhost:3001/addusertoteam', { stuID, TeamName});
+            alert('User added to team!');
+            fetchInterest();
+
+        } catch (error) {
+            console.error('Error adding user:', error);
+            alert('Failed to add user to team');
+        }
+    };
       
     return (
         <div>
@@ -283,8 +326,18 @@ function UserProfile() {
                     <Grid item xs={6}>
                         <Card className='widget' sx={{ maxWidth: 345, minWidth: 345, marginLeft: '2%', marginTop: '5%' }}>
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Team Requests
+                                <Typography gutterBottom variant="h5" component="div" style={{fontWeight: 'bold'}}>
+                                    Team Requests:
+                                </Typography>
+                                <Typography gutterBottom variant="h5" component="div" >
+                                {interestedUsers.map(user => (
+                                    <div key={user.stuID} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <p>{user.firstName} {user.lastName}</p>
+                                        <Button onClick={() => addUserToTeam(user.stuID)} variant="contained" color="primary" style={{fontWeight: 'bold'}}>
+                                            +
+                                        </Button>
+                                    </div>
+                                ))}
                                 </Typography>
                             </CardContent>
                         </Card>

@@ -629,19 +629,18 @@ app.post('/removeTeam', async (req, res) => {
 
 app.post('/addusertoteam', async (req, res) => {
   try {
-    const {email, sanitizedTeamName} = req.body;
-    console.log(email, sanitizedTeamName);
+    const {stuID, TeamName} = req.body;
+    console.log(stuID, TeamName);
 
     const teamIDQuery = 'SELECT teamID from team where TeamName = ?';
-    teamQueryResults = await queryAsync(teamIDQuery, [sanitizedTeamName]);
+    teamQueryResults = await queryAsync(teamIDQuery, [TeamName]);
     teamID = teamQueryResults[0].teamID;
 
-    const userEmailQuery = 'SELECT stuID from user where email = ?';
-    teamQueryResults = await queryAsync(userEmailQuery, [email]);
-    userID = teamQueryResults[0].stuID;
+    const removeUsersQuery = 'UPDATE user SET teamID = ?, role=1 WHERE stuID = ?';
+    await queryAsync(removeUsersQuery, [teamID, stuID]);
 
-    const removeUsersQuery = 'UPDATE user SET teamID = ? WHERE stuID = ?';
-    await queryAsync(removeUsersQuery, [teamID, userID]);
+    const removeFromInterestQuery = "DELETE FROM interest WHERE stuID = ? AND teamID = ?";
+    await queryAsync(removeFromInterestQuery, [stuID, teamID]);
 
     res.send('User\'s team set');
   } catch (error) {
@@ -650,6 +649,55 @@ app.post('/addusertoteam', async (req, res) => {
   }
 });
 
+app.post('/setInterest', async (req, res) => {
+  try{
+    const {email, sanitizedTeamName} = req.body;
+
+    const teamIDQuery = 'SELECT teamID from team where TeamName = ?';
+    teamQueryResults = await queryAsync(teamIDQuery, [sanitizedTeamName]);
+    const teamID = teamQueryResults[0].teamID;
+
+    const userEmailQuery = 'SELECT stuID from user where email = ?';
+    teamQueryResults = await queryAsync(userEmailQuery, [email]);
+    const userID = teamQueryResults[0].stuID;
+
+    const setInterestQuery = `insert into interest set stuID = ?, teamID = ?`;
+    await queryAsync(setInterestQuery, [userID, teamID]);
+
+
+  } catch(error){
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
+
+
+app.post('/getInterest', async (req, res) => {
+  console.log("thinking");
+  try{
+    const {email} = req.body;
+
+    const userEmailQuery = 'SELECT stuID from user where email = ?';
+    teamQueryResults = await queryAsync(userEmailQuery, [email]);
+    const userID = teamQueryResults[0].stuID;
+
+    const getInterestQuery = `SELECT u.*
+                              FROM user u
+                              JOIN interest i ON u.stuID = i.stuID
+                              JOIN team t ON i.teamID = t.teamID
+                              WHERE t.teamID = (
+                                  SELECT teamID
+                                  FROM user
+                                  WHERE stuID = ? 
+                              );`;
+    const result = await queryAsync(getInterestQuery, [userID]);
+    res.json(result);
+
+  } catch(error){
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 app.post('/updateAdminRole', (req, res) => {
   const { userId } = req.body;

@@ -113,7 +113,8 @@ export default function UserNavBar() {
     console.log(sanitizedTeamName);
     console.log(email);
     try {
-      await axios.post('http://localhost:3001/addusertoteam', { email, sanitizedTeamName});
+      await axios.post('http://localhost:3001/setInterest', { email, sanitizedTeamName});
+      alert('Request Sent!');
   } catch (error) {
       console.error('Error adding game:', error);
       alert('Failed to add user to team');

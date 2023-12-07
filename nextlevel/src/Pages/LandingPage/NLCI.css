@@ -1,7 +1,11 @@
+
 .landing-page {
-    position: absolute;
+    display: flex;
     top: 10%;
     left: 5%;
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
     /* border: 1px solid black; */ /*Benifical to see where everything is on page*/
     /* padding: 10px; */
   }
@@ -10,12 +14,12 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    
+    padding: 40px;
 
   }
   
   .landing-page-text h1 {:root {
-  --font-family: 'Roboto Flex', sans-serif;
+  --font-family: sans-serif;
   --font-size-h1: 64px;
   --font-size-h2: 48px;
   --font-weight-bold: 800;
@@ -23,9 +27,6 @@
 }
 
 .landing-page {
-  position: absolute;
-  top: 0;
-  left: 0;
   border: 1px solid black;
   padding: 10px;
 }
@@ -57,13 +58,13 @@
 }
     margin: 0;
 
-    color: #0C0E0F;
+    color: black;
     /* leading-trim: both;
     text-edge: cap; */
-    font-family: Roboto Flex;
+    font-family: sans-serif;
     font-size: 54px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 700;
     line-height: normal;
     letter-spacing: 1.28px;
     text-transform: uppercase;
@@ -72,20 +73,20 @@
   .landing-page-text h2 {
     margin: 0;
 
-    color: #0C0E0F;
+    color: black;
 
-    font-family: Roboto Flex;
+    font-family: sans-serif;
     font-size: 54px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 700;
     line-height: normal;
     letter-spacing: 1.28px;
     text-transform: uppercase;
   }
 
   .landing-page-text p {
-    color: var(--COLOR-3, #0B1519);
-    font-family: Roboto Flex;
+    color: var(--COLOR-3, black);
+    font-family: sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -93,9 +94,10 @@
     letter-spacing: 0.48px;
   }
 
-
+  
   .landing-page-image {
     margin-left: 20;
   }
+
 
 

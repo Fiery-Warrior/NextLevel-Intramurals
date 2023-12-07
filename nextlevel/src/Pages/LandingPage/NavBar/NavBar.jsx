@@ -28,12 +28,11 @@ export default function TopNavBar() {
     <div className={classes.root}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title} style={{ visibility: "hidden" }}>
-            NextLevel
+          <Typography variant="h6" className={classes.title}>
           </Typography>
           <div>
             <Button color="inherit" href = "/">Home</Button>
-            <Button color="inherit" className={classes.button} >About</Button>
+            <Button color="inherit" className={classes.button} href='/about' >About</Button>
             <Button color="inherit" className={classes.button} href='/login'>Login</Button>
             <Button color="inherit" className={classes.button} href='/contactpage'>Contact</Button>
           </div>

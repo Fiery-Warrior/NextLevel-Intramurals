@@ -39,7 +39,7 @@ function UserProfile() {
     const [rosterData, setRosterData] = useState(null); //for roster by teamID
     const [games, setGames] = useState([]); 
     const [interestedUsers, setInterestedUsers] = useState([]);
-
+    const [userRole, setUserRole] = useState(null);
 
     const highlightedElements = useRef(null);
 
@@ -101,6 +101,7 @@ function UserProfile() {
                 if (Array.isArray(data) && data.length > 0) {
                     setUserData(data[0]);
                     setTeamName(data[0].TeamName);
+                    setUserRole(data[0].role);
                     setSportName(data[0].sportName);
                 } else {
                     console.error('Invalid response data:', data);
@@ -207,7 +208,7 @@ function UserProfile() {
             alert('Failed to add user to team');
         }
     };
-      
+    
     return (
         <div>
             <UserNavBar/>
@@ -324,23 +325,29 @@ function UserProfile() {
                         </Container>
                     </Grid>
                     <Grid item xs={6}>
+                        {teamName && userRole ===2 && (
                         <Card className='widget' sx={{ maxWidth: 345, minWidth: 345, marginLeft: '2%', marginTop: '5%' }}>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div" style={{fontWeight: 'bold'}}>
                                     Team Requests:
                                 </Typography>
                                 <Typography gutterBottom variant="h5" component="div" >
-                                {interestedUsers.map(user => (
-                                    <div key={user.stuID} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <p>{user.firstName} {user.lastName}</p>
-                                        <Button onClick={() => addUserToTeam(user.stuID)} variant="contained" color="primary" style={{fontWeight: 'bold'}}>
-                                            +
-                                        </Button>
-                                    </div>
-                                ))}
+                                {interestedUsers.length > 0 ? (
+                                    interestedUsers.map(user => (
+                                        <div key={user.stuID} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <p>{user.firstName} {user.lastName}</p>
+                                            <Button onClick={() => addUserToTeam(user.stuID)} variant="contained" color="primary" style={{fontWeight: 'bold'}}>
+                                                +
+                                            </Button>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No requests</p>
+                                )}
                                 </Typography>
                             </CardContent>
                         </Card>
+                        )}
                     </Grid>
                 </Grid>
                 <br/>

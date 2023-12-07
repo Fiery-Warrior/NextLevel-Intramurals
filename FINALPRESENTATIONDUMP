@@ -1,0 +1,228 @@
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: nlidb
+-- ------------------------------------------------------
+-- Server version	8.2.0
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `bet`
+--
+
+DROP TABLE IF EXISTS `bet`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bet` (
+  `betID` int NOT NULL AUTO_INCREMENT,
+  `user_stuID` varchar(45) NOT NULL,
+  `game_gameID` int NOT NULL,
+  `payoutRate` float DEFAULT NULL,
+  `investment` float DEFAULT NULL,
+  PRIMARY KEY (`betID`,`user_stuID`,`game_gameID`),
+  KEY `fk_bet_user1_idx` (`user_stuID`),
+  KEY `fk_bet_game_idx` (`game_gameID`),
+  CONSTRAINT `fk_bet_game` FOREIGN KEY (`game_gameID`) REFERENCES `game` (`gameID`),
+  CONSTRAINT `fk_bet_user1` FOREIGN KEY (`user_stuID`) REFERENCES `user` (`stuID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bet`
+--
+
+LOCK TABLES `bet` WRITE;
+/*!40000 ALTER TABLE `bet` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bet` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `game`
+--
+
+DROP TABLE IF EXISTS `game`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `game` (
+  `gameID` int NOT NULL AUTO_INCREMENT,
+  `date` date DEFAULT NULL,
+  `location` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`gameID`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `game`
+--
+
+LOCK TABLES `game` WRITE;
+/*!40000 ALTER TABLE `game` DISABLE KEYS */;
+INSERT INTO `game` VALUES (58,'2023-12-02','Basketball Court'),(59,'2023-12-09','Basketball Court'),(61,'2023-12-17','Intramural Field');
+/*!40000 ALTER TABLE `game` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `interest`
+--
+
+DROP TABLE IF EXISTS `interest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `interest` (
+  `stuID` varchar(45) NOT NULL,
+  `teamID` int NOT NULL,
+  PRIMARY KEY (`stuID`,`teamID`),
+  KEY `teamID_idx` (`teamID`),
+  CONSTRAINT `stuID` FOREIGN KEY (`stuID`) REFERENCES `user` (`stuID`),
+  CONSTRAINT `teamID` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `interest`
+--
+
+LOCK TABLES `interest` WRITE;
+/*!40000 ALTER TABLE `interest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interest` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sport`
+--
+
+DROP TABLE IF EXISTS `sport`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sport` (
+  `idSport` int NOT NULL AUTO_INCREMENT,
+  `sportName` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idSport`),
+  UNIQUE KEY `idSport_UNIQUE` (`idSport`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sport`
+--
+
+LOCK TABLES `sport` WRITE;
+/*!40000 ALTER TABLE `sport` DISABLE KEYS */;
+INSERT INTO `sport` VALUES (1,'Football'),(2,'Basketball'),(3,'Volleyball'),(4,'Table Tennis'),(5,'Tennis'),(6,'Softball');
+/*!40000 ALTER TABLE `sport` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `team`
+--
+
+DROP TABLE IF EXISTS `team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `team` (
+  `teamID` int NOT NULL AUTO_INCREMENT,
+  `TeamName` varchar(45) NOT NULL,
+  `Captain` varchar(45) DEFAULT NULL,
+  `sport_idSport` int NOT NULL,
+  PRIMARY KEY (`teamID`,`sport_idSport`),
+  UNIQUE KEY `TeamName_UNIQUE` (`TeamName`),
+  UNIQUE KEY `teamID_UNIQUE` (`teamID`),
+  KEY `fk_team_sport1_idx` (`sport_idSport`),
+  CONSTRAINT `fk_team_sport1` FOREIGN KEY (`sport_idSport`) REFERENCES `sport` (`idSport`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `team`
+--
+
+LOCK TABLES `team` WRITE;
+/*!40000 ALTER TABLE `team` DISABLE KEYS */;
+INSERT INTO `team` VALUES (5,'Beagles','1033662',2),(6,'Bengals','2148576',5),(8,'New York Giants','9103662',1),(9,'Mavericks','1123476',2),(10,'Heat','2132838',5),(11,'Lakers','7932212',2),(12,'Warriors','7847612',2),(13,'Celtics','1935135',2),(14,'Supernovas','7777777',3),(15,'Vibe','7587581',3),(16,'Fury','7514077',3),(17,'Rise','7587581',3),(18,'Valkyries','7514077',3),(20,'Paddle Masters','6305774',4),(22,'Spin Wizards','5555555',4),(23,'Net Ninjas','2006549',4),(24,'Rally Raiders','4444444',4),(25,'Smash Squad','4436638',4),(28,'Ace Achievers','7847612',5),(29,'Rally Royals','3912068',5),(30,'Serve Sentries','3436619',5),(31,'Court Conquerors','3333333',5),(32,'Baseline Brigade','2948135',5),(33,'Diamond Divas','000601724',6),(34,'Strikeout Stars','2222222',6),(35,'Homerun Heroes','2136582',6),(36,'Batting Belles','2124450',6),(37,'Pitch Perfect','1833960',6),(38,'My new team',NULL,4),(39,'New Football Team','1075785',1),(40,'Volley Stars',NULL,5);
+/*!40000 ALTER TABLE `team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `team_has_game`
+--
+
+DROP TABLE IF EXISTS `team_has_game`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `team_has_game` (
+  `team_teamID` int NOT NULL,
+  `team_sport_idSport` int NOT NULL,
+  `game_gameID` int NOT NULL,
+  `score` int DEFAULT '0',
+  `forfeited` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`team_teamID`,`team_sport_idSport`,`game_gameID`),
+  UNIQUE KEY `team_game_unique` (`team_teamID`,`game_gameID`),
+  KEY `fk_team_has_game_game1_idx` (`game_gameID`),
+  KEY `fk_team_has_game_team1_idx` (`team_teamID`,`team_sport_idSport`),
+  CONSTRAINT `fk_team_has_game_game1` FOREIGN KEY (`game_gameID`) REFERENCES `game` (`gameID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `team_has_game`
+--
+
+LOCK TABLES `team_has_game` WRITE;
+/*!40000 ALTER TABLE `team_has_game` DISABLE KEYS */;
+INSERT INTO `team_has_game` VALUES (5,1,61,12,0),(8,1,61,7,0),(9,2,58,0,0),(9,2,59,0,1),(10,2,59,0,0),(11,2,58,0,0);
+/*!40000 ALTER TABLE `team_has_game` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `role` int DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(70) DEFAULT NULL,
+  `firstName` varchar(45) DEFAULT NULL,
+  `lastName` varchar(45) DEFAULT NULL,
+  `sex` varchar(1) NOT NULL,
+  `stuID` varchar(45) NOT NULL,
+  `profPicture` varchar(99) DEFAULT NULL,
+  `teamID` int DEFAULT NULL,
+  PRIMARY KEY (`stuID`),
+  UNIQUE KEY `Username_UNIQUE` (`email`),
+  KEY `fk_user_teamID` (`teamID`),
+  CONSTRAINT `fk_user_teamID` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'gwen.frederick@dbu.edu','$2b$10$Ljy.ZWrtIM32rnDz8vgzo.rMElvxScnWfERvaORFwKoFOR4qsQbg2','Gwen','Frederick','M','1059110',NULL,32),(1,'asherc@dbu.edu','$2b$10$F65EhOzTgrb1yVuMqQEGu.sV4VHOQkyk7XKZpErFVNwt5XQTvT9Yu','Asher','Coates','M','1075785',NULL,32),(1,'paul.green@dbu.edu','$2b$10$B8x6uY.t8IUqxC2t2074Mubaqg7LSaWujkGZ/xwge8.4wBA90/Qtu','Paul','Green','M','1111364',NULL,17),(2,'julie.hyatt@dbu.edu','$2b$10$phzTnqwt6BjjUROCEmdY3O1rPtWclb7ifCyL8R8drcLHp4WVsor2m','Julie','Hyatt','M','1123476',NULL,9),(1,'melinda.smith@dbu.edu','$2b$10$HplV0wYDnqEBb2/b8s0hHuZRm0xRPgjjHQyHsf.1r.bZTq9vZWv8q','Melinda','Smith','M','1161798',NULL,37),(1,'mona.schmitt@dbu.edu','$2b$10$bweqG8gmhHKCph9UdTUtTedIPO0P.nvK03u6bknCmim.YlGGDGlJe','Mona','Schmitt','M','1195912',NULL,36),(1,'mark.smith@dbu.edu','$2b$10$whSQagjIPhCk4vRr925uKOUdmmwndsoMzoA59PIRAUswWP3gbh.da','Mark','Smith','M','1408591',NULL,37),(1,'ray.curtis@dbu.edu','$2b$10$dqGSpZSUmBqcqPfYXlC7xektxCxxMV/5I3z2lf3TFCR0FLP3ZBIGi','Ray','Curtis','M','1446710',NULL,11),(1,'nancy.thompson@dbu.edu','$2b$10$hgFpdYNy6yJqd./vfDkz9.5v5PShLBuJYusv0oTcQ9ZbOhytF4xCG','Nancy','Thompson','M','1521298',NULL,NULL),(1,'ginger.fahey@dbu.edu','$2b$10$kReYvvwbyWtzul3mFFGfYe.GZBwwxdsWu6uqGNF9ujtgpuq0168Oe','Ginger','Fahey','M','1558179',NULL,14),(1,'kenneth.banuelos@dbu.edu','$2b$10$lUgzSFz2oWzDsBUItbMrAOamPeXl1X6Z3slpTedZHqEkHI9Vdsek.','Kenneth','Banuelos','M','1571502',NULL,5),(1,'sylvia.covert@dbu.edu','$2b$10$w/uGeAjAwBFEDdtJCQtTY.wkIPu0x91AjCOzv5lKNE0vIwyqiGhNu','Sylvia','Covert','M','1574391',NULL,10),(1,'richard.jones@dbu.edu','$2b$10$06TBXcErROkJSY6OTTMcdOwqD1JJ0uz1GLWIA0RMIpg1pWsmxLi82','Richard','Jones','M','1595260',NULL,24),(1,'joseph.saliba@dbu.edu','$2b$10$EbykTbMTBZriqSGpjXie9Os5wbqCGzi7ghHVxyIJrUbPDB9E.XlI6','Joseph','Saliba','M','1661407',NULL,35),(1,'cynthia.hamilton@dbu.edu','$2b$10$PY8BaacTHpVqNwWeP8eoWOEXblGLraEjgyKNpFhoJ2REscdJFMyGa','Cynthia','Hamilton','M','1672317',NULL,17),(1,'andre.butler@dbu.edu','$2b$10$k871bI9jBr6xHzvwxYj7seIcZqW8Ma1O8Y896OvWt26ztfYGuMZVS','Andre','Butler','M','1688387',NULL,NULL),(1,'cindi.lawrence@dbu.edu','$2b$10$SefWzlxKJ8/LkWGVBODeqem6CgvMuD9PZK3hxJqat/yrpPcVoUA8K','Cindi','Lawrence','M','1799847',NULL,25),(2,'tylerogata@dbu.edu','$2b$10$74WZuWscgG/4zDXesb47X.EqTSeGG4jFCwUC9DvQfdm4idl4Qc6Em','Tyler','Ogata','M','1833960',NULL,NULL),(1,'laura.martin@dbu.edu','$2b$10$a.rdsH5tS0WmhA5rKWCoi.5s.H313cpNKW6MT4I8/.VEVl/gUHvzu','Laura','Martin','F','1881336',NULL,29),(1,'chad.salinas@dbu.edu','$2b$10$TAV0u3u//wotTmtlHn/JWOoVkeC7gmSloueESs8l9dkRNZ8pLLJmG','Chad','Salinas','M','1935135',NULL,36),(2,'michelleshapiro@dbu.edu','$2b$10$WnTL7OqbDW5rPI4xe6Zaueh6hS/7RZnSfZM2Yf.jAQQ7UStgr2JNS','Michelle','Shapiro','F','2124450',NULL,36),(2,'david.stricklin@dbu.edu','$2b$10$CcMP.5zeQbJGOcCmMq.1xOa91FL0eqRyVTvmiI/XiIgrRfqsREu6q','David','Stricklin','M','2132838',NULL,10),(1,'lisawilson@dbu.edu','$2b$10$TLSWWNL0BhtHBc5vUYKseeenz7vzjXbGCX9rFMuYk10cawN60eb82','Lisa','Wilson','F','2136582',NULL,NULL),(1,'sherrie.bishop@dbu.edu','$2b$10$Qrr8OlUIPDS1rYAJ9h9vYOJD4sD1gVU9nD0bt2s6xCLRe.t.6z.nq','Sherrie','Bishop','M','2148576',NULL,28),(2,'captain@dbu.edu','$2b$10$CLEmkNRhH3lXjYSCQOYszexm/oWFqOnxroQ954hjJLgaq0D4BZOSi','Captain','1','M','2222222',NULL,NULL),(1,'michael.mahaffey@dbu.edu','$2b$10$laMjoWty.x80EkwASyFoku9BrOscRQcjDyjXF1WgzmC5QI86BxF7C','Michael','Mahaffey','M','2244021',NULL,28),(1,'william.petty@dbu.edu','$2b$10$9yqx9QEmaEaRojx0FpxrzuDSUqevmS2x7FdGgvk1iX0JxzJBKItcK','William','Petty','M','2286255',NULL,33),(1,'cleo.legrand@dbu.edu','$2b$10$HEgNuqatUADhb/KDMfLEweuqk.5oCo.qGJiEAkcsWC9qRIRwVwBgy','Cleo','Legrand','M','2304713',NULL,28),(1,'luis.legaspi@dbu.edu','$2b$10$cEMOttWGhB3fcWKHmi2sy.WpRH2EjnRB8yvO9bnPHFOHR/nB3ZcXK','Luis','Legaspi','M','2328105',NULL,25),(1,'christine.bates@dbu.edu','$2b$10$H/GUAW85yDsJeDsIJsVAkudUxbVG6VvRmwUHsPjxy9KnMgf243uC2','Christine','Bates','M','2385541',NULL,5),(1,'jennifer.hook@dbu.edu','$2b$10$mmvYGwT6GQiY0bIDHwYVW.caEy4Y0KHhh4VlnVt9CwiNP/pBmMbuO','Jennifer','Hook','M','2497325',NULL,22),(1,'valentina.pack@dbu.edu','$2b$10$cNs4r44m3RUshCre6TYQyuANZ78u/1Qycep2uAAvzcDpPXcjAMQHi','Valentina','Pack','M','2567942',NULL,33),(1,'valorie.johnson@dbu.edu','$2b$10$3dA1r7BHd1VOQs/TdGrm2.u6jdYO7GzigUBXHuvP2q/HUJlatv7AS','Valorie','Johnson','M','2589922',NULL,23),(1,'larry.downing@dbu.edu','$2b$10$wFfoscZhQg2wClY27bY5gei733i3bls6MZpxkg0zroNJ0HnUwQdaa','Larry','Downing','M','2603605',NULL,12),(1,'maurice.johnson@dbu.edu','$2b$10$0wdInqER3AMspyKApNSOKORt3Z9/PU4788jH4Yaa32F82iB3bH2We','Maurice','Johnson','M','2620724',NULL,24),(1,'davidfrederick@dbu.edu','$2b$10$6oL6T0D0ZpSwnGBWIxkAT.NVHAcgzC1f5Sayc8gywGFpUGbqRso2K','David','Frederick','M','2823223',NULL,33),(1,'nilda.morris@dbu.edu','$2b$10$Fz.O8t5S1ykMfyvYU48BSeUqgB7eWYKYfyBmJD8cLUKKZdraPSqcu','Nilda','Morris','M','2905946',NULL,32),(2,'billdaniels@dbu.edu','$2b$10$qotAj9whynMRUL2WT0CelumWilqgs.En2y4wRC4z.x/SK0JzLsfxq','William','Daniels','M','2948135',NULL,32),(1,'MariaMMcDaniels@dbu.edu','$2b$10$bINNj5i88JYlwdr4eJXqw.pji6oRL.4LCNVHKoj4KZFfFLFUauFTa','Maria ','McDaniels','F','2972243',NULL,31),(1,'judith.bruce@dbu.edu','$2b$10$I5v7vm6AaH9/bOWN38bInu4THe1bWqvQwmZ3bqNWX3qhPjzuQucy.','Judith','Bruce','M','2981094',NULL,6),(1,'diedre.harp@dbu.edu','$2b$10$lm3kWwFQ5f.WXj/1FZa5FOQeHOMb2C8BBfUYAHby708Ah7TqILWv2','Diedre','Harp','M','3186114',NULL,18),(3,'admin@dbu.edu','$2b$10$AIj1N6rSIAR0DBEleYaHa.TEt27qvtiDVzOcscjUKP7qNvAtdje5C','Admin','1','F','3333333',NULL,NULL),(1,'melissa.schneider@dbu.edu','$2b$10$HmN4ibE0XgDwhIy8o.7VHOPxBHxszwfgyWa5uUl0gWaTogR0BTBuq','Melissa','Schneider','M','3367355',NULL,37),(2,'danielmesa@dbu.edu','$2b$10$7Aa4xQ3RVYtSA99b.CsOKuugpuYMAX//HOAJbBj/dN8w93sKwt/V2','Daniel','Mesa','M','3436619',NULL,30),(1,'erica.hamilton@dbu.edu','$2b$10$SyQL.7719sILXC.cgHGPj.Xgec.5qpcTrN/nAyZo1hMqtgaXx5sc2','Erica','Hamilton','M','3464129',NULL,17),(1,'PhillipMHughes@dbu.edu','$2b$10$W4uwPVC2f9F4bRmpZuKLcOt9dW1xLkPBBaKJF3lx.cnKgEViSvZKK','Phillip','Hughes','M','3537771',NULL,23),(1,'mike.nowlin@dbu.edu','$2b$10$BwPuF7iCYlCsJiVl0mykT.PsfuE8NaCZz6deG3/VhAsBYvbTwQU.6','Mike','Nowlin','M','3621712',NULL,32),(1,'janet.freeman@dbu.edu','$2b$10$oliVMaaYYTSFdV1RjdaXuuvsMAeNibXIQqz8cKI80Wcwj991W1F4O','Janet','Freeman','M','3672623',NULL,16),(1,'horace.hudgens@dbu.edu','$2b$10$rrol5T/ShBHrsIdZWcHPaeSjWUdhUdx1rWhSbmUfoZBQRa2Lvmbre','Horace','Hudgens','M','3712980',NULL,22),(1,'curtis.burger@dbu.edu','$2b$10$tlwYCQLGQoW0GRK4vaKR7OK6rSxH8G/BRDNGcos4fCuTrYYxyFcHS','Curtis','Burger','M','3720774',NULL,NULL),(1,'janice.morgenstern@dbu.edu','$2b$10$IuOjv7XyxxoN6z8pCHRfOeYYz18qLF9GtamrBa6vTvrN.8zq4A0iq','Janice','Morgenstern','M','3728806',NULL,32),(1,'marjorie.dixon@dbu.edu','$2b$10$M1WDMkdWfbH2V/Ao02It/u02y.K0Zipo1lUaVQOWT3/R2dl7XL0xS','Marjorie','Dixon','M','3759683',NULL,12),(1,'philip.harvey@dbu.edu','$2b$10$IYXgaAreCzzVwMPBuEjUDObYG9oDmXbuccsEZd3MmNkiAt06ctq8K','Philip','Harvey','M','3808263',NULL,18),(1,'albert.rodriguez@dbu.edu','$2b$10$sMorkVg28wWLp1jyPLpYMumE6unOk/F2hI.K9rhR3Kj63laS5oJ3y','Albert','Rodriguez','M','3846257',NULL,35),(1,'ellis.price@dbu.edu','$2b$10$tp9l.dSXGktLOvLiQRLTNuJhKeOb4fCzFvivsm43Hj59qHCKpf4kC','Ellis','Price','M','3848712',NULL,34),(1,'susan.espinoza@dbu.edu','$2b$10$AEKslXip2JGLdRgGxs70g.TyTFklrBYZ5ePQtyOPgkVHjKIpj4gie','Susan','Espinoza','M','3872099',NULL,14),(2,'samuel.allee@dbu.edu','$2b$10$RUfH1wy9GwD0GhJ.S7sOKulf.0X4D2kLwjtpEuFIQrygZ8M.VXzKW','Samuel','Allee','M','3912068',NULL,29),(1,'jason.chang@dbu.edu','$2b$10$5aRuiCmD0VoEfLlKOf6KYu1RMhHSTZxAPHbLzVLHkGyeTmlV4i.Du','Jason','Chang','M','3917166',NULL,8),(1,'nickole.cremeans@dbu.edu','$2b$10$93k4BGSa2ys2hwEwZVQgduNeHr5rhaB4DYqbnKzRToOGyfpRtn0nW','Nickole','Cremeans','M','3935812',NULL,10),(1,'fernandomccall@dbu.edu','$2b$10$c7Bem0Chsx9xBf3476C3v.2ZdE7ddSikX89bLQ2oXCVSFczZ4fvmW','Fernando','McCall','M','3992223',NULL,29),(1,'lois.corbitt@dbu.edu','$2b$10$Z2q/qgD6j.O4hrfHQ3d0J.pp7lsE5UDAFm6X2dr/kGIdnk0XjCnGa','Lois','Corbitt','M','4032108',NULL,10),(1,'jeffrey.smith@dbu.edu','$2b$10$.c5YRY2ttzpDLnTrjlXx/uqansiVG5k7NKCVqjiqVrxSepw0.o2jO','Jeffrey','Smith','M','4056999',NULL,NULL),(1,'christina.hall@dbu.edu','$2b$10$/DtkVzSw4ZJbz2.5ED/DUusZgasXXoVXYzqlNBVjhqGmTmYPlQcLq','Christina','Hall','M','4085263',NULL,17),(2,'beth.cain@dbu.edu','$2b$10$hE46e3GNipHD.zoifG3gc.NK10ePAJ2A34pNAp0lZggsBI1vX39o.','Beth','Cain','M','4119808',NULL,NULL),(1,'alton.peterson@dbu.edu','$2b$10$XpFQBkrt1ryugrIXGH3KCeqyBTBhbBSWKDjT6QhZ4DLoi6p/8LJzS','Alton','Peterson','M','4189591',NULL,33),(2,'jlemmon@dbu.edu','$2b$10$aevFWkfJ0CNllrkXMYTjjebmK0tc7By1BDB/Kcn5G70xZUvRaNhDq','Jacqueline','Lemmon','F','4226640',NULL,28),(1,'arlene.ayala@dbu.edu','$2b$10$tXi5KWuBbc2ld41vehCRYOIwNbqykjKpzKmVhvAzhrhTZb8aezwt6','Arlene','Ayala','M','4243474',NULL,NULL),(1,'linda.heineman@dbu.edu','$2b$10$Lu/kuJ4/rrdeTWVDwwlcCeWo759Rat1X9WGIPtqDaqifFiDkgshRK','Linda','Heineman','M','4303278',NULL,20),(1,'julie.hawkins@dbu.edu','$2b$10$rz39z5BHHwsZnJ6hPcur8.3Kq9zlJf8/TeEZ9Zrvm7eFDQOd2NAwu','Julie','Hawkins','M','4309171',NULL,18),(1,'MaryJLightle@dbu.edu','$2b$10$193aUEKmkydLWAMd26jK/usb43hMWXCr/R3LSqkc62xcAygm.95ce','Mary','Lightle','F','4352414 ',NULL,28),(1,'joseph.earwood@dbu.edu','$2b$10$lGgPmH2IXjfqSJP60d18Vu91UyvldBzSaM.e0lk24yMsY2yaY7lNm','Joseph','Earwood','M','4394100',NULL,13),(2,'williammoon@dbu.edu','$2b$10$R4aycNIYDgw8ux33wZzhK./r1/Ew5I4ghAJmD6wSBl5HL6C696HA6','William','Moon','M','4436638',NULL,25),(1,'howard.mccoy@dbu.edu','$2b$10$iKD8bF1qCANA0bpRepuJYe.pKVoxomPGf0XIvrgftJVPEReae1Tcu','Howard','McCoy','M','4443187',NULL,30),(4,'superadmin@dbu.edu','$2b$10$9o/zWYadi9etZOkNGhf.UuGTnA3/v6cbim8uJ8pauvCHC/3SpA3ne','Super','Admin','F','4444444',NULL,NULL),(1,'marie.mccrary@dbu.edu','$2b$10$4ZP5GmSQPyxQb0TceYJb1.vccEt20zTFppG1f0r6DNZ0.kIMYyOH6','Marie','McCrary','M','4451484',NULL,30),(1,'ashley.watkins@dbu.edu','$2b$10$pjgaLal5.TRvX9qkrdqi9.gpvmTS/KggtJP9b2xSQ/5UgZ/if0rGm','Ashley','Watkins','M','4466637',NULL,NULL),(1,'teresa.hernandez@dbu.edu','$2b$10$AJfjAFmDUEVCGGVLzkh8KujDERakPznaY7Xbk52/7o15IS3/YU0RW','Teresa','Hernandez','M','4495950',NULL,20),(1,'basherb@dbu.edu','$2b$10$FRugfWNVxTLu9TNNYFf2quDlYVaG8Dy2SWQSmRXqtLYS6PtFrmhvK','Basher','Boates','M','4536792',NULL,NULL),(1,'herbert.chan@dbu.edu','$2b$10$R4Fwj5e5NjXUzoVaEOB/Uek6XgRUzOjRqEIvY2xp6GsAwYQJ9Yvnm','Herbert','Chan','M','4544581',NULL,8),(1,'barrett.massey@dbu.edu','$2b$10$TLiHTbzcL8gp.ok1JHIqTuHt0OcnFZCfUsxgMWBpj/Ld/fJ7wQzEi','Barrett','Massey','M','4577317',NULL,30),(1,'judy.cash@dbu.edu','$2b$10$QYqpgrU2GWZSltd8wqGdRO2KQe1Ml9fL2RnwHd/EIQCsfvgR1Salq','Judy','Cash','M','4590821',NULL,8),(1,'chelsea.pham@dbu.edu','$2b$10$AKjWCkFkNqyF0cs9.h2KXuVoUowuwfBI5nK7yba4GGT/4eGOTNeu2','Chelsea','Pham','M','4606588',NULL,34),(1,'derek.snapp@dbu.edu','$2b$10$GniBzkykR.xBDFGydFF1G.UBduVa0SLktEedg7GtWRCO9IcjRGGJe','Derek','Snapp','M','4631597',NULL,NULL),(1,'sheilalien@dbu.edu','$2b$10$bvDFMqmyxSZjGsKB.KuJuuK6g9ucSKcy9mvOTsDgeZF2jrOZ8FcRK','Sheila','Lien','F','4632933',NULL,23),(1,'malcolm.carter@dbu.edu','$2b$10$mLHZSWA9EWWxudY0lZ6TQudo.ETWqqFgdbqHe9/dvMP82abJZ2XAC','Malcolm','Carter','M','4666727',NULL,8),(1,'jack.sykes@dbu.edu','$2b$10$hKRr/DxO.GZcaXdTsMonKucNE0aOYbmyc2Vf.qYdkjO/lam3m/ERq','Jack','Sykes','M','4757330',NULL,NULL),(1,'anna.embree@dbu.edu','$2b$10$lE8y4M4MuFKLhfSTmzKd/eSH2JoB8AEa737h.e1lLC9r0kKgjqnAq','Anna','Embree','M','4762533',NULL,13),(1,'anthony.starling@dbu.edu','$2b$10$fNj9st6AJKYh2etdr54sQ.Ly4FQmHy3eGvqDHfByk6XwOUHRY3o/a','Anthony','Starling','M','4771941',NULL,NULL),(1,'barb.stanley@dbu.edu','$2b$10$5WpUIEIyykEXRaK/gRAWge.QWmo1auc25Nv5cngXcdhuzPz..2o3q','Barb','Stanley','M','4925383',NULL,NULL),(1,'jeffrey.clarke@dbu.edu','$2b$10$3NkT90saWOJz3KjWBi/2LeVF1drVYOF5oo/T/Vqj.blEAvoVmP.HK','Jeffrey','Clarke','M','4978161',NULL,9),(1,'michael.vickers@dbu.edu','$2b$10$tmgwnJFTlF6UgqhSof8S7.lf3AJC5I59DoUniEVOgu3sjXVd.F1n2','Michael','Vickers','M','5119263',NULL,NULL),(1,'PamelaJJohnson@dbu.edu','$2b$10$wRU0Hi20FsL.PXcFNj6GderKaLwL6qqp6FAj/aa8o5IL0GqH54bEK','Pamela ','Johnson','F','5143524',NULL,24),(1,'john.benitez@dbu.edu','$2b$10$.HKR0HgNUtBdH1OBq5gj0.DdYpflrruc6ykTwXkSpgzPMjvkqaugy','John','Benitez','M','5160908',NULL,6),(1,'richard.brown@dbu.edu','$2b$10$6yVawIjGdhIFmvClOcYTkOKFcm9XK6yODlhvRzsKpsx1eqe2B2.w6','Richard','Brown','M','5162113',NULL,6),(1,'antonio.rhodes@dbu.edu','$2b$10$bROLMZjzApta7mIOAM.WUucyhhREeCXuNfbm/kxCi64vRxQtVX5A.','Antonio','Rhodes','M','5193866',NULL,34),(1,'benjamin.hogue@dbu.edu','$2b$10$wbmbb8mJNwK78xUrhKG3QeeCrvos3650.GF290CKYt1cvKKBx3KlC','Benjamin','Hogue','M','5194128',NULL,20),(1,'angelique.donnell@dbu.edu','$2b$10$0YNzNBcut5Ujg1ahoojLYOTRfzBvcviGwPeDxs8huWL9NCrOBJioO','Angelique','Donnell','M','5227545',NULL,12),(1,'rose.england@dbu.edu','$2b$10$6fV0UgS.rQPh4KcRuKMok.nc.Qlp3tU4ogyCzz4aXFN1cx1Iqg6.W','Rose','England','M','5281817',NULL,13),(1,'SamKTorres@dbu.edu','$2b$10$TXHJ4/986hhdPNQBU.1W.ujfdEEJZ/20S8MZqSTUvs7S37q4I4WvK','Sam ','Torres','F','5292968',NULL,NULL),(1,'susan.maupin@dbu.edu','$2b$10$cpFUgDC.eMG9vK9/OeEJpuvg3v0Xh2MKPGpyuyIxE892ygdUUfIWK','Susan','Maupin','M','5350382',NULL,30),(1,'joseph.mingle@dbu.edu','$2b$10$Hf.1c9uxMVOjbtwGCNojFenUZaxischdHPldqCyq9bd07zRS1yhle','Joseph','Mingle','M','5361480',NULL,31),(1,'tonya.dejesus@dbu.edu','$2b$10$naBag.Lif83UYrMnFoxoTOiDF6/FkTI6ATIjaZY46Fk6qXxG7SmA.','Tonya','Dejesus','M','5370148',NULL,11),(1,'loretta.meyer@dbu.edu','$2b$10$FQY6iXpYAgvfVoovp6COOexWfelHrI0B7azXtanMQgShOJ9J6drGG','Loretta','Meyer','M','5389905',NULL,31),(1,'christine.ohare@dbu.edu','$2b$10$Xq10ZggSua1CxCS5dm9GgeVNt8XwbdAT4eqEeU4i/AP45E6ZMjeZe','Christine','Ohare','M','5549544',NULL,33),(2,'test@dbu.edu','$2b$10$cHPW/yVxruSwCvPcLbRQwekGf/EImqpK8rQ8UpeIvtMSTgQnipugq','Test','User','M','5555555',NULL,22),(1,'shanna.coleman@dbu.edu','$2b$10$ZbsGd3F7Fjdi5LYgbi13heE8pGwOo8RuzESJzOYA1v3svSeHVk8iW','Shanna','Coleman','M','5865025',NULL,9),(1,'richard.sweet@dbu.edu','$2b$10$B9K.fA67gt4hvZea8a10hOSira7WqEFy.pb6n4Q4binLj6.Qs4Whq','Richard','Sweet','M','5965092',NULL,NULL),(1,'michael.roman@dbu.edu','$2b$10$kh40N9GlYBP0TxIpRjG0Gew7xywFWtIkCvweQJkxyT0ROuynaS0B.','Michael','Roman','M','6002830',NULL,35),(1,'mamie.lepore@dbu.edu','$2b$10$RLFXCGu8v7R26HAePFhFhO7j4mxPLDEHd//WcTxOiG/530g4fIH26','Mamie','Lepore','M','6015255',NULL,28),(1,'jeffery.ferry@dbu.edu','$2b$10$PcmA.1.rJWbjTkocMfZILu3uzTvkoRpADxtjYSyHqHmWOTgAC7B0S','Jeffery','Ferry','M','6042124',NULL,15),(1,'melissa.gaines@dbu.edu','$2b$10$EEwIxdwMzxgyl4ChkobxqecZ.7aAA/E5GFDR9Ctr.GQKtWaM.EbFq','','Gaines','M','6042636',NULL,16),(1,'brooks.jenkins@dbu.edu','$2b$10$9Vqv6qF7f1uVUE00hodFTOcemoEUjW/nArupwtSPrXXqkJJeuWCfm','Brooks','Jenkins','M','6088537',NULL,23),(1,'emily.crocker@dbu.edu','$2b$10$PZgxshj8RY0vja6FfLkMVu2b38bdQ82E7LUIb1p/q7fIkpB9zIRRS','Emily','Crocker','M','6155067',NULL,11),(1,'marie.marston@dbu.edu','$2b$10$3N116o3VitVO6w57Plow3OR/hvRkKqioSb7dx9ZIxoDyXmFABZX6.','Marie','Marston','M','6230589',NULL,29),(1,'joseph.torrez@dbu.edu','$2b$10$Csl2WUR7pF44iUAwijmJT.lv72pNoA8eg2zgqdqSb4eTJ0XoVssT6','Joseph','Torrez','M','6248958',NULL,NULL),(2,'jeanneorozco@dbu.edu','$2b$10$dlrpXY8je7gdTtXYccN6p.e1ZPGz4kBQhUlViD7/kV0Yh/IlkjI..','Jeanne','Orozco','F','6305774',NULL,20),(1,'jean.ferrara@dbu.edu','$2b$10$ol13MeoNIvfXh1esg95sIOZe.Z95c5bUzRJshb28KlifIfNfsre9i','Jean','Ferrara','M','6308520',NULL,14),(1,'tonia.henderson@dbu.edu','$2b$10$HObpVG9J62Hm8TYH6c7gsuf73r9yYAM/WXEg4KRWkqJBjNtAyJQOS','Tonia','Henderson','M','6326447',NULL,20),(1,'josefina.atkins@dbu.edu','$2b$10$XMmenuzdH70mZZ5r/ZLG5e9.lCJd/OH7Ouoo/wpf6fsX6RL.MZPkK','Josefina','Atkins','M','6351001',NULL,NULL),(1,'brenda.buchanan@dbu.edu','$2b$10$Ao2CzrnChmNSmrrJQUJn2uinQu806QilOuOaZRxHRcAvhPN74hOEa','Brenda','Buchanan','M','6404127',NULL,NULL),(1,'sheryl.zamora@dbu.edu','$2b$10$B9tdMLDihOlBQgMC.TPace7yjisOb8Qh433piLKfSwvV9f.4B.LQu','Sheryl','Zamora','M','6424032',NULL,NULL),(1,'robert.conaway@dbu.edu','$2b$10$4znO.BcaN8by4lEF/zfMzef5Kn.o6xG8Oj7f0YzUCKuz76ZXRHN0y','Robert','Conaway','M','6460316',NULL,9),(1,'dawn.gonzalez@dbu.edu','$2b$10$RxfmQRcA4dGJj36v/QRaKuVfWbnkwyLd2KBdCx0.qRpxuL1nknCrW','Dawn','Gonzalez','M','6473853',NULL,16),(1,'keith.barron@dbu.edu','$2b$10$suZOh0oHzpWInFhiJxxUFuPt4CNjGDgIcLiRvj5oeNvnctTTkrMhK','Keith','Barron','M','6511785',NULL,5),(1,'john.finn@dbu.edu','$2b$10$cEJnFPALEEqnkhgZ8ck1uO1hCPmnZ7RTEC/Qj8XpVUEzJXnsWBAsW','John','Finn','M','6543194',NULL,15),(1,'leah.williams@dbu.edu','$2b$10$HNuucJ8p0.Ubvyo6H/0u.eQGEvzZtGdYCUgZA4E9Kb.s/XYN.YB0.','Leah','Williams','M','6546840',NULL,NULL),(1,'mary.simmons@dbu.edu','$2b$10$0sfpkOOxvZoXx10aR/hDHev1s3sqe6td/f6gEzMYRJJp/d7bhp4uu','Mary','Simmons','M','6722932',NULL,37),(1,'adrian.johnson@dbu.edu','$2b$10$H078zfB2giTNTIqVmgWjCuN91QriPwz2c.a1ascqnzAj0i3fsFQy6','Adrian','Johnson','M','6724086',NULL,24),(1,'mary.arteaga@dbu.edu','$2b$10$HIoBajgYbJakL6iqrVwQ2eESrcg8WSgkNcdnZFWw79Zbhgya/mAb.','Mary','Arteaga','M','6743079',NULL,NULL),(1,'james.villar@dbu.edu','$2b$10$41i1yyoAmZ0U0ldX5DrX9uPDABeZEWXm9v9Ee50oj8fboUAXG6rJ.','James','Villar','M','6766180',NULL,NULL),(1,'jonathan.clark@dbu.edu','$2b$10$/vHeM5o.yIVY3OrDwjhG5um5QAsT0hCaJYZJiTr.qYPhf2dCWTSJO','Jonathan','Clark','M','6841343',NULL,8),(1,'william.martinez@dbu.edu','$2b$10$Oj2fuFSyx11VRMyWXAEUZez4B9fp2LxRyMhcTE2B4ItuD1gmBUAXS','William','Martinez','M','6896484',NULL,30),(1,'jodie.foerster@dbu.edu','$2b$10$My6bJJr4pwJjfxqagH5sK.2bGg9ZuWE5RnxTrOrPhnpbidQk.s6iO','Jodie','Foerster','M','7004587',NULL,15),(1,'harold.layman@dbu.edu','$2b$10$l8LBAl.GBE.D5YVyPEC3a.j6jHQll8CIuwynFprZ1etEKPVL6TYWS','Harold','Layman','M','7007763',NULL,25),(1,'willie.green@dbu.edu','$2b$10$tq0XBj32negR4wfmOBYLOeqU.QxlcwvTGP6rnBNCDWdxQ.d6rrwXe','Willie','Green','M','7008982',NULL,17),(1,'greg.allen@dbu.edu','$2b$10$eml6B17S0UG0L3714P3f9uy7I2uyxd59JIwIjcruabi9nUyaziLX.','Greg','Allen','M','7018550',NULL,NULL),(1,'yvonne.laporte@dbu.edu','$2b$10$.06zfATtcM4Ztd6v4y2S4ekCXgvRkUwaU/7WftF53op.Psa3i7IYm','Yvonne','Laporte','M','7020390',NULL,25),(1,'brandon.hassan@dbu.edu','$2b$10$JwSjzBMG9gYgBOtHXoFLGOurPuagaxvpeO8rdVXUOo2s2DyLD9QZ2','Brandon','Hassan','M','7046921',NULL,18),(1,'donald.wickham@dbu.edu','$2b$10$KSGMwBcT75PE7enVpDf4UO.YDgP82S1ailJBaRJf40ogpvKygaLGW','Donald','Wickham','M','7084536',NULL,NULL),(1,'natalia.smith@dbu.edu','$2b$10$wIvMmASgAyLKvpl5TOHOcOVXitbaA4x7Jcmx0pMTFyz6xlQchYdZy','Natalia','Smith','M','7143809',NULL,NULL),(1,'juan.flores@dbu.edu','$2b$10$AVhW9k/Kus3jAT3OUFwRvuxpaRwg0qibBwI0a0Qdc.tl2DrvgdEqa','Juan','Flores','M','7152573',NULL,15),(1,'michele.arnold@dbu.edu','$2b$10$IB14ar7xwDmmj7pSdfTLROlJUmuuqNaSKd3w3OGokmbO1.pzP05t2','Michele','Arnold','M','7199636',NULL,NULL),(1,'ayesha.urso@dbu.edu','$2b$10$mT.AOezPqGrlCAodWcDX3.Y3WSlJO7Jjxfz96HawEPHvthtZYfirS','Ayesha','Urso','M','7238782',NULL,NULL),(1,'joanne.clayton@dbu.edu','$2b$10$akfKfbSlMaRKRmIW3BWLYemhD/PD27rU8Lkh5YlffKh6YHiL7CmVe','Joanne','Clayton','M','7310108',NULL,9),(1,'jack.eubanks@dbu.edu','$2b$10$VJjwgQ3ksNdEeRvGckwUxOzd4/vn3TldP7JoISTVE4od6m5o04sni','Jack','Eubanks','M','7322292',NULL,14),(1,'phillip.lewis@dbu.edu','$2b$10$e4aOZT3PVUfPP.Op0Xs4YOAospAKjO05SfBcII.44seNowTqauA7y','Phillip','Lewis','M','7339848',NULL,28),(1,'trish.randall@dbu.edu','$2b$10$VFPoDOYpgmZTSH4nJ6jMguhR6PyyYvy5yzaX6C0BJYSEEDrJ/i/0K','Trish','Randall','M','7417398',NULL,34),(1,'gladys.whitaker@dbu.edu','$2b$10$6j0k53s0L8YGhiKmy8yNWOSbG/hYvmEmORbllmU4u4EqdS1wEHXJy','Gladys','Whitaker','M','7496909',NULL,NULL),(2,'anthonyporter@dbu.edu','$2b$10$B2ovP6AI498pFDO9I1gLPenVSl4iKNryZtXOk.p610bNwY.T5I8b.','Anthony','Porter','M','7514077',NULL,16),(1,'linda.benavides@dbu.edu','$2b$10$JsVCPT/3vNzbF3i22n2uEuGTYwCbUNhILHs4bc0OWZeiAz8ZPZ4U6','Linda','Benavides','M','7523377',NULL,5),(2,'haroldgassett@dbu.edu','$2b$10$RhQEKLRlxuLZuG6tAekmP.2a3iHo/PvMjLUG/xeiDEqhOQnsK2Z.G','Harold','Gassett','M','7587581',NULL,15),(1,'sarah.delgadillo@dbu.edu','$2b$10$78Gna5nSXcTQwWH4tFLTXOl2wRXgoMHSEwb91ZTh8yLPoLaOM6976','Sarah','Delgadillo','M','7588500',NULL,12),(1,'ralph.white@dbu.edu','$2b$10$9SUG9dCknq9mXOJG9DlkUOCLBzEA5OozaXs3IfxO1Y88O4Ice5a0K','Ralph','White','M','7596056',NULL,NULL),(1,'mario.delano@dbu.edu','$2b$10$Zp3lWlntRVx4DWknMGINIOxW8HOl99mNtFR68Knvnly0UGczisGhS','Mario','Delano','M','7605286',NULL,11),(1,'gloria.hearne@dbu.edu','$2b$10$pjGb76E8FkUkQw/FDzB/h.jfMSo5ZUbj5UJeeJF7pfcoOPQLHwgyG','Gloria','Hearne','M','7643130',NULL,20),(1,'jd@dbu.edu','$2b$10$ZtjTa4E2bcXJf3On2KUkt.WNaOQ0GRmbOODhbYmICPcglpweqOcRK','John','Doe','M','7648382',NULL,NULL),(1,'hazel.peters@dbu.edu','$2b$10$c7mlGUKiIpXbCTvh72wE9OYqgPQHL7siMdj0dgGjwU9MkffoouH3K','Hazel','Peters','M','7691370',NULL,33),(2,'johnsmith@dbu.edu','$2b$10$Qgqh5MWdmWaqc1LT6bctMOfCj70.BG/5gKfvuvwvVrYh0Tx2Sn8ne','John','Smith','M','7777777',NULL,NULL),(2,'georgefluharty@dbu.edu','$2b$10$LWA8hO3MwiSOSLKSTxLHYe/PaFBJF2nO0y/EY1SnrnazEFG.xUvVm','George','Fluharty','M','7823645 ',NULL,13),(1,'juan.hollingsworth@dbu.edu','$2b$10$Dj.8jBiWiXpUVIW5CW1H5enAgascDSjw/TmXvpnHIKE5lr/t7lBpO','Juan','Hollingsworth','M','7840589',NULL,22),(1,'joanperkins@dbu.edu','$2b$10$2nRQVTcaUYBmHg4t1L1vsObPBviGASn1MwtlMlqXcfk162iFa0e.G','Joan','Perkins','F','7847612',NULL,32),(1,'marjorie.triana@dbu.edu','$2b$10$nLkQBNjZOw4LGGAFEtsUQOmrRg6pvxjv2.Te9XCRXZ3h5XZh.Sgau','Marjorie','Triana','M','7911977',NULL,NULL),(2,'patriciabowman@dbu.edu','$2b$10$wKtH4keXjI/VJMmyFu6JSO1bzO2urZAWS8UGlJg1/VYLYh3fkQeMK','Patricia','Bowman','F','7932212',NULL,11),(1,'lisa.duran@dbu.edu','$2b$10$6nJvEj4uaMY60MWjKgoLVO1NxflWHF4xoOgTCema2uAu64hgPAE9C','Lisa','Duran','M','8099288',NULL,13),(1,'barbara.scales@dbu.edu','$2b$10$M7Ls/aXzIGKt3qnbTthDHuH3ssWvWfNd5o15msHDe9pNYYgFoVgKC','Barbara','Scales','M','8213188',NULL,36),(1,'kandi.rush@dbu.edu','$2b$10$kcYVyZ7NGuKRPHKy3NZiNOIbvWTizSIzJr9H5Zek3jmRQGY1xY2si','Kandi','Rush','M','8258075',NULL,35),(1,'calvingariepy@dbu.edu','$2b$10$9CRm6Drs7KE7lQGn/.8nI.IR63sW6GVSz11qu0uuXzq56bxkGA/HO','Calvin','Gariepy','M','8285559',NULL,10),(1,'CliffordPCamp@dbu.edu','$2b$10$1BSP2S5EJ2YmMJeSA1ZYn.gc7mBezKUnrbHHVIyRFM9dLuISpcQD.','Clifford ','Camp','M','8414247',NULL,NULL),(1,'donita.jenkins@dbu.edu','$2b$10$xPDCTecjkEstChyT8rCmtuJkcSWMOvUnCgbqAKZhzUOkDW8ZOM/ti','Donita','Jenkins','M','8432165',NULL,23),(1,'jenelle.bethea@dbu.edu','$2b$10$WautylD3cL0es1DbCcZN5eKYZfukJirWY32HIxOr1tGpaywityu8i','Jenelle','Bethea','M','8446909',NULL,6),(1,'justin.miller@dbu.edu','$2b$10$vAcqPLBR7fb9cD84JWYcFuB10K/l561cyWMHwlRTOVQR1fGNAMyBG','Justin','Miller','M','8549473',NULL,31),(1,'johnny.howell@dbu.edu','$2b$10$TLWMOIA/BWa2GACurood8.X3/MwI9tN0BDNzAsde9eEQx/b1M54MG','Johnny','Howell','M','8650605',NULL,22),(1,'imogene.vanauken@dbu.edu','$2b$10$riMw8.63J.u4Ak/c9ahQ8.nKwF8cfDgPZgcg9LBWF0PY14y.iom0K','Imogene','Vanauken','M','8783534',NULL,NULL),(1,'dora.saylors@dbu.edu','$2b$10$Cje5Ro6NfNFhSMhzV2.AouA0l4L9wjoxleKX10Of2MrxCCTU4f.86','Dora','Saylors','M','8784437',NULL,36),(1,'brittanyhernandez@dbu.edu','$2b$10$03untbl9MPd54Eg.wKBymOlJ6Adb7eBWefq4uEpqnl6T.w62x2n9O','Brittany','Hernandez','F','8787461',NULL,9),(1,'stacy.samuels@dbu.edu','$2b$10$WxHhcgmYQcT6Le0rahPTtudkph8UG3tV87FQqUh3lcP9aiqnUtOna','Stacy','Samuels','M','8793304',NULL,36),(1,'gladys.najera@dbu.edu','$2b$10$NLXx0WDl2OmcrVD20iwzvu2opZfir6nmQ5La2LrKU4dM.qEioPzRO','Gladys','Najera','M','8838718',NULL,32),(1,'ryan.karns@dbu.edu','$2b$10$HJ3CLcCoLyl61XXWYebdDePWOSoAeVW6jqOaenJtYM0WFUOxn7l2.','Ryan','Karns','M','8841895',NULL,24),(1,'gwen.mize@dbu.edu','$2b$10$VKJEfQDlmV2PsZNCqLceoO4N4/617oxYJsRrOlLR5AcJp/mi3OwYS','Gwen','Mize','M','8856885',NULL,31),(1,'daniel.esparza@dbu.edu','$2b$10$cZgLTiTnhG7Gjn1Ia8PP5.unR9/zvMWcjXoSpROQaIe4yt7cZp.Jy','Daniel','Esparza','M','8988935',NULL,13),(1,'kenneth.ford@dbu.edu','$2b$10$uHMv.drlGRjR9tPxL6HsR.JrGpsrgIxh/ptQfP5Max2jCfTPqW8Yi','Kenneth','Ford','M','9021395',NULL,16),(1,'timmy.bailey@dbu.edu','$2b$10$bpFkXhYEp9T9c4K4zd8CKO5C62DmesTzb3LRhMB6pgPK9bWkKHspC','Timmy','Bailey','M','9096366',NULL,NULL),(2,'lonniecouture@dbu.edu','$2b$10$ZMfzs.wzkLGD/KVsroCChePlcJGS2Kaoe/yo83udLvkV7IVjyhB66','Lonnie','Couture','F','9103662',NULL,8),(1,'alicia.fleming@dbu.edu','$2b$10$pARfn6q5ZszJ6m9sTJkoteitc1KjHesCZkCEsz2Ar15Y1gpAG2Hpq','Alicia','Fleming','M','9119531',NULL,15),(1,'ernest.brown@dbu.edu','$2b$10$VxPA6wsrHejoW5FFZa8zFOJ0knXlRmN5Mv8lkdI5DCEwEf9CwgoCC','Ernest','Brown','M','9148620',NULL,NULL),(1,'james.baker@dbu.edu','$2b$10$1RVB9hxjWWf26jpVgu0Fl.9RfC9YrNZ3SlSlo7MW4JwBHAxnj/eau','James','Baker','M','9202377',NULL,5),(1,'carminefetzer@dbu.edu','$2b$10$qkD.WSElDwZDRZs3BxzXIuZ6Qi1UoxGJnRfmRDsEe5.awvjT5BHxK','Carmine','Fetzer','F','9414457 ',NULL,6),(1,'jacqueline.howlett@dbu.edu','$2b$10$Ng40WqGcK8uzYqLYbqCqrOSBVX7ozqpIKb4HBdjTqdtxEbzaFcsu2','Jacqueline','Howlett','M','9499762',NULL,22),(1,'robert.clubb@dbu.edu','$2b$10$YD.N4JYIfc2KYD7sQjfqoea1LbaBuenYHI1d03vbEMiJGgbjl.gXa','Robert','Clubb','M','9597499',NULL,9),(1,'irene.hannah@dbu.edu','$2b$10$tu5d4SlIBrGkEU/w0M6Th.B0Z0nwXzdZHnPPfE3LlJDBL8aOZXAxe','Irene','Hannah','M','9616794',NULL,18),(1,'peter.reeves@dbu.edu','$2b$10$O2Y6tVizimrsRII3evc2lOk75w1XGtXdhr19d7sow0yWtSdlrnULa','Peter','Reeves','M','9617598',NULL,34),(1,'larry.suiter@dbu.edu','$2b$10$3uBNZaxdc0WYIohkYxTOp.GAJm7CNXE1ExRJJRXRj3QaJ7opnqI3y','Larry','Suiter','M','9665043',NULL,NULL),(1,'joshuamorgan@dbu.edu','$2b$10$rQezjIgpYgSWtpGXwbbWf.CcjMzWW.i8wvIVClQzrHYnlwQ1rpIvO','Joshua','Morgan','M','9716715',NULL,NULL),(1,'sylvester.dean@dbu.edu','$2b$10$2Th.l39Q0djubR839YccquJcyu/8nZutkorm8FxtNq4Tq1PA3pbl.','Sylvester','Dean','M','9743369',NULL,11),(1,'catherine.sherrill@dbu.edu','$2b$10$LxepxAI.Z2cWdsyPW7yaGeuhi.RxWpxBV8MV6PRXf4XXH7hlNy7QC','Catherine','Sherrill','M','9768495',NULL,37),(1,'paul.thompson@dbu.edu','$2b$10$cgKeazAFAQIcreST3HJr5ehIskAC3rQbYOLR6HbnexcgYrWu1Sz1e','Paul','Thompson','M','9839457',NULL,28),(1,'julie.coulson@dbu.edu','$2b$10$DSV3Q3KKrae6qbY155qVw.lYgiXfpZ5e7JUmW5I0.9UjiRIn9GCRC','Julie','Coulson','M','9870068',NULL,10),(1,'SammieMLyon@dbu.edu','$2b$10$K5GnCMx/.lsidRXQnZ7Pl.XAUjrKWibWLCYRspLxaXdDX3nv0xWnq','Sammie ','Lyon','M','9881718 ',NULL,29),(1,'craig.dickinson@dbu.edu','$2b$10$AEA/PKP/NJMDh.WKflnoGexpRul0EYQk8aPd17jWRvgCD3MU2NnjC','Craig','Dickinson','M','9926375',NULL,12),(1,'alice.levine@dbu.edu','$2b$10$GUvVksENDdxS//jUpKtYfePPj65QGfU7bujbjXDX9gkI5BPOOogWm','Alice','Levine','M','9975344',NULL,28);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-12-07 11:19:03

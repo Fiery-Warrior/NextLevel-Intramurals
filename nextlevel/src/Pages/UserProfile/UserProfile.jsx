@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useCookies } from 'react-cookie';
 import CardDesign from './CardDesign';
 import { Typography } from '@material-ui/core';
@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
 
 
@@ -36,6 +37,9 @@ function UserProfile() {
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
     const [games, setGames] = useState([]); 
+
+
+    const highlightedElements = useRef(null);
 
 
     //Modal
@@ -86,7 +90,7 @@ function UserProfile() {
     }, [cookies, email]);
 
 
-    useEffect(() => {
+    useEffect(() => { 
         fetch(`http://localhost:3001/userprofile/${email}`)
             .then(response => response.json())
             .then(data => {
@@ -182,11 +186,17 @@ function UserProfile() {
 
             {teamName && (
                 <div>
+   
                     <h1 className="activity-cards-title-central">Activity Central</h1>
 
 
+        <Grid container spacing={2}>
+            <Grid item xs={6}>
 
-                    <Container maxWidth="md" className='all-of-sport-card' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
+
+
+
+                <Container maxWidth="md" className='all-of-sport-card' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', marginTop: '5%' ,alignItems: 'center', minWidth: '800px', minHeight: '300px' }}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <Container maxWidth="sm" className='calender'>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -257,14 +267,41 @@ function UserProfile() {
                             </Card>
                         </Container>
                     </Container>
+            </Grid>
+            <Grid item xs={6}>
+         
+<Container maxWidth="md" className='widget' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center', width: 300, height: 200, maxWidth: '500px', maxHeight: '300px' }}>
+                <div>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <Container maxWidth="md" className='widget' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
+                        </Container>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card className='widget' sx={{ maxWidth: 345, minWidth: 345, marginLeft: '2%', marginTop: '5%' }}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Team Requests
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+                <br/>
+                <br/>
+            </div>
+                </Container>
+            </Grid>
+        </Grid>
 
-
+                    
                     <br/>
                     <br/>
                 </div>
             )}
         <br/>
             <CardDesign/>
+
 
         </div>
     );

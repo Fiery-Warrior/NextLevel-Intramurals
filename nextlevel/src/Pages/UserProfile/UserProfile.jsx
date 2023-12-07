@@ -9,7 +9,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
@@ -33,11 +32,11 @@ const style = {
 function UserProfile() {
     const [cookies] = useCookies(['myCookie']);
     const [email, setEmail] = useState('');
-    const [teamID, setteamID] = useState('');
     const [userData, setUserData] = useState(null);
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
-    const [rosterData, setRosterData] = useState(null); //for roster by teamID
+    const [games, setGames] = useState([]); 
+
 
     //Modal
     const [open, setOpen] = React.useState(false);
@@ -50,15 +49,13 @@ function UserProfile() {
     //sport image chooser
     //this '?' checks to make sure that sportname is not null
     const userSport = sportName ? sportName.toLowerCase() : null;
-
+    
     const getSportImage = (sport) => {
         if (!sport) {
-            console.log("No sport");
             return;
         }
     
         sport = sport.toLowerCase();
-        console.log(sport);
         switch(sport) {
             case 'football':
                 return "/static/images/football.png";
@@ -81,12 +78,13 @@ function UserProfile() {
         }
     }
 
-
+    
     useEffect(() => {
         if (cookies.myCookie && !email) {
             setEmail(cookies.myCookie.email);
         }
     }, [cookies, email]);
+
 
     useEffect(() => {
         fetch(`http://localhost:3001/userprofile/${email}`)
@@ -105,24 +103,58 @@ function UserProfile() {
             });
         }, [email]);
 
-
-        const [teamMembers, setTeamMembers] = useState([]);
-        useEffect(() => {
-            if (teamName) {
-                fetch(`http://localhost:3001/team/${teamName}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (Array.isArray(data)) {
-                            setTeamMembers(data);
-                        } else {
-                            console.error('Invalid response data:', data);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching team members:', error);
-                    });
-            }
-        }, [teamName]); // This will run whenever teamName changes /each user profile
+    useEffect(() => {
+        if (teamName) {
+            // Only proceed if teamName is available
+            fetch("http://localhost:3001/showGames", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ teamName }) // Sending teamName in the request body
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Set the time to the start of the day
+    
+                    const upcomingGames = data
+                        .filter(game => {
+                            const gameDate = new Date(game.date);
+                            gameDate.setHours(0, 0, 0, 0); // Set the time to the start of the day for comparison
+                            return gameDate >= today; // Include games today and in the future
+                        })
+                        .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date ascending
+    
+                    setGames(upcomingGames); // Update the state with the filtered and sorted games
+                } else {
+                    console.error('Invalid response data:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching games:', error);
+            });
+        }
+    }, [teamName])
+    const nearestUpcomingGame = games.length > 0 ? games[0] : null;
+    const [teamMembers, setTeamMembers] = useState([]);
+    useEffect(() => {
+        if (teamName) {
+            fetch(`http://localhost:3001/team/${teamName}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setTeamMembers(data);
+                    } else {
+                        console.error('Invalid response data:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching team members:', error);
+                });
+        }
+    }, [teamName]); // This will run whenever teamName changes /each user profile
 
         
       
@@ -163,6 +195,13 @@ function UserProfile() {
                             </Container>
                             <Container className='next-game' style={{display: 'flex', flexDirection: 'column'}}>
                                 <section>Upcoming Game</section>
+                                    {nearestUpcomingGame && (
+                                        <div>
+                                            <p>Date: {new Date(nearestUpcomingGame.date).toLocaleDateString()}</p>
+                                            <p>Match: {nearestUpcomingGame['Your Team']} vs {nearestUpcomingGame['Opposing Team']}</p>
+                                            <p>Location: {nearestUpcomingGame.location}</p>
+                                        </div>
+                                    )}
                             </Container>
                         </div>
                         <Container maxWidth="sm" style={{marginLeft: '2%'}} className='sport-card'>
@@ -200,6 +239,23 @@ function UserProfile() {
                                 </CardContent>
                             </Card>
                         </Container>
+                        <Container className="schedule">
+                            <Card sx={{ maxWidth: 10000, minWidth: 345 }}>
+                                    <CardContent>
+                                        <Typography variant="h4">Your Schedule</Typography>
+                                        <ul>
+                                            {games.map(game => (
+                                                <li key={game.gameID}>
+                                                {game['Your Team']} vs {game['Opposing Team']} - {new Date(game.date).toLocaleDateString()}, {game.location}, Score: {game['Your Team Score']} - {game['Opposing Team Score']}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <Typography variant="h5" component="h2">
+                                            <Button onClick={handleOpen}> View all games</Button>
+                                        </Typography>
+                                    </CardContent>
+                            </Card>
+                        </Container>
                     </Container>
 
 
@@ -207,9 +263,7 @@ function UserProfile() {
                     <br/>
                 </div>
             )}
-
-<br/>
-
+        <br/>
             <CardDesign/>
 
         </div>

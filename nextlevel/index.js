@@ -230,6 +230,14 @@ app.get('/api/teams', (req, res) => {
   });
 });
 
+app.get('/sport', (req, res) => {
+  connection.query('SELECT sportName FROM sport', (err, results) => {
+      if (err) {
+          return res.status(500).send('Error fetching teams');
+      }
+      res.json(results.map(sport => sport.sportName));
+  });
+});
 
 app.post('/updateCaptain', async (req, res) => {
   try {
@@ -311,8 +319,10 @@ app.get('/gamedata', (req, res) => {
       g.date,
       MAX(CASE WHEN thg.seq = 1 THEN t.TeamName END) AS Team1Name,
       MAX(CASE WHEN thg.seq = 1 THEN thg.score END) AS Team1Score,
+	    MAX(CASE WHEN thg.seq = 1 THEN thg.forfeited END) AS Team1Forfeited,
       MAX(CASE WHEN thg.seq = 2 THEN t.TeamName END) AS Team2Name,
-      MAX(CASE WHEN thg.seq = 2 THEN thg.score END) AS Team2Score
+      MAX(CASE WHEN thg.seq = 2 THEN thg.score END) AS Team2Score,
+	    MAX(CASE WHEN thg.seq = 2 THEN thg.forfeited END) AS Team2Forfeited
       FROM game g
       LEFT JOIN (
       SELECT *, ROW_NUMBER() OVER (PARTITION BY game_gameID ORDER BY team_teamID) AS seq
@@ -390,15 +400,12 @@ function queryAsync(sql, values) {
 
 app.post('/editGame', async (req, res) => {
   try {
-    const { location, date, team1Name, team2Name, score1, score2, gameID} = req.body;
+    const { location, date, team1Name, team2Name, score1, score2, gameID, forfeit1, forfeit2} = req.body;
     // Get old team1ID
-    console.log(gameID);
     const oldTeamIDQuery = 'SELECT team_teamID FROM team_has_game WHERE game_gameID = ?';
     const oldTeamIDs = await queryAsync(oldTeamIDQuery, [gameID]);
     const oldTeam1Id = oldTeamIDs[0].team_teamID;
     const oldTeam2Id = oldTeamIDs[1].team_teamID;
-    console.log(oldTeam1Id);
-    console.log(oldTeam2Id);
 
     // Get team1 ID
     const team1IDQuery = 'SELECT teamID FROM team WHERE teamName = ?';
@@ -423,11 +430,11 @@ app.post('/editGame', async (req, res) => {
     await queryAsync(updateGameQuery, [location, date, gameID]);
     
     //Update Team 1 Score
-    const updateTeamQuery = 'UPDATE team_has_game SET score = ?, team_teamID = ? WHERE game_gameID = ? AND team_teamID = ?';
-    await queryAsync(updateTeamQuery, [score1, team1Id, gameID, oldTeam1Id]);
+    const updateTeamQuery = 'UPDATE team_has_game SET score = ?, team_teamID = ?, forfeited = ? WHERE game_gameID = ? AND team_teamID = ?';
+    await queryAsync(updateTeamQuery, [score1, team1Id, forfeit1, gameID, oldTeam1Id]);
 
     //Update Team 2 Score
-    await queryAsync(updateTeamQuery, [score2, team2Id, gameID, oldTeam2Id]);
+    await queryAsync(updateTeamQuery, [score2, team2Id, forfeit2, gameID, oldTeam2Id]);
 
     res.send('Game and team links created successfully');
   } catch (error) {
@@ -478,25 +485,6 @@ function queryAsync(sql, values) {
   });
 }
 
-
-
-
-
-
-// app.get('/roster/:teamID', (req, res) => {
-//   const teamID = req.params.teamID;
-//   connection.query('SELECT u.firstName, u.lastName FROM user u WHERE u.teamID = ?', [teamID], (err, results) => {
-//     if (err) throw err;
-//     res.json(results);
-//     console.log(results);
-//     console.log(teamID);
-//   });
-// });
-
-
-
-
-
 app.get('/team/:teamName', (req, res) => {
   const teamName = req.params.teamName;
   connection.query('SELECT u.firstName, u.lastName FROM user u JOIN team t ON u.teamID = t.teamID WHERE t.TeamName = ?', [teamName], (err, results) => {
@@ -509,7 +497,43 @@ app.get('/team/:teamName', (req, res) => {
   });
 });
 
+app.post('/showGames', async (req, res) => {
+  try {
+    const {teamName} = req.body;
+    const getTeamIDQuery = 'SELECT teamID FROM team WHERE teamName = ?'
+    const teamIDResults = await queryAsync(getTeamIDQuery, [teamName]);
+    const teamID = teamIDResults[0].teamID;
+    const getGamesQuery = 	`SELECT g.gameID, g.date, g.location, 
+                          t1.TeamName AS 'Your Team', thg1.score AS 'Your Team Score',
+                          t2.TeamName AS 'Opposing Team', thg2.score AS 'Opposing Team Score'
+                      FROM nlidb.game g
+                      JOIN nlidb.team_has_game thg1 ON g.gameID = thg1.game_gameID AND thg1.team_teamID = ?
+                      JOIN nlidb.team t1 ON thg1.team_teamID = t1.teamID
+                      JOIN nlidb.team_has_game thg2 ON g.gameID = thg2.game_gameID AND thg2.team_teamID != ?
+                      JOIN nlidb.team t2 ON thg2.team_teamID = t2.teamID`;
+    const games = await queryAsync(getGamesQuery, [teamID, teamID]);
+    console.log("Games JSON Response:", games);
+    res.json(games);
 
+  } catch (error) {
+    console.error(error);
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Helper function to promisify MySQL queries
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 // Search for teams and sport
 app.get('/teams-sports', (req, res) => {
   connection.query('SELECT t.TeamName, s.sportName FROM team t LEFT JOIN sport s ON t.sport_idSport = s.idSport', (err, results) => {
@@ -522,6 +546,81 @@ app.get('/teams-sports', (req, res) => {
     }
   });
 });
+
+app.get('/teaminfo', async (req, res) => {
+  try{
+  const getTeamsquery = (`SELECT t.teamID, t.TeamName, s.sportName, u.firstName, u.lastName, u.stuID
+                          FROM nlidb.team t
+                          JOIN nlidb.sport s ON t.sport_idSport = s.idSport
+                          LEFT JOIN nlidb.user u ON t.Captain = u.stuID
+                        `)
+  const teams = await queryAsync(getTeamsquery);
+  res.json(teams);
+  } catch(error) {
+    console.error(error);
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post('/addTeam', async (req, res) => {
+  try {
+    const { teamName, sport} = req.body;
+    const getSportIDQuery = 'SELECT idSport FROM sport WHERE sportName = ?'
+    const sportIDResults = await queryAsync(getSportIDQuery, [sport]);
+    const sportID = sportIDResults[0].idSport
+
+    // Insert a new game
+    const createTeamSql = 'INSERT INTO team (TeamName, sport_idSport) VALUES (?, ?)';
+    await queryAsync(createTeamSql, [teamName, sportID]);
+
+    res.send('Game and team links created successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.post('/editTeam', async (req, res) => {
+  try {
+    const { teamName, sportName, teamID} = req.body;
+    // Get sportID
+    const sportIDQuery = 'SELECT idSport FROM sport WHERE sportName = ?';
+    const sportResult = await queryAsync(sportIDQuery, [sportName]);
+    const sportID = sportResult[0].idSport;
+
+    const createTeamSql = 'UPDATE team SET TeamName = ?, sport_idSport = ? WHERE teamID = ?';
+    await queryAsync(createTeamSql, [teamName, sportID, teamID]);
+
+    res.send('Game and team links created successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/removeTeam', async (req, res) => {
+  try {
+    const {teamID} = req.body;
+    // Get sportID
+    console.log(teamID);
+    const removeUsersQuery = 'UPDATE user SET teamID = NULL WHERE teamID = ?';
+    await queryAsync(removeUsersQuery, [teamID]);
+
+    const removeTeamQuery = 'DELETE FROM team WHERE teamID = ?';
+    await queryAsync(removeTeamQuery, [teamID]);
+
+    res.send('Team Successfully Removed');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
 
 
 

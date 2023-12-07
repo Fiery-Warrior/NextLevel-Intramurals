@@ -13,10 +13,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
+import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import HomeIcon from '@mui/icons-material/Home';
 import Card from '@material-ui/core/Card';
 import axios from 'axios';
@@ -24,6 +24,7 @@ import CardContent from '@material-ui/core/CardContent';
 //import './admindash2.jsx/index.js';
 import Users from './Users.jsx';
 import Game from './Game';
+import Teams from './Teams';
 
 const drawerWidth = 240;
 
@@ -124,12 +125,13 @@ function AdminDash() {
 
     
   const renderPage = () => {
-    console.log("I tried to render")
     switch(currentPage) {
       case 'Users':
         return <Users />;
       case 'Game':
         return <Game />;
+      case 'Teams':
+        return <Teams />;
       default:
         return <Users />;
     }
@@ -187,12 +189,7 @@ function AdminDash() {
                 </div>
                 <Divider />
                 <List>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <DashboardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
-                    </ListItem>
+
                     <ListItem button onClick={() => setCurrentPage('Users')}>
                         <ListItemIcon>
                             <PeopleIcon />
@@ -201,9 +198,15 @@ function AdminDash() {
                     </ListItem>
                     <ListItem button onClick={() => setCurrentPage('Game')}>
                         <ListItemIcon>
-                            <LayersIcon />
+                            <ScoreboardIcon />
                         </ListItemIcon>
                         <ListItemText primary="Games" />
+                    </ListItem>
+                    <ListItem button onClick={() => setCurrentPage('Teams')}>
+                        <ListItemIcon>
+                            <Diversity3Icon />
+                        </ListItemIcon>
+                        <ListItemText primary="Teams" />
                     </ListItem>
                 </List>
                 <Divider />

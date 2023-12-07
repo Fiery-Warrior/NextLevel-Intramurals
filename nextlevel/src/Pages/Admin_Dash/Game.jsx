@@ -15,6 +15,8 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import AdminDash from './AdminDash';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const Game = () => {
     const [games, setGames] = useState([]);
@@ -22,6 +24,8 @@ const Game = () => {
     const [selectedGame, setSelectedGame] = useState(null);
     const [teams, setTeams] = useState([]);
     const [modalMode, setModalMode] = useState('addGame');
+    const [forfeit, setForfeit] = useState({ team1: false, team2: false });
+
 
     //TODO Move styling to other file
     const modalStyle = {
@@ -98,10 +102,13 @@ const Game = () => {
         const team2 = document.getElementById('teamSelect2').value;
         const score1 = document.getElementById('team1Score').value;
         const score2 = document.getElementById('team2Score').value;
+        console.log(forfeit.team2)
+        const forfeit1 = forfeit.team1 ? 1 : 0;
+        const forfeit2 = forfeit.team2;
         const sportId = 1; // Currently Placeholder. Can remove as long as it is also removed from endpoint
 
         try {
-            await axios.post('http://localhost:3001/editGame', { date, location, team1Name: team1, team2Name: team2, score1, score2, gameID});
+            await axios.post('http://localhost:3001/editGame', { date, location, team1Name: team1, team2Name: team2, score1, score2, gameID, forfeit1, forfeit2});
             alert('Game edited successfully');
             fetchGames();
             setOpenModal(false);
@@ -150,8 +157,8 @@ const Game = () => {
                             <TableCell>{game.gameID}</TableCell>
                             <TableCell>{game.date}</TableCell>
                             <TableCell>{game.location}</TableCell>
-                            <TableCell>{game.Team1Name}</TableCell>
-                            <TableCell>{game.Team1Score}</TableCell>
+                            <TableCell>{game.Team1Name} {game.Team1Forfeited ? "(forfeited)" : ""}</TableCell>
+                            <TableCell>{game.Team2Name} {game.Team2Forfeited ? "(forfeited)" : ""}</TableCell>
                             <TableCell>{game.Team2Name}</TableCell>
                             <TableCell>{game.Team2Score}</TableCell>
                         </TableRow>
@@ -171,23 +178,23 @@ const Game = () => {
                             <Box> 
                                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
                                 
-                                <TextField
-                                    id="date"
-                                    label="Select Date"
-                                    type="date"
-                                    defaultValue={new Date().toISOString().split('T')[0]}
-                                    sx={{ width: 220 }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
+                                    <TextField
+                                        id="date"
+                                        label="Select Date"
+                                        type="date"
+                                        defaultValue={new Date().toISOString().split('T')[0]}
+                                        sx={{ width: 220 }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
 
-                                <TextField
-                                    id ="location"
-                                    label="Location"
-                                    variant="outlined"
-                                    sx={{ width: 220 }}
-                                />
+                                    <TextField
+                                        id ="location"
+                                        label="Location"
+                                        variant="outlined"
+                                        sx={{ width: 220 }}
+                                    />
                                 </Box>
                                     <br></br>
                     
@@ -212,35 +219,35 @@ const Game = () => {
                         {modalMode === 'viewUser' && selectedGame && (
                                 <Box> 
                                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
-                                <TextField
-                                    id="date"
-                                    label="Select Date"
-                                    type="date"
-                                    defaultValue={new Date(selectedGame.date).toISOString().split('T')[0]}
-                                    sx={{ width: 220 }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
+                                    <TextField
+                                        id="date"
+                                        label="Select Date"
+                                        type="date"
+                                        defaultValue={new Date(selectedGame.date).toISOString().split('T')[0]}
+                                        sx={{ width: 220 }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
 
-                                <TextField
-                                    id ="location"
-                                    label="Location"
-                                    variant="outlined"
-                                    defaultValue={selectedGame.location}
-                                    sx={{ width: 220 }}
-                                />
+                                    <TextField
+                                        id ="location"
+                                        label="Location"
+                                        variant="outlined"
+                                        defaultValue={selectedGame.location}
+                                        sx={{ width: 220 }}
+                                    />
                                 </Box>
                                     <br></br>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
-                                        <select name="TeamName1" id="teamSelect1" defaultValue = {selectedGame.Team1Name}>
-                                            {teams.map(TeamName => (<option key={TeamName} value={TeamName}>{TeamName}</option>))} 
-                                        </select>
-                                        <p>VS.</p>
-                                        <select name="TeamName2" id="teamSelect2" defaultValue = {selectedGame.Team2Name}>
-                                            {teams.map(TeamName => (<option key={TeamName} value={TeamName}>{TeamName}</option>))} 
-                                        </select>
-                                    </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
+                                    <select name="TeamName1" id="teamSelect1" defaultValue = {selectedGame.Team1Name}>
+                                        {teams.map(TeamName => (<option key={TeamName} value={TeamName}>{TeamName}</option>))} 
+                                    </select>
+                                    <p>VS.</p>
+                                    <select name="TeamName2" id="teamSelect2" defaultValue = {selectedGame.Team2Name}>
+                                        {teams.map(TeamName => (<option key={TeamName} value={TeamName}>{TeamName}</option>))} 
+                                    </select>
+                                </Box>
                                     <br></br>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
                                     <TextField
@@ -249,14 +256,27 @@ const Game = () => {
                                         label={`${selectedGame.Team1Name} Score`}
                                         defaultValue={selectedGame.Team1Score}
                                     />
+                                    
                                     <TextField
                                         id = "team2Score"
                                         type = "number"
                                         label={`${selectedGame.Team2Name} Score`}
                                         defaultValue={selectedGame.Team2Score}
                                     />
+                                    
                                 </Box>
                                     <br></br>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={forfeit.team1} onChange={(e) => setForfeit({ ...forfeit, team1: e.target.checked })} />}
+                                        label="Mark Team Forfeit"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={forfeit.team2} onChange={(e) => setForfeit({ ...forfeit, team2: e.target.checked })} />}
+                                        label="Mark Team Forfeit"
+                                    />
+                                </Box>
+                                        <br></br>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px', justifyContent: 'center' }}>
                                     <Button variant="contained" onClick={handleEditGame}>
                                         Update Game

@@ -9,6 +9,23 @@ import { TextField } from '@material-ui/core';
 import HomeIcon from '@mui/icons-material/Home';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css"
+
+
+
+// const driverObj = driver();
+// driverObj.highlight({
+//   element: "#some-element",
+//   popover: {
+//     title: "Title",
+//     description: "Description"
+//   }
+// });
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,20 +117,21 @@ export default function UserNavBar() {
         if (data.success) {
           // User successfully joined the team
           console.log('User successfully joined the team');
+          // You might want to update some state or perform other actions upon successful joining
         } else {
           // Error joining the team
           console.error(data.error);
+          // Handle error scenario
         }
       });
   };
-  
-
 
   const handleLogout = () => {
     removeCookie('myCookie'); // remove the cookie
     window.location.href = '/login'; // redirect to login
   };
 
+  
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar}>
@@ -138,19 +156,7 @@ export default function UserNavBar() {
   }}
   className="search-input"
 />
-{/* {searchTerm && (
-  <div className="dropdown-menu">
-    {searchResults.length > 0 ? (
-      <div>
-        {searchResults.filter(result => result.toLowerCase().includes(searchTerm.toLowerCase())).map((result) => (
-          <p className="dropdown-item" key={result}>{result}</p>
-        ))}
-      </div>
-    ) : (
-      <p>No results found.</p>
-    )}
-  </div>
-)} */}
+
       {searchTerm && (
         <div className="dropdown-menu">
           {searchResults.length > 0 ? (

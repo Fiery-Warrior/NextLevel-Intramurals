@@ -410,6 +410,18 @@ app.post('/join-team', (req, res) => {
   });
 });
 
+app.get('/teams-sports', (req, res) => {
+  connection.query('SELECT t.TeamName, s.sportName FROM team t LEFT JOIN sport s ON t.sport_idSport = s.idSport', (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error fetching teams and sports');
+    } else {
+      const teamsSports = results.map(result => result.sportName ? `${result.TeamName} (${result.sportName})` : result.TeamName);
+      res.json(teamsSports);
+    }
+  });
+});
+
 
 
 // Start the server

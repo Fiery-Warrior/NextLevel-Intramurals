@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useCookies } from 'react-cookie';
 import CardDesign from './CardDesign';
 import { Typography } from '@material-ui/core';
@@ -39,6 +39,9 @@ function UserProfile() {
     const [teamName, setTeamName] = useState('');
     const [sportName, setSportName] = useState('');
     const [rosterData, setRosterData] = useState(null); //for roster by teamID
+
+    const highlightedElements = useRef(null);
+
 
     //Modal
     const [open, setOpen] = React.useState(false);
@@ -154,80 +157,8 @@ function UserProfile() {
                     <h1 className="activity-cards-title-central">Activity Central</h1>
 
 
-
-                    {/* <Container maxWidth="md" className='all-of-sport-card' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
-                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                            <Container maxWidth="sm" className='calender'>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateCalendar />
-                                </LocalizationProvider>
-                            </Container>
-                            <Container className='next-game' style={{display: 'flex', flexDirection: 'column'}}>
-                                <section>Upcoming Game</section>
-                            </Container>
-                        </div>
-                        <Container maxWidth="sm" style={{marginLeft: '2%'}} className='sport-card'>
-                            <Card sx={{ maxWidth: 345, minWidth: 345 }}>
-                                <CardMedia
-                                    sx={{ height: 180 }}
-                                    // image="/static/images/football.png"
-                                    image={getSportImage(userSport)}
-                                    title="Sport Card"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div" >
-                                        {teamName} | {sportName}
-                                    </Typography>
-
-                                        <Typography variant="h5" component="h2">
-                                            <Button onClick={handleOpen}> Player Roster</Button>
-                                            <Modal
-                                                open={open}
-                                                onClose={handleClose}
-                                                aria-labelledby="modal-modal-title"
-                                                aria-describedby="modal-modal-description"
-                                            >
-                                                <Box sx={style}>
-                                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                                        <h2>{teamName} Roster</h2>
-                                                        {teamMembers.map(member => (
-                                                            <p key={member.id}>{member.firstName} {member.lastName}</p>
-                                                        ))}
-                                                    </Typography>
-                                                </Box>
-                                            </Modal>
-                                        </Typography>
-
-                                </CardContent>
-                            </Card>
-                        </Container>
-                    </Container> */}
-
-
-
         <Grid container spacing={2}>
             <Grid item xs={6}>
-                {/* <Container maxWidth="md" className='widget' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
-                <div>
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <Container maxWidth="md" className='widget' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
-                        </Container>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Card className='widget' sx={{ maxWidth: 345, minWidth: 345, marginLeft: '2%', marginTop: '5%' }}>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Team Requests
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
-                <br/>
-                <br/>
-            </div>
-                </Container> */}
 
 
 
@@ -281,54 +212,7 @@ function UserProfile() {
                     </Container>
             </Grid>
             <Grid item xs={6}>
-            {/* <Container maxWidth="md" className='all-of-sport-card' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center'}}>
-                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                            <Container maxWidth="sm" className='calender'>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateCalendar />
-                                </LocalizationProvider>
-                            </Container>
-                            <Container className='next-game' style={{display: 'flex', flexDirection: 'column'}}>
-                                <section>Upcoming Game</section>
-                            </Container>
-                        </div>
-                        <Container maxWidth="sm" style={{marginLeft: '2%'}} className='sport-card'>
-                            <Card sx={{ maxWidth: 345, minWidth: 345 }}>
-                                <CardMedia
-                                    sx={{ height: 180 }}
-                                    // image="/static/images/football.png"
-                                    image={getSportImage(userSport)}
-                                    title="Sport Card"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div" >
-                                        {teamName} | {sportName}
-                                    </Typography>
-
-                                        <Typography variant="h5" component="h2">
-                                            <Button onClick={handleOpen}> Player Roster</Button>
-                                            <Modal
-                                                open={open}
-                                                onClose={handleClose}
-                                                aria-labelledby="modal-modal-title"
-                                                aria-describedby="modal-modal-description"
-                                            >
-                                                <Box sx={style}>
-                                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                                        <h2>{teamName} Roster</h2>
-                                                        {teamMembers.map(member => (
-                                                            <p key={member.id}>{member.firstName} {member.lastName}</p>
-                                                        ))}
-                                                    </Typography>
-                                                </Box>
-                                            </Modal>
-                                        </Typography>
-
-                                </CardContent>
-                            </Card>
-                        </Container>
-                    </Container> */}
-
+         
 <Container maxWidth="md" className='widget' style={{display: 'flex', justifyContent: 'flex-start', marginLeft: '2%', alignItems: 'center', width: 300, height: 200, maxWidth: '500px', maxHeight: '300px' }}>
                 <div>
                 <Grid container spacing={2}>
@@ -363,11 +247,6 @@ function UserProfile() {
 
             <CardDesign/>
 
-
-            {/* <Container maxWidth="md" className = 'widget' style={{display: 'flex', justifyContent: 'flex-start', marginRight: '2%', alignItems: 'center', maxWidth: '350px'}}>
-                                             
-                                                            <h1>here</h1>
-                    </Container> */}
 
         </div>
     );
